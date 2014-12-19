@@ -9,7 +9,8 @@ pydarkstar.logutils.setDebug()
 
 class TestAuctionHouse(unittest.TestCase):
     def test_init(self):
-        pydarkstar.tables.auction_house.AuctionHouse()
+        row = pydarkstar.tables.auction_house.AuctionHouse()
+        pydarkstar.logutils.logging.debug(row)
 
 if __name__ == '__main__':
     unittest.main()
