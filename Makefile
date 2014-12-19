@@ -1,5 +1,16 @@
 HEADER=**********************************************************************
 
+help:
+	@echo "[targets]"
+	@echo "    make tests"
+	@echo "    make darkobject"
+	@echo "    make timeutils"
+	@echo "    make database"
+	@echo "    make broker"
+	@echo "    make tables.base"
+	@echo "    make tables.auction_house"
+	@echo "    make tables.delivery_box"
+
 test: \
  logutils \
  darkobject \
