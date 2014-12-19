@@ -1,0 +1,109 @@
+"""
+.. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
+"""
+import contextlib
+import warnings
+import logging
+import logging.handlers
+
+lfmt = '[%(asctime)s][%(process)5d][%(levelname)-5s]: %(message)s'
+dfmt = "%Y-%m-%d %H:%M:%S"
+logging.basicConfig(level=logging.ERROR, format=lfmt, datefmt=dfmt)
+logging.addLevelName(logging.CRITICAL, 'FATAL')
+logging.addLevelName(logging.WARNING , 'WARN' )
+
+def setLevel(level):
+    logging.getLogger().setLevel(level)
+
+def setDebug():
+    setLevel(logging.DEBUG)
+
+def setError():
+    setLevel(logging.ERROR)
+
+def setInfo():
+    setLevel(logging.INFO)
+
+def custom_warning_format(message, category, filename, lineno, *args, **kwargs):
+    return '%s:%s\n%s: %s' % (filename, lineno, category.__name__, message)
+
+@contextlib.contextmanager
+def capture(capture_warnings=True, reraise=False):
+    """
+    Log exceptions and warnings.
+    """
+    try:
+        if capture_warnings:
+            default_warning_format = warnings.formatwarning
+            warnings.formatwarning = custom_warning_format
+            logging.captureWarnings(True)
+        try:
+            yield
+        except Exception as e:
+            logging.exception('caught unhandled excetion')
+            if reraise:
+                if not isinstance(e, Warning):
+                    raise
+    finally:
+        if capture_warnings:
+            warnings.formatwarning = default_warning_format
+            logging.captureWarnings(False)
+
+class LoggingObject(object):
+    """
+    Inherit from this to get a bunch of logging functions as class methods.
+    """
+    def __init__(self):
+        self.debug('init')
+
+    def debug(self, msg, *args, **kwargs):
+        logging.debug(self._preprocess(msg), *args, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        logging.error(self._preprocess(msg), *args, **kwargs)
+
+    def fatal(self, msg, *args, **kwargs):
+        logging.fatal(self._preprocess(msg), *args, **kwargs)
+        exit(-1)
+
+    def info(self, msg, *args, **kwargs):
+        logging.info(self._preprocess(msg), *args, **kwargs)
+
+    def exception(self, msg, *args, **kwargs):
+        logging.exception(self._preprocess(msg), *args, **kwargs)
+
+    def _preprocess(self, msg):
+        return '{}: {}'.format(repr(self), msg)
+
+def addRotatingFileHandler(level=logging.DEBUG, fname='app.log',
+        logger=None, fmt=lfmt, **kwargs):
+    """
+    Create rotating file handler and add it to logging.
+
+    :param level: logging level
+    :param fname: name of file
+    :param name: logger instance
+    :param fmt: format
+    """
+
+    _kwargs = dict(maxBytes=(1048576*5), backupCount=5)
+    _kwargs.update(**kwargs)
+
+    handler = logging.handlers.RotatingFileHandler(fname, **kwargs)
+    handler.setLevel(level)
+
+    formatter = logging.Formatter(fmt)
+    handler.setFormatter(formatter)
+
+    if isinstance(logger, str):
+        logger = logging.getLogger(logger)
+
+    elif logger is None:
+        logger = logging.getLogger()
+
+    logger.addHandler(handler)
+
+    return logger
+
+if __name__ == '__main__':
+    pass
