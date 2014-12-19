@@ -9,7 +9,8 @@ pydarkstar.logutils.setDebug()
 
 class TestDeliveryBox(unittest.TestCase):
     def test_init(self):
-        pydarkstar.tables.delivery_box.DeliveryBox()
+        row = pydarkstar.tables.delivery_box.DeliveryBox()
+        pydarkstar.logutils.logging.debug(row)
 
 if __name__ == '__main__':
     unittest.main()

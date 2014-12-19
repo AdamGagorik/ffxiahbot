@@ -5,6 +5,22 @@ from sqlalchemy import Column, Integer, SmallInteger, String, text
 from sqlalchemy.dialects.mysql.base import BIT
 from pydarkstar.tables.base import Base
 
+_template = \
+"""
+[DeliveryBoxRow]
+    charid      = {self.charid}
+    charname    = {self.charname}
+    box         = {self.box}
+    slot        = {self.slot}
+    itemid      = {self.itemid}
+    itemsubid   = {self.itemsubid}
+    quantity    = {self.quantity}
+    senderid    = {self.senderid}
+    sender      = {self.sender}
+    received    = {self.received}
+    sent        = {self.sent}
+"""[:-1]
+
 class DeliveryBox(Base):
     __tablename__ = 'delivery_box'
 
@@ -19,6 +35,12 @@ class DeliveryBox(Base):
     sender    = Column(String(15))
     received  = Column(BIT(1), nullable=False)
     sent      = Column(BIT(1), nullable=False)
+
+    def __repr__(self):
+        return '({addr}) DeliveryBoxRow charid={self.charid}'.format(self=self, addr=hex(id(self)))
+
+    def __str__(self):
+        return _template.format(self=self, addr=hex(id(self)))
 
 if __name__ == '__main__':
     pass
