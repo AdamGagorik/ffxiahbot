@@ -56,5 +56,19 @@ class TestItemList(unittest.TestCase):
             self.assertEqual(line, ','.join(map(str, self._test_item1)))
         os.remove(fname)
 
+    def test_loadcsv(self):
+        ilist1 = pydarkstar.itemlist.ItemList()
+        ilist1.add(*self._test_item1)
+        i, fname = tempfile.mkstemp()
+        ilist1.savecsv(fname)
+
+        ilist2 = pydarkstar.itemlist.ItemList()
+        ilist2.loadcsv(fname)
+
+        for k in pydarkstar.item.Item.keys:
+            attr1 = getattr(ilist1.get(0), k)
+            attr2 = getattr(ilist2.get(0), k)
+            self.assertEqual(attr1, attr2)
+
 if __name__ == '__main__':
     unittest.main()
