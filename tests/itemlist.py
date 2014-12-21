@@ -22,6 +22,14 @@ class TestItemList(unittest.TestCase):
         with self.assertRaises(KeyError):
             ilist.add(0)
 
+    def test_set(self):
+        ilist = pydarkstar.itemlist.ItemList()
+        ilist.add(0)
+        ilist.add(1)
+        ilist.set(0, 1, price01=5)
+        self.assertEqual(ilist[0].price01, 5)
+        self.assertEqual(ilist[1].price01, 5)
+
     def test_getitem(self):
         ilist = pydarkstar.itemlist.ItemList()
         i0 = ilist.add(0)

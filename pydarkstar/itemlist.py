@@ -20,6 +20,15 @@ class ItemList(pydarkstar.darkobject.DarkObject):
         self.items[i.itemid] = i
         return i
 
+    def set(self, *itemids, **kwargs):
+        for itemid in itemids:
+            i = self[itemid]
+            for k in kwargs:
+                if hasattr(i, k):
+                    setattr(i, k, kwargs[k])
+                else:
+                    raise KeyError('%s' % str(k))
+
     def __getitem__(self, key):
         return self.items[key]
 
