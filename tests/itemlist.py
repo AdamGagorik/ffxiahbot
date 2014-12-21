@@ -43,15 +43,17 @@ class TestItemList(unittest.TestCase):
         ilist.add(1)
         self.assertEqual(len(ilist), 2)
 
+    _test_item1 = [0, 'A', True, False, 10, 20, False, True, 30, 40]
+
     def test_savecsv(self):
         ilist = pydarkstar.itemlist.ItemList()
-        ilist.add(0, 'A', True, True, 10, 20, False, False, 30, 40)
+        ilist.add(*self._test_item1)
         i, fname = tempfile.mkstemp()
         ilist.savecsv(fname)
         with open(fname, 'rb') as handle:
             line = handle.readline().strip()
             line = handle.readline().strip()
-            self.assertEqual(line, '0,A,True,True,10,20,False,False,30,40')
+            self.assertEqual(line, ','.join(map(str, self._test_item1)))
         os.remove(fname)
 
 if __name__ == '__main__':
