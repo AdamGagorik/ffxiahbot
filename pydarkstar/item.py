@@ -20,6 +20,11 @@ class Item(pydarkstar.darkobject.DarkObject):
     :param price12: price (>= 1) for stack
     :param stock12: restock count (>= 0) for stack
     """
+
+    keys = ['itemid', 'name',
+            'sell01', 'buy01', 'price01', 'stock01',
+            'sell12', 'buy12', 'price12', 'stock12']
+
     def __init__(self, itemid, name=None,
             sell01=None, buy01=None, price01=None, stock01=None,
             sell12=None, buy12=None, price12=None, stock12=None):
@@ -50,7 +55,7 @@ class Item(pydarkstar.darkobject.DarkObject):
         self.stock12 = stock12
 
     def __str__(self):
-        return 'Item({self.itemid})'.format(self=self)
+        return ','.join(map(str, map(lambda x : getattr(self, x), self.keys)))
 
     @property
     def itemid(self):

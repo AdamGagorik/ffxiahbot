@@ -38,5 +38,14 @@ class ItemList(pydarkstar.darkobject.DarkObject):
     def __len__(self):
         return len(self.items)
 
+    def loadcsv(self, fname):
+        pass
+
+    def savecsv(self, fname):
+        with open(fname, 'wb') as handle:
+            handle.write('{}\n'.format(','.join(pydarkstar.item.Item.keys)))
+            for i in self.items:
+                handle.write('{}\n'.format(self.items[i]))
+
 if __name__ == '__main__':
     pass
