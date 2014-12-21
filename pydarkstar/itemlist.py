@@ -29,8 +29,11 @@ class ItemList(pydarkstar.darkobject.DarkObject):
                 else:
                     raise KeyError('%s' % str(k))
 
-    def __getitem__(self, key):
-        return self.items[key]
+    def get(self, itemid):
+        return self.items[itemid]
+
+    def __getitem__(self, itemid):
+        return self.items[itemid]
 
     def __len__(self):
         return len(self.items)
