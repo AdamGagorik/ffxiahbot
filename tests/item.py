@@ -9,7 +9,9 @@ pydarkstar.logutils.setDebug()
 
 class TestItem(unittest.TestCase):
     def test_init(self):
-        pydarkstar.item.Item()
+        i0 = pydarkstar.item.Item(0, 'A')
+        self.assertEqual(i0.itemid,  0 )
+        self.assertEqual(i0.name  , 'A')
 
 if __name__ == '__main__':
     unittest.main()
