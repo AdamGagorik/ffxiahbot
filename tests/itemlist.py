@@ -11,5 +11,17 @@ class TestItemList(unittest.TestCase):
     def test_init(self):
         pydarkstar.itemlist.ItemList()
 
+    def test_add1(self):
+        ilist = pydarkstar.itemlist.ItemList()
+        ilist.add(0)
+        ilist.add(1)
+
+    def test_add2(self):
+        ilist = pydarkstar.itemlist.ItemList()
+
+        ilist.add(0)
+        with self.assertRaises(KeyError):
+            ilist.add(0)
+
 if __name__ == '__main__':
     unittest.main()

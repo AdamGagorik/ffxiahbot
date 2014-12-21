@@ -24,7 +24,7 @@ tests: \
  database \
  broker \
  item \
- itelist \
+ itemlist \
  tables/base \
  tables/auction_house \
  tables/delivery_box \
