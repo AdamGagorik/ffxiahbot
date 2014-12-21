@@ -23,5 +23,8 @@ class ItemList(pydarkstar.darkobject.DarkObject):
     def __getitem__(self, key):
         return self.items[key]
 
+    def __len__(self):
+        return len(self.items)
+
 if __name__ == '__main__':
     pass

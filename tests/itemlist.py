@@ -18,7 +18,6 @@ class TestItemList(unittest.TestCase):
 
     def test_add2(self):
         ilist = pydarkstar.itemlist.ItemList()
-
         ilist.add(0)
         with self.assertRaises(KeyError):
             ilist.add(0)
@@ -27,6 +26,12 @@ class TestItemList(unittest.TestCase):
         ilist = pydarkstar.itemlist.ItemList()
         i0 = ilist.add(0)
         self.assertEqual(id(i0), id(ilist[0]))
+
+    def test_len(self):
+        ilist = pydarkstar.itemlist.ItemList()
+        ilist.add(0)
+        ilist.add(1)
+        self.assertEqual(len(ilist), 2)
 
 if __name__ == '__main__':
     unittest.main()
