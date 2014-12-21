@@ -23,7 +23,7 @@ class Item(pydarkstar.darkobject.DarkObject):
     def __init__(self, itemid, name=None,
             sell01=None, buy01=None, price01=None, stock01=None,
             sell12=None, buy12=None, price12=None, stock12=None):
-        super(Item, self).__init__(*args, **kwargs)
+        super(Item, self).__init__()
 
         self._itemid   = int(itemid)
         self._name     = None
@@ -37,7 +37,6 @@ class Item(pydarkstar.darkobject.DarkObject):
         self._stack01  = None
         self._stock12  = None
 
-        self.itemid = itemid
         self.name = name
 
         self.sell01 = sell01
@@ -59,7 +58,7 @@ class Item(pydarkstar.darkobject.DarkObject):
 
     @property
     def name(self):
-        self._name = str(name)
+        return self._name
     @name.setter
     def name(self, value):
         if value is None:
