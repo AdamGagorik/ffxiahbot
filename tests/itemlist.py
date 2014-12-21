@@ -23,5 +23,10 @@ class TestItemList(unittest.TestCase):
         with self.assertRaises(KeyError):
             ilist.add(0)
 
+    def test_getitem(self):
+        ilist = pydarkstar.itemlist.ItemList()
+        i0 = ilist.add(0)
+        self.assertEqual(id(i0), id(ilist[0]))
+
 if __name__ == '__main__':
     unittest.main()
