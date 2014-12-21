@@ -7,6 +7,8 @@ help:
 	@echo "    make timeutils"
 	@echo "    make database"
 	@echo "    make broker"
+	@echo "    make item"
+	@echo "    make itemlist"
 	@echo "    make tables/base"
 	@echo "    make tables/auction_house"
 	@echo "    make tables/delivery_box"
@@ -21,6 +23,8 @@ tests: \
  timeutils \
  database \
  broker \
+ item \
+ itelist \
  tables/base \
  tables/auction_house \
  tables/delivery_box \
@@ -62,6 +66,22 @@ broker:
 	@echo "${HEADER}"
 	@echo "broker"
 	python ${PWD}/tests/broker.py
+	@echo "${HEADER}"
+	@echo ""
+
+.PHONY : item
+item:
+	@echo "${HEADER}"
+	@echo "item"
+	python ${PWD}/tests/item.py
+	@echo "${HEADER}"
+	@echo ""
+
+.PHONY : itemlist
+itemlist:
+	@echo "${HEADER}"
+	@echo "itemlist"
+	python ${PWD}/tests/itemlist.py
 	@echo "${HEADER}"
 	@echo ""
 
