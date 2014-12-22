@@ -54,6 +54,9 @@ class Item(pydarkstar.darkobject.DarkObject):
         self.price12 = price12
         self.stock12 = stock12
 
+        if not self._itemid >= 0:
+            raise ValueError('itemid must be positive: %d' % self._itemid)
+
     def __str__(self):
         return ','.join(map(str, map(lambda x : getattr(self, x), self.keys)))
 
@@ -96,6 +99,8 @@ class Item(pydarkstar.darkobject.DarkObject):
         if value is None:
             value = 1
         self._price01 = int(value)
+        if self._price01 < 1:
+            raise ValueError('price01 must be positive definite: %d' % self._price01)
 
     @property
     def stock01(self):
@@ -105,6 +110,8 @@ class Item(pydarkstar.darkobject.DarkObject):
         if value is None:
             value = 0
         self._stock01 = int(value)
+        if self._stock01 < 0:
+            raise ValueError('stock01 must be positive: %d' % self._stock01)
 
     @property
     def sell12(self):
@@ -132,6 +139,8 @@ class Item(pydarkstar.darkobject.DarkObject):
         if value is None:
             value = 1
         self._price12 = int(value)
+        if self._price12 < 1:
+            raise ValueError('price12 must be positive definite: %d' % self._price12)
 
     @property
     def stock12(self):
@@ -141,6 +150,8 @@ class Item(pydarkstar.darkobject.DarkObject):
         if value is None:
             value = 0
         self._stock12 = int(value)
+        if self._stock12 < 0:
+            raise ValueError('stock12 must be positive: %d' % self._stock12)
 
 if __name__ == '__main__':
     pass
