@@ -83,28 +83,42 @@ class ItemList(pydarkstar.darkobject.DarkObject):
                     # split into tokens
                     tokens = map(lambda x : x.strip(), line.split(','))
 
-                    # try to evaluate tokens
-                    for i, token in enumerate(tokens):
-                        try:
-                            token = eval(token)
-                        except SyntaxError:
-                            pass
-                        except NameError:
-                            pass
+                    # check for new title line
+                    if set(tokens).issubset(pydarkstar.item.Item.keys):
+                        keys = tokens
 
-                        # process missing tokens
-                        if isinstance(token, str) and not token:
-                            token = None
+                        # check for primary key
+                        if not 'itemid' in keys:
+                            raise RuntimeError('missing itemid column')
 
-                        tokens[i] = token
+                    # validate line
+                    elif set(tokens).intersection(pydarkstar.item.Item.keys):
+                        raise RuntimeError('something wrong with line')
 
-                    # map values
-                    kwargs = { k : None for k in keys }
-                    for i in range(len(tokens)):
-                        kwargs[keys[i]] = tokens[i]
+                    # process normal line
+                    else:
+                        # try to evaluate tokens
+                        for i, token in enumerate(tokens):
+                            try:
+                                token = eval(token)
+                            except SyntaxError:
+                                pass
+                            except NameError:
+                                pass
 
-                    # add new item
-                    self.add(**kwargs)
+                            # process missing tokens
+                            if isinstance(token, str) and not token:
+                                token = None
+
+                            tokens[i] = token
+
+                        # map values
+                        kwargs = { k : None for k in keys }
+                        for i in range(len(tokens)):
+                            kwargs[keys[i]] = tokens[i]
+
+                        # add new item
+                        self.add(**kwargs)
 
                 # read next line
                 line = handle.readline()
