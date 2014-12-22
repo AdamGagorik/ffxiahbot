@@ -123,11 +123,17 @@ class ItemList(pydarkstar.darkobject.DarkObject):
                 # read next line
                 line = handle.readline()
 
+    def _write_objs(self, handle, *objs, **kwargs):
+        a = kwargs.pop('a', '>')
+        w = kwargs.pop('w', 16)
+        _format = ', '.join([r'{:{a}{w}}'] * len(objs)) + '\n'
+        handle.write(_format.format(*objs, a=a, w=w))
+
     def savecsv(self, fname):
         with open(fname, 'wb') as handle:
-            handle.write('{}\n'.format(','.join(pydarkstar.item.Item.keys)))
+            self._write_objs(handle, *pydarkstar.item.Item.keys)
             for i in self.items:
-                handle.write('{}\n'.format(self.items[i]))
+                self._write_objs(handle, *self.items[i].values)
 
 if __name__ == '__main__':
     pass
