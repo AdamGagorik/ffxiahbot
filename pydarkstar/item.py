@@ -25,6 +25,12 @@ class Item(pydarkstar.darkobject.DarkObject):
             'sell01', 'buy01', 'price01', 'stock01',
             'sell12', 'buy12', 'price12', 'stock12']
 
+    @property
+    def values(self):
+        return [self.itemid, self.name,
+                self.sell01, self.buy01, self.price01, self.stock01,
+                self.sell12, self.buy12, self.price12, self.stock12]
+
     def __init__(self, itemid, name=None,
             sell01=None, buy01=None, price01=None, stock01=None,
             sell12=None, buy12=None, price12=None, stock12=None):
