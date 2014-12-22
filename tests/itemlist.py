@@ -70,5 +70,44 @@ class TestItemList(unittest.TestCase):
             attr2 = getattr(ilist2.get(0), k)
             self.assertEqual(attr1, attr2)
 
+    def _get_ilist(self, text):
+        i, fname = tempfile.mkstemp()
+        with open(fname, 'wb') as handle:
+            handle.write(text)
+
+        ilist = pydarkstar.itemlist.ItemList()
+        ilist.loadcsv(fname)
+        os.remove(fname)
+        return ilist
+
+    def test_loadcsv2(self):
+        text = \
+"""
+itemid, name # comment 0
+     0,    A
+     2,    B
+     4,    C # comment 1
+itemid, name, price01
+     6,    D,      10
+"""[1:-1]
+        ilist = self._get_ilist(text)
+        self.assertEqual(ilist[0].name, 'A')
+        self.assertEqual(ilist[2].name, 'B')
+        self.assertEqual(ilist[4].name, 'C')
+        self.assertEqual(ilist[6].name, 'D')
+        self.assertEqual(ilist[0].price01,  1)
+        self.assertEqual(ilist[2].price01,  1)
+        self.assertEqual(ilist[4].price01,  1)
+        self.assertEqual(ilist[6].price01, 10)
+
+    def test_loadcsv3(self):
+        text = \
+"""
+itemid, price01
+     0,    -1.0
+"""[1:-1]
+        with self.assertRaises(ValueError):
+            ilist = self._get_ilist(text)
+
 if __name__ == '__main__':
     unittest.main()
