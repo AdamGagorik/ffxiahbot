@@ -15,6 +15,11 @@ class ItemList(pydarkstar.darkobject.DarkObject):
         self.items = collections.OrderedDict()
 
     def add(self, itemid, *args, **kwargs):
+        """
+        Add Item to ItemList.  Item must not already exist.
+
+        .. seealso:: py:class:`pydarkstar.item.Item`
+        """
         i = pydarkstar.item.Item(itemid, *args, **kwargs)
         if i.itemid in self.items:
             raise KeyError('duplicate item found: %d' % i.itemid)
@@ -22,6 +27,9 @@ class ItemList(pydarkstar.darkobject.DarkObject):
         return i
 
     def set(self, *itemids, **kwargs):
+        """
+        Set Item(s) properties.
+        """
         for itemid in itemids:
             i = self[itemid]
             for k in kwargs:
@@ -31,6 +39,9 @@ class ItemList(pydarkstar.darkobject.DarkObject):
                     raise KeyError('%s' % str(k))
 
     def get(self, itemid):
+        """
+        Get Item by itemid.
+        """
         return self.items[itemid]
 
     def __getitem__(self, itemid):
@@ -40,6 +51,13 @@ class ItemList(pydarkstar.darkobject.DarkObject):
         return len(self.items)
 
     def loadcsv(self, fname):
+        """
+        Load Item(s) from CSV file.
+
+        Columns are Item attributes.  The 'itemid' column is required.
+
+        :param fname: name of file
+        """
         regex_C = re.compile(r'#.*$')
 
         regex_T = '[{0}{1}]?True[{0}{1}]?'.format('"', "'")
@@ -123,13 +141,20 @@ class ItemList(pydarkstar.darkobject.DarkObject):
                 # read next line
                 line = handle.readline()
 
+    @staticmethod
     def _write_objs(self, handle, *objs, **kwargs):
+        """
+        Helper method for writing CSV file.
+        """
         a = kwargs.pop('a', '>')
         w = kwargs.pop('w', 16)
         _format = ', '.join([r'{:{a}{w}}'] * len(objs)) + '\n'
         handle.write(_format.format(*objs, a=a, w=w))
 
     def savecsv(self, fname):
+        """
+        Save Item data to CSV file.
+        """
         with open(fname, 'wb') as handle:
             self._write_objs(handle, *pydarkstar.item.Item.keys)
             for i in self.items:
