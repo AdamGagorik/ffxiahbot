@@ -64,7 +64,7 @@ class Item(pydarkstar.darkobject.DarkObject):
             raise ValueError('itemid must be positive: %d' % self._itemid)
 
     def __str__(self):
-        return ','.join(map(str, map(lambda x : getattr(self, x), self.keys)))
+        return 'Item({self.itemid})'.format(self=self)
 
     @property
     def itemid(self):
