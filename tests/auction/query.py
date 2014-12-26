@@ -14,5 +14,8 @@ class TestQuery(unittest.TestCase):
     def setUp(self):
         self.db = pydarkstar.database.Database.pymysql(**pydarkstar.rc.sql)
 
+    def test_getStock(self):
+        self.assertTrue(False)
+
 if __name__ == '__main__':
     unittest.main()
