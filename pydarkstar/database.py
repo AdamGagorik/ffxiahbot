@@ -3,7 +3,10 @@
 """
 import sqlalchemy
 import sqlalchemy.orm
+import sqlalchemy.exc
 import pydarkstar.darkobject
+import contextlib
+import logging
 
 class Database(pydarkstar.darkobject.DarkObject):
     """
@@ -25,6 +28,41 @@ class Database(pydarkstar.darkobject.DarkObject):
         Create session.
         """
         return self._Session(*args, **kwargs)
+
+    @contextlib.contextmanager
+    def scoped_session(self, reraise=False, rollback=True):
+        """
+        Provide a transactional scope around a series of operations.
+
+        :param reraise: raise error after catch
+        :param rollback: rollback transactions after catch
+
+        :type reraise: bool
+        :type rollback: bool
+        """
+        session = self._Session()
+        try:
+            yield session
+
+            # commit transactions
+            session.commit()
+
+        # catch errors
+        except sqlalchemy.exc.SQLAlchemyError:
+            # log the error
+            logging.exception('caught SQL exception')
+
+            # rollback transactions
+            if rollback:
+                session.rollback()
+
+            # reraise error
+            if reraise:
+                raise
+
+        # cleanup
+        finally:
+            session.close()
 
     @classmethod
     def pymysql(cls, hostname, database, username, password):
