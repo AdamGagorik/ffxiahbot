@@ -17,5 +17,8 @@ class TestQuery(unittest.TestCase):
     def test_getStock(self):
         self.assertTrue(False)
 
+    def test_getPrice(self):
+        self.assertTrue(False)
+
 if __name__ == '__main__':
     unittest.main()
