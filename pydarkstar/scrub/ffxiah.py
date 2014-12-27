@@ -65,7 +65,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
 
         :param urls: category urls
         """
-        self.info('getting item ids')
+        self.info('getting itemids')
 
         items = []
         for i, url in enumerate(urls):
@@ -141,7 +141,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         :type itemids: list
         :type threads: int
         """
-        self.info('getting item data')
+        self.info('getting itemdata')
         self.info('threads = %d', threads)
 
         # get data from itemids
