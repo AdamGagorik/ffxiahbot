@@ -23,7 +23,7 @@ class TestFFXIAHScrubber(unittest.TestCase):
             r'http://www.ffxiah.com/browse/56/breads-rice',
         ]
         scrubber = pydarkstar.scrub.ffxiah.FFXIAHScrubber()
-        scrubber._get_itemids(urls, force=False, save=None)
+        scrubber._get_itemids(urls)
 
     def test_get_item_data_for_itemid(self):
         scrubber = pydarkstar.scrub.ffxiah.FFXIAHScrubber()

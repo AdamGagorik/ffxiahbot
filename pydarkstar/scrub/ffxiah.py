@@ -59,53 +59,18 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         return urls
 
     # step 2
-    def _get_itemids(self, urls=None, force=False, save='itemids.pkl'):
+    def _get_itemids(self, urls):
         """
         Scrub urls of the form http://www.ffxiah.com/{CategoryNumber} for itemids.
 
-        If no urls are given, then they are obtained using getCategoryURLs()
-        If force, then save and urls are ignored.
-
-        :param urls: list of category urls
-        :param force: do not load from file
-        :param save: pickle file
+        :param urls: category urls
         """
         self.info('getting item ids')
+
         items = []
-
-        # hard load
-        if force:
-
-            # parse urls
-            urls = self._get_category_urls()
-
-            # parse items
-            for i, url in enumerate(urls):
-                self.info('category %02d/%02d', i + 1, len(urls))
-                items.extend(self._get_itemids_for_category_url(url))
-
-        # soft load
-        else:
-
-            # load items from file
-            if save and os.path.exists(save):
-                with open(save, 'rb') as handle:
-                    items = pickle.load(handle)
-
-            else:
-                # parse urls
-                if not urls:
-                    urls = self._get_category_urls()
-
-                # parse items
-                for i, url in enumerate(urls):
-                    self.info('category %02d/%02d', i + 1, len(urls))
-                    items.extend(self._get_itemids_for_category_url(url))
-
-        # save items to file
-        if save:
-            with open(save, 'wb') as handle:
-                pickle.dump(items, handle, pickle.HIGHEST_PROTOCOL)
+        for i, url in enumerate(urls):
+            self.info('category %02d/%02d', i + 1, len(urls))
+            items.extend(self._get_itemids_for_category_url(url))
 
         return items
 
