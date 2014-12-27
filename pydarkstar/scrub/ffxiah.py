@@ -2,8 +2,6 @@
 .. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
 """
 import pydarkstar.scrub.scrubber
-import pydarkstar.scrub.common
-import logging
 import pickle
 import re
 import os
@@ -34,7 +32,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         """
 
         # the browse section of FFXIAH has a list of urls with category numbers
-        soup = pydarkstar.scrub.common.soup('http://www.ffxiah.com/browse')
+        soup = self.soup('http://www.ffxiah.com/browse')
         urls = []
         for tag in soup.find_all('a'):
             if tag.has_attr('href'):
@@ -46,14 +44,14 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
 
                         if category < 240:
                             urls.append('http://www.ffxiah.com{href}'.format(href=href))
-                            logging.debug('category %s', href)
+                            self.debug('category %s', href)
                         else:
-                            logging.debug('skipping %s', href)
+                            self.debug('skipping %s', href)
 
                     except (ValueError, IndexError):
-                        logging.exception('failed to extract category')
+                        self.exception('failed to extract category')
                 else:
-                    logging.debug('ignoring %s', href)
+                    self.debug('ignoring %s', href)
 
         # sort the urls
         urls.sort(key=lambda x : map(float, re.findall('\d+', x)))
@@ -72,7 +70,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         :param force: do not load from file
         :param save: pickle file
         """
-        logging.info('getting itemids')
+        self.info('getting item ids')
         items = []
 
         # hard load
@@ -83,7 +81,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
 
             # parse items
             for i, url in enumerate(urls):
-                logging.info('category %02d/%02d', i + 1, len(urls))
+                self.info('category %02d/%02d', i + 1, len(urls))
                 items.extend(self._get_itemids_for_category_url(url))
 
         # soft load
@@ -101,7 +99,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
 
                 # parse items
                 for i, url in enumerate(urls):
-                    logging.info('category %02d/%02d', i + 1, len(urls))
+                    self.info('category %02d/%02d', i + 1, len(urls))
                     items.extend(self._get_itemids_for_category_url(url))
 
         # save items to file
@@ -119,24 +117,24 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         :param url: category url
         """
         # create tag soup
-        soup = pydarkstar.scrub.common.soup(url)
+        soup = self.soup(url)
 
         # look for table class
         table = soup.find('table', class_='stdlist')
         if not table:
-            logging.error('failed to parse <table>')
+            self.error('failed to parse <table>')
             return
 
         # look for table body
         tbody = table.find('tbody')
         if not tbody:
-            logging.error('failed to parse <tbody>')
+            self.error('failed to parse <tbody>')
             return
 
         # look for table rows
         trs = tbody.find_all('tr')
         if not trs:
-            logging.error('failed to parse <tr>')
+            self.error('failed to parse <tr>')
             return
 
         # loop table rows
@@ -154,29 +152,59 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
                     #logging.debug('found %s', href)
 
                 except (ValueError, IndexError):
-                    logging.exception('failed to extract itemid!\n\n\trow %d of %s\n\n%s\n\n',
+                    self.exception('failed to extract itemid!\n\n\trow %d of %s\n\n%s\n\n',
                         j, url, row)
             else:
-                logging.error('failed to extract href!\n\n\trow %d of %s\n\n%s\n\n',
+                self.error('failed to extract href!\n\n\trow %d of %s\n\n%s\n\n',
                     j, url, row)
 
         # make sure we found something
         if not items:
-            logging.error('could not find any itemids!')
+            self.error('could not find any itemids!')
             return []
 
         return items
 
+    # step 3
+    def _get_item_data(self, itemids, threads=-1):
+        """
+        Get metadata for many items.
+
+        :param itemids: item numbers
+        :param threads: number of cpu threads to use
+
+        :type itemids: list
+        :type threads: int
+        """
+        self.info('getting item data')
+        self.info('threads = %d', threads)
+
+        # get data from itemids
+        if threads > 1:
+            from multiprocessing.dummy import Pool as ThreadPool
+            pool = ThreadPool(threads)
+            data = pool.map(self._get_item_data_for_itemid, itemids)
+            data = {d['itemid'] : d for d in data}
+        else:
+            data = {}
+            for i, itemid in enumerate(itemids):
+                data[itemid] = self._get_item_data_for_itemid(itemid)
+
+        return data
+
     # step 3.1
     def _get_item_data_for_itemid(self, itemid):
         """
-        Get metadata for single item from www.ffxiah.com.
+        Get metadata for single item.
+
+        :param itemid: item number
+        :type itemid: int
         """
         data = {'name' : None, 'itemid' : itemid}
         url = self._create_item_url(itemid)
 
         # create tag soup
-        soup = pydarkstar.scrub.common.soup(url)
+        soup = self.soup(url)
 
         # extract name
         try:
