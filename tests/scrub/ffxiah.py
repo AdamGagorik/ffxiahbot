@@ -33,5 +33,9 @@ class TestFFXIAHScrubber(unittest.TestCase):
         scrubber = pydarkstar.scrub.ffxiah.FFXIAHScrubber()
         scrubber._get_item_data(list(range(1, 9)), threads=4)
 
+    def test_scrub(self):
+        scrubber = pydarkstar.scrub.ffxiah.FFXIAHScrubber()
+        scrubber.scrub(force=True, threads=4, ids=[1, 2, 3, 4])
+
 if __name__ == '__main__':
     unittest.main()

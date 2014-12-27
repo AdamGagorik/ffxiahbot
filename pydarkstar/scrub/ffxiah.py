@@ -18,11 +18,59 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         self._regex_item     = re.compile(r'/item/(\d+)')
         self._regex_name     = re.compile(r'(.*?)\s*-?\s*(FFXIAH)?\.(com)?')
 
-    def scrub(self):
+        # pickled file names
+        self._pkl_item_ids = 'itemids.pkl'
+        self._pkl_item_dat = 'itemdat.pkl'
+
+    def scrub(self, force=False, threads=-1, urls=None, ids=None):
         """
-        Get item metadata.
+        Get item metadata main function.
         """
-        return {}
+        # force a redownload of all data
+        if force:
+            # get ids
+            if ids is None:
+                # get urls
+                if urls is None:
+                    urls = self._get_category_urls()
+                ids  = self._get_itemids(urls)
+            data = self._get_item_data(ids, threads=threads)
+
+        else:
+            # get ids
+            if ids is None:
+
+                # from file
+                if os.path.exists(self._pkl_item_ids):
+                    with open(self._pkl_item_ids, 'rb') as handle:
+                        ids = pickle.load(handle)
+
+                # from internet
+                else:
+                    # get urls
+                    if urls is None:
+                        urls = self._get_category_urls()
+
+                    ids = self._get_itemids(urls)
+
+            # from file
+            if os.path.exists(self._pkl_item_dat):
+                with open(self._pkl_item_dat, 'rb') as handle:
+                    data = pickle.load(handle)
+
+            # from internet
+            else:
+                data = self._get_item_data(ids, threads=threads)
+
+        # save to file
+        with open(self._pkl_item_ids, 'wb') as handle:
+            pickle.dump(ids, handle, pickle.HIGHEST_PROTOCOL)
+
+        # save to file
+        with open(self._pkl_item_dat, 'wb') as handle:
+            pickle.dump(data, handle, pickle.HIGHEST_PROTOCOL)
+
+        return data
 
     # step 1
     def _get_category_urls(self):
