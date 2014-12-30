@@ -72,6 +72,8 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
             # save to file
             self._save_item_dat(data)
 
+            return data
+
         else:
             # data exists already
             if os.path.exists(self._pkl_item_dat):
