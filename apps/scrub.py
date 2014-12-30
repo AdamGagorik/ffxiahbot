@@ -3,8 +3,10 @@ Create item database.
 """
 import argparse
 import logging
+import yaml
 import sys
 import os
+import re
 
 try:
     import pydarkstar
@@ -20,44 +22,117 @@ except ImportError:
 import pydarkstar.logutils
 import pydarkstar.scrub.ffxiah
 import pydarkstar.itemlist
+import pydarkstar.darkobject
 
-def get_arguments(work, args=None):
-    parser = argparse.ArgumentParser(description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
+class Options(pydarkstar.darkobject.DarkObject):
+    """
+    Program options.
+    """
+    def __init__(self, args=None):
+        super(Options, self).__init__()
+        self.config  = 'scrub.yaml'
+        self.stub    = 'items'
+        self.force   = False
+        self.threads =-1
+        self.stock01 = 5
+        self.stock12 = 5
+        self.verbose = False
+        self.silent  = False
 
-    # output
-    parser.add_argument(dest='ofile', nargs='?', default='items.csv',
-        help='output file name')
+        self._parent = argparse.ArgumentParser(add_help=False)
+        self._parser = argparse.ArgumentParser(parents=[self._parent],
+            description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
 
-    # scrubbing parameters
-    parser.add_argument('-f', '--force', action='store_true',
-        help='start from scratch')
-    parser.add_argument('-t', '--threads', type=int, default=-1,
-        help='number of cpu threads to use')
+        # config file
+        self._parent.add_argument('--config', type=str,
+            default=self.config, metavar=self.config,
+            help='configuration file name')
 
-    # defaults
-    parser.add_argument('--stock', default=5, type=int,
-        help='default stock (number of items sold)')
-    parser.add_argument('--stock01', default=None, type=int,
-        help='default stock for singles (--stock if not given)')
-    parser.add_argument('--stock12', default=None, type=int,
-        help='default stock for stacks (--stock if not given)')
+        # output
+        self._parser.add_argument(dest='stub', nargs='?', type=str,
+            default=self.stub, help='output file stub')
 
-    # logging
-    parser.add_argument('-v', '--verbose', action='store_true',
-        help='logging level = 2')
-    parser.add_argument('-s', '--silent', action='store_true',
-        help='logging level = 0')
+        # scrubbing parameters
+        self._parser.add_argument('--force', action='store_true',
+            help='start from scratch')
+        self._parser.add_argument('--threads', type=int,
+            default=self.threads, metavar=self.threads,
+            help='number of cpu threads to use')
 
-    opts = parser.parse_args(args)
+        # defaults
+        self._parser.add_argument('--stock01', type=int,
+            default=self.stock01, metavar=self.stock01,
+            help='default stock for singles')
+        self._parser.add_argument('--stock12', type=int,
+            default=self.stock12, metavar=self.stock12,
+            help='default stock for stacks')
 
-    if opts.stock01 is None:
-        opts.stock01 = opts.stock
+        # logging
+        self._parser.add_argument('--verbose', action='store_true',
+            help='logging level = 2')
+        self._parser.add_argument('--silent', action='store_true',
+            help='logging level = 0')
 
-    if opts.stock12 is None:
-        opts.stock12 = opts.stock
+        self._parse_args(args)
 
-    return opts
+    def update(self, **kwargs):
+        """
+        Update options.
+        """
+        for k in kwargs:
+            if hasattr(self, k):
+                setattr(self, k, kwargs[k])
+            else:
+                raise KeyError('unknown option: %s', k)
+
+    def show(self):
+        """
+        Show parameters in log.
+        """
+        fmt = '%-8s = %s'
+        self.debug(fmt, 'config', self.config)
+        self.debug(fmt, 'verbose', self.verbose)
+        self.debug(fmt, 'silent', self.silent)
+        self.debug(fmt, 'stub', self.stub)
+        self.debug(fmt, 'force', self.force)
+        self.debug(fmt, 'threads', self.threads)
+        self.debug(fmt, 'stock01', self.stock01)
+        self.debug(fmt, 'stock12', self.stock12)
+
+    def _parse_args(self, args=None):
+        """
+        Parse config file and then command line.
+        """
+        results, remaining_args = self._parent.parse_known_args(args)
+        self.update(**results.__dict__)
+        self._load_config()
+        results = self._parser.parse_args(remaining_args)
+        self.update(**results.__dict__)
+        self._save_config()
+
+    def _load_config(self):
+        """
+        Parse config file.
+        """
+        if os.path.exists(self.config):
+            self.info('load %s', self.config)
+            with open(self.config, 'rb') as handle:
+                data = yaml.load(handle)
+                if not isinstance(data, dict):
+                    raise RuntimeError('invalid configuration file')
+                self.update(**data)
+                self._parser.set_defaults(**data)
+
+    def _save_config(self):
+        """
+        Save config file.
+        """
+        with open(self.config, 'wb') as handle:
+            yaml.dump(self._to_dict(), handle, default_flow_style=False)
+
+    def _to_dict(self):
+        return dict(stub=self.stub, force=self.force, threads=self.threads, verbose=self.verbose,
+            silent=self.silent, stock01=self.stock01, stock12=self.stock12)
 
 def setup_logging(opts):
     pydarkstar.logutils.setInfo()
@@ -72,11 +147,11 @@ def setup_logging(opts):
     logging.info('start')
 
 def main():
-    work = os.getcwd()
-    opts = get_arguments(work)
+    opts = Options()
     setup_logging(opts)
+    opts.show()
     scrubber = pydarkstar.scrub.ffxiah.FFXIAHScrubber()
-    data = scrubber.scrub(force=opts.force, threads=opts.threads, ids=[1, 2, 3])
+    data = scrubber.scrub(force=opts.force, threads=opts.threads)
     ilist = pydarkstar.itemlist.ItemList()
     for itemid in data:
 
@@ -99,7 +174,11 @@ def main():
             price01=price01, stock01=opts.stock01, sell01=sell01, buy01=True,
             price12=price12, stock12=opts.stock12, sell12=sell12, buy12=True)
 
-    ilist.savecsv(opts.ofile)
+    oname = '{}.csv'.format(re.sub(r'\.csv$', '', opts.stub))
+    if os.path.exists(oname):
+        logging.error('file already exists! %s', oname)
+
+    ilist.savecsv(oname)
 
 def cleanup():
     logging.info('exit\n')
