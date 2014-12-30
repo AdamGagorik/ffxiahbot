@@ -2,6 +2,7 @@
 .. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
 """
 import pydarkstar.scrub.scrubber
+import warnings
 import pickle
 import re
 import os
@@ -19,12 +20,29 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         self._regex_name     = re.compile(r'(.*?)\s*-?\s*(FFXIAH)?\.(com)?')
 
         # pickled file names
-        self._pkl_item_ids = 'itemids.pkl'
-        self._pkl_item_dat = 'itemdat.pkl'
+        self._pkl_item_ids = 'scrub_item_list.pkl'
+        self._pkl_item_dat = 'scrub_item_info.pkl'
 
     def scrub(self, force=False, threads=-1, urls=None, ids=None):
         """
         Get item metadata main function.
+
+        If the pkl files exist (from a previous run of this function), then the ids and/or data
+        will just be loaded from those pkl files.  The force option allows you to ignore the
+        pkl files and just redownload the data.
+
+        The item ids can be loaded from category urls or simply passed as a list.  The urls
+        can be generated automatically, in which case all possible items will be downloaded.
+
+        :param force: ignore existing data and redownload
+        :param threads: number of cpu threads to use while downloading
+        :param urls: list of category urls
+        :param ids: set of item ids
+
+        :type force: bool
+        :type threads: int
+        :type urls: list
+        :type ids: set
         """
         # force a redownload of all data
         if force:
@@ -37,13 +55,36 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
                     urls = self._get_category_urls()
 
                 ids = self._get_itemids(urls)
+
+                # save to file
+                self._save_item_ids(ids)
+
             else:
                 self.debug('using passed ids')
                 ids = set(ids)
 
+                if not urls is None:
+                    warnings.warn('passed urls ignored')
+
+            # from internet
             data = self._get_item_data(ids, threads=threads)
 
+            # save to file
+            self._save_item_dat(data)
+
         else:
+            # data exists already
+            if os.path.exists(self._pkl_item_dat):
+                data = self._load_item_dat()
+
+                if not ids is None:
+                    warnings.warn('passed ids ignored')
+
+                if os.path.exists(self._pkl_item_ids):
+                    warnings.warn('%s ignored', self._pkl_item_ids)
+
+                return data
+
             # get ids
             if ids is None:
 
@@ -58,25 +99,29 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
                         urls = self._get_category_urls()
 
                     ids = self._get_itemids(urls)
+
+                    # save to file
+                    self._save_item_ids(ids)
             else:
                 self.debug('using passed ids')
                 ids = set(ids)
 
+                if not urls is None:
+                    warnings.warn('passed urls ignored')
+
             # from file
             if os.path.exists(self._pkl_item_dat):
-                data = self._load_item_dat()
+                raise RuntimeError('%s exists', self._pkl_item_dat)
 
             # from internet
-            else:
-                data = self._get_item_data(ids, threads=threads)
+            data = self._get_item_data(ids, threads=threads)
 
-        # save to file
-        self._save_item_ids(ids)
+            # save to file
+            self._save_item_dat(data)
 
-        # save to file
-        self._save_item_dat(data)
+            return data
 
-        return data
+        raise RuntimeError('can not load data')
 
     def _load_item_ids(self):
         """
