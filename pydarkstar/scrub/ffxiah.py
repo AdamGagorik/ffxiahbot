@@ -28,13 +28,17 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         """
         # force a redownload of all data
         if force:
+            self.debug('forcing redownload of data')
+
             # get ids
             if ids is None:
                 # get urls
                 if urls is None:
                     urls = self._get_category_urls()
+
                 ids = self._get_itemids(urls)
             else:
+                self.debug('using passed ids')
                 ids = set(ids)
 
             data = self._get_item_data(ids, threads=threads)
@@ -45,6 +49,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
 
                 # from file
                 if os.path.exists(self._pkl_item_ids):
+                    self.debug('load %s', self._pkl_item_ids)
                     with open(self._pkl_item_ids, 'rb') as handle:
                         ids = pickle.load(handle)
 
@@ -56,10 +61,12 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
 
                     ids = self._get_itemids(urls)
             else:
+                self.debug('using passed ids')
                 ids = set(ids)
 
             # from file
             if os.path.exists(self._pkl_item_dat):
+                self.debug('load %s', self._pkl_item_dat)
                 with open(self._pkl_item_dat, 'rb') as handle:
                     data = pickle.load(handle)
 
@@ -68,10 +75,12 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
                 data = self._get_item_data(ids, threads=threads)
 
         # save to file
+        self.debug('save %s', self._pkl_item_ids)
         with open(self._pkl_item_ids, 'wb') as handle:
             pickle.dump(ids, handle, pickle.HIGHEST_PROTOCOL)
 
         # save to file
+        self.debug('save %s', self._pkl_item_dat)
         with open(self._pkl_item_dat, 'wb') as handle:
             pickle.dump(data, handle, pickle.HIGHEST_PROTOCOL)
 
@@ -83,6 +92,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         Parse http://www.ffxiah.com/browse to get URLs of the
          form http://www.ffxiah.com/{CategoryNumber}
         """
+        self.debug('getting category urls')
 
         # the browse section of FFXIAH has a list of urls with category numbers
         soup = self.soup('http://www.ffxiah.com/browse')
@@ -194,7 +204,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         :type itemids: list
         :type threads: int
         """
-        self.info('getting itemdata')
+        self.info('getting data')
         self.info('threads = %d', threads)
 
         # get data from itemids
@@ -257,6 +267,12 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
     # step 3.1.2
     @staticmethod
     def _fix_stack_price_key(data):
+        """
+        Fix dictionary key.
+
+        :param data: dictionary
+        :type data: dict
+        """
         old_key = u'stack\xa0price'
         new_key = r'stack price'
         if data.has_key(old_key):
