@@ -66,6 +66,7 @@ class ItemList(pydarkstar.darkobject.DarkObject):
         regex_F = '[{0}{1}]?False[{0}{1}]?'.format('"', "'")
         regex_F = re.compile(regex_F, re.IGNORECASE)
 
+        self.info('load %s', fname)
         with open(fname, 'rb') as handle:
             # first line is item titles
             line = handle.readline()
@@ -157,6 +158,7 @@ class ItemList(pydarkstar.darkobject.DarkObject):
 
         :param fname: name of file
         """
+        self.info('save %s', fname)
         with open(fname, 'wb') as handle:
             for j, i in enumerate(self.items):
                 if j % itertitle == 0:
