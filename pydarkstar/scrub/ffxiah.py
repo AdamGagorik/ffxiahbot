@@ -33,7 +33,10 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
                 # get urls
                 if urls is None:
                     urls = self._get_category_urls()
-                ids  = self._get_itemids(urls)
+                ids = self._get_itemids(urls)
+            else:
+                ids = set(ids)
+
             data = self._get_item_data(ids, threads=threads)
 
         else:
@@ -52,6 +55,8 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
                         urls = self._get_category_urls()
 
                     ids = self._get_itemids(urls)
+            else:
+                ids = set(ids)
 
             # from file
             if os.path.exists(self._pkl_item_dat):
@@ -115,10 +120,10 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         """
         self.info('getting itemids')
 
-        items = []
+        items = set()
         for i, url in enumerate(urls):
             self.info('category %02d/%02d', i + 1, len(urls))
-            items.extend(self._get_itemids_for_category_url(url))
+            items.update(self._get_itemids_for_category_url(url))
 
         return items
 
@@ -136,22 +141,22 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         table = soup.find('table', class_='stdlist')
         if not table:
             self.error('failed to parse <table>')
-            return
+            return set()
 
         # look for table body
         tbody = table.find('tbody')
         if not tbody:
             self.error('failed to parse <tbody>')
-            return
+            return set()
 
         # look for table rows
         trs = tbody.find_all('tr')
         if not trs:
             self.error('failed to parse <tr>')
-            return
+            return set()
 
         # loop table rows
-        items = []
+        items = set()
         for j, row in enumerate(trs):
 
             # look for href
@@ -161,7 +166,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
                 # make sure href matches /item/{number}
                 try:
                     item = int(self._regex_item.match(href).group(1))
-                    items.append(item)
+                    items.add(item)
                     #logging.debug('found %s', href)
 
                 except (ValueError, IndexError):
@@ -174,7 +179,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         # make sure we found something
         if not items:
             self.error('could not find any itemids!')
-            return []
+            return set()
 
         return items
 
