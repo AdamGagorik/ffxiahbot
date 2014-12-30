@@ -54,6 +54,9 @@ class LoggingObject(object):
     Inherit from this to get a bunch of logging functions as class methods.
     """
     def __init__(self):
+        self._init_notify()
+
+    def _init_notify(self):
         self.debug('init')
 
     def debug(self, msg, *args, **kwargs):
