@@ -63,6 +63,9 @@ class Item(pydarkstar.darkobject.DarkObject):
         if not self._itemid >= 0:
             raise ValueError('itemid must be positive: %d' % self._itemid)
 
+    def _init_notify(self):
+        pass
+
     def __str__(self):
         return 'Item({self.itemid})'.format(self=self)
 
