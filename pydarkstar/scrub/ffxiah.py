@@ -49,9 +49,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
 
                 # from file
                 if os.path.exists(self._pkl_item_ids):
-                    self.debug('load %s', self._pkl_item_ids)
-                    with open(self._pkl_item_ids, 'rb') as handle:
-                        ids = pickle.load(handle)
+                    ids = self._load_item_ids()
 
                 # from internet
                 else:
@@ -66,25 +64,59 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
 
             # from file
             if os.path.exists(self._pkl_item_dat):
-                self.debug('load %s', self._pkl_item_dat)
-                with open(self._pkl_item_dat, 'rb') as handle:
-                    data = pickle.load(handle)
+                data = self._load_item_dat()
 
             # from internet
             else:
                 data = self._get_item_data(ids, threads=threads)
 
         # save to file
+        self._save_item_ids(ids)
+
+        # save to file
+        self._save_item_dat(data)
+
+        return data
+
+    def _load_item_ids(self):
+        """
+        Load item ids from pkl file.
+        """
+        if not os.path.exists(self._pkl_item_ids):
+            return set()
+
+        self.debug('load %s', self._pkl_item_ids)
+        with open(self._pkl_item_ids, 'rb') as handle:
+            ids = pickle.load(handle)
+        return set(ids)
+
+    def _load_item_dat(self):
+        """
+        Load item dat from pkl file.
+        """
+        if not os.path.exists(self._pkl_item_dat):
+            return dict()
+
+        self.debug('load %s', self._pkl_item_dat)
+        with open(self._pkl_item_dat, 'rb') as handle:
+            dat = pickle.load(handle)
+        return dict(dat)
+
+    def _save_item_ids(self, ids):
+        """
+        save item ids to pkl file.
+        """
         self.debug('save %s', self._pkl_item_ids)
         with open(self._pkl_item_ids, 'wb') as handle:
             pickle.dump(ids, handle, pickle.HIGHEST_PROTOCOL)
 
-        # save to file
+    def _save_item_dat(self, dat):
+        """
+        save item dat to pkl file.
+        """
         self.debug('save %s', self._pkl_item_dat)
         with open(self._pkl_item_dat, 'wb') as handle:
-            pickle.dump(data, handle, pickle.HIGHEST_PROTOCOL)
-
-        return data
+            pickle.dump(dat, handle, pickle.HIGHEST_PROTOCOL)
 
     # step 1
     def _get_category_urls(self):
