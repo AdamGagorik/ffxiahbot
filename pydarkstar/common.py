@@ -49,7 +49,7 @@ def backup(path, copy=False):
         raise RuntimeError('can not backup file: %s' % old_path)
 
     # copy the file
-    if not copy:
+    if copy:
         logging.debug('backup (old): %s', old_path)
         logging.debug('backup (new): %s', new_path)
         shutil.copy(old_path, new_path)
