@@ -15,14 +15,14 @@ class Scrubber(pydarkstar.darkobject.DarkObject):
         """
         return {}
 
-    def soup(self, url):
+    @staticmethod
+    def soup(url):
         """
         Open URL and create tag soup.
 
         :param url: website string
         :type url: str
         """
-        self.debug('open %s', url)
         handle = urllib2.urlopen(url)
         s = BeautifulSoup(handle.read())
         return s

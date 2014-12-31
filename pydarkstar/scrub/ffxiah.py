@@ -181,7 +181,9 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         self.debug('getting category urls')
 
         # the browse section of FFXIAH has a list of urls with category numbers
-        soup = self.soup('http://www.ffxiah.com/browse')
+        path = 'http://www.ffxiah.com/browse'
+        self.debug('open %s', path)
+        soup = self.soup(path)
         urls = []
         for tag in soup.find_all('a'):
             if tag.has_attr('href'):
@@ -218,7 +220,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
 
         items = set()
         for i, url in enumerate(urls):
-            self.info('category %02d/%02d', i + 1, len(urls))
+            self.info('category %02d/%02d : %s', i + 1, len(urls), url)
             items.update(self._get_itemids_for_category_url(url))
 
         return items
@@ -302,28 +304,36 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         # get data from itemids
         if threads > 1:
             from multiprocessing.dummy import Pool as ThreadPool
+            import itertools
+            params = zip(itemids, range(len(itemids)), itertools.repeat(len(itemids)))
             pool = ThreadPool(threads)
-            data = pool.map(self._get_item_data_for_itemid, itemids)
+            data = pool.map(self._get_item_data_for_itemid_map, params)
             data = {d['itemid'] : d for d in data}
         else:
             data = {}
             for i, itemid in enumerate(itemids):
-                data[itemid] = self._get_item_data_for_itemid(itemid)
+                data[itemid] = self._get_item_data_for_itemid(itemid, index=i, total=len(itemids))
 
         return data
 
     # step 3.1
-    def _get_item_data_for_itemid(self, itemid):
+    def _get_item_data_for_itemid(self, itemid, index=0, total=0):
         """
         Get metadata for single item.
 
         :param itemid: item number
         :type itemid: int
         """
+        if total > 0:
+            percent = float(index) / float(total) * 100.0
+        else:
+            percent = 0.0
+
         data = {'name' : None, 'itemid' : itemid}
         url = self._create_item_url(itemid)
 
         # create tag soup
+        self.debug('open (%06d/%06d,%6.2f) %s', index, total, percent, url)
         soup = self.soup(url)
 
         # extract name
@@ -344,6 +354,9 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         data = self._fix_stack_price_key(data)
 
         return data
+
+    def _get_item_data_for_itemid_map(self, args):
+        return self._get_item_data_for_itemid(*args)
 
     # step 3.1.1
     @staticmethod
