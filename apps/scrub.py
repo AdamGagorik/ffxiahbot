@@ -30,14 +30,14 @@ class Options(pydarkstar.darkobject.DarkObject):
     """
     def __init__(self, args=None):
         super(Options, self).__init__()
-        self.config  = 'scrub.yaml'
-        self.stub    = 'items'
-        self.force   = False
-        self.threads =-1
-        self.stock01 = 5
-        self.stock12 = 5
-        self.verbose = False
-        self.silent  = False
+        self.config  =  'scrub.yaml' # options in config file
+        self.stub    =  'items'      # output file stub
+        self.force   =  False        # redownload
+        self.threads = -1            # cpu threads during download
+        self.stock01 =  5            # default stock for singles
+        self.stock12 =  5            # default stock for stacks
+        self.verbose =  False        # logging level (debug + info + error)
+        self.silent  =  False        # logging level (error)
 
         self._parent = argparse.ArgumentParser(add_help=False)
         self._parser = argparse.ArgumentParser(parents=[self._parent],
