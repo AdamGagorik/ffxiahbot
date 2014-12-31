@@ -5,6 +5,7 @@ import pydarkstar.darkobject
 import pydarkstar.item
 import collections
 import re
+import os
 
 class ItemList(pydarkstar.darkobject.DarkObject):
     """
@@ -158,7 +159,12 @@ class ItemList(pydarkstar.darkobject.DarkObject):
 
         :param fname: name of file
         """
-        self.info('save %s', fname)
+        if os.path.exists(fname):
+            self.info('overwriting file...')
+            self.info('save %s', fname)
+        else:
+            self.info('save %s', fname)
+
         with open(fname, 'wb') as handle:
             for j, i in enumerate(self.items):
                 if j % itertitle == 0:
