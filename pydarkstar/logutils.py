@@ -111,5 +111,20 @@ def addRotatingFileHandler(level=logging.DEBUG, fname='app.log',
 
     return logger
 
+def basicConfig(verbose=False, silent=False, fname=None):
+    """
+    Setup logging.
+    """
+    setInfo()
+
+    if verbose:
+        setDebug()
+
+    if silent:
+        setError()
+
+    if fname:
+        addRotatingFileHandler(fname='scrub.log')
+
 if __name__ == '__main__':
     pass
