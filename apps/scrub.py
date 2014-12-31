@@ -1,13 +1,12 @@
 """
 Create item database.
 """
-import argparse
 import logging
-import yaml
 import sys
 import os
 import re
 
+# import hack to avoid PYTHONPATH
 try:
     import pydarkstar
 except ImportError:
@@ -22,136 +21,86 @@ except ImportError:
 import pydarkstar.logutils
 import pydarkstar.scrub.ffxiah
 import pydarkstar.itemlist
-import pydarkstar.darkobject
+import pydarkstar.options
+import pydarkstar.common
 
-class Options(pydarkstar.darkobject.DarkObject):
+class Options(pydarkstar.options.Options):
     """
-    Program options.
+    Reads options from config file, then from command line.
     """
-    def __init__(self, args=None):
-        super(Options, self).__init__()
-        self.config  =  'scrub.yaml' # options in config file
-        self.stub    =  'items'      # output file stub
-        self.force   =  False        # redownload
-        self.threads = -1            # cpu threads during download
-        self.stock01 =  5            # default stock for singles
-        self.stock12 =  5            # default stock for stacks
-        self.verbose =  False        # logging level (debug + info + error)
-        self.silent  =  False        # logging level (error)
+    def __init__(self):
+        super(Options, self).__init__(config='scrub.yaml', description=__doc__)
+        self.verbose   =  False   # error, info, and debug
+        self.silent    =  False   # error only
+        self.stub      =  'items' # output file stub
+        self.overwrite =  False   # overwrite output
+        self.backup    =  False   # backup output
+        self.save      =  False   # save config
+        self.force     =  False   # redownload
+        self.threads   = -1       # cpu threads during download
+        self.stock01   =  5       # default stock for singles
+        self.stock12   =  5       # default stock for stacks
 
-        self._parent = argparse.ArgumentParser(add_help=False)
-        self._parser = argparse.ArgumentParser(parents=[self._parent],
-            description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-
-        # config file
-        self._parent.add_argument('--config', type=str,
-            default=self.config, metavar=self.config,
-            help='configuration file name')
+        # logging
+        self.add_argument('--verbose', action='store_true',
+            help='report debug, info, and error')
+        self.add_argument('--silent', action='store_true',
+            help='report error only')
 
         # output
-        self._parser.add_argument(dest='stub', nargs='?', type=str,
-            default=self.stub, help='output file stub')
+        self.add_argument(dest='stub', nargs='?', type=str, default=self.stub,
+            help='output file stub')
+        self.add_argument('--overwrite', action='store_true',
+            help='overwrite output file')
+        self.add_argument('--backup', action='store_true',
+            help='backup output file')
+        self.add_argument('--save', action='store_true',
+            help='save config file (and exit)')
 
         # scrubbing parameters
-        self._parser.add_argument('--force', action='store_true',
+        self.add_argument('--force', action='store_true',
             help='start from scratch')
-        self._parser.add_argument('--threads', type=int,
-            default=self.threads, metavar=self.threads,
+        self.add_argument('--threads', type=int, default=self.threads, metavar=self.threads,
             help='number of cpu threads to use')
 
         # defaults
-        self._parser.add_argument('--stock01', type=int,
-            default=self.stock01, metavar=self.stock01,
+        self.add_argument('--stock01', type=int, default=self.stock01, metavar=self.stock01,
             help='default stock for singles')
-        self._parser.add_argument('--stock12', type=int,
-            default=self.stock12, metavar=self.stock12,
+        self.add_argument('--stock12', type=int, default=self.stock12, metavar=self.stock12,
             help='default stock for stacks')
 
-        # logging
-        self._parser.add_argument('--verbose', action='store_true',
-            help='logging level = 2')
-        self._parser.add_argument('--silent', action='store_true',
-            help='logging level = 0')
-
-        self._parse_args(args)
-
-    def update(self, **kwargs):
-        """
-        Update options.
-        """
-        for k in kwargs:
-            if hasattr(self, k):
-                setattr(self, k, kwargs[k])
-            else:
-                raise KeyError('unknown option: %s', k)
-
-    def show(self):
-        """
-        Show parameters in log.
-        """
-        fmt = '%-8s = %s'
-        self.debug(fmt, 'config', self.config)
-        self.debug(fmt, 'verbose', self.verbose)
-        self.debug(fmt, 'silent', self.silent)
-        self.debug(fmt, 'stub', self.stub)
-        self.debug(fmt, 'force', self.force)
-        self.debug(fmt, 'threads', self.threads)
-        self.debug(fmt, 'stock01', self.stock01)
-        self.debug(fmt, 'stock12', self.stock12)
-
-    def _parse_args(self, args=None):
-        """
-        Parse config file and then command line.
-        """
-        results, remaining_args = self._parent.parse_known_args(args)
-        self.update(**results.__dict__)
-        self._load_config()
-        results = self._parser.parse_args(remaining_args)
-        self.update(**results.__dict__)
-        self._save_config()
-
-    def _load_config(self):
-        """
-        Parse config file.
-        """
-        if os.path.exists(self.config):
-            self.info('load %s', self.config)
-            with open(self.config, 'rb') as handle:
-                data = yaml.load(handle)
-                if not isinstance(data, dict):
-                    raise RuntimeError('invalid configuration file')
-                self.update(**data)
-                self._parser.set_defaults(**data)
-
-    def _save_config(self):
-        """
-        Save config file.
-        """
-        with open(self.config, 'wb') as handle:
-            yaml.dump(self._to_dict(), handle, default_flow_style=False)
-
-    def _to_dict(self):
-        return dict(stub=self.stub, force=self.force, threads=self.threads, verbose=self.verbose,
-            silent=self.silent, stock01=self.stock01, stock12=self.stock12)
-
-def setup_logging(opts):
-    pydarkstar.logutils.setInfo()
-
-    if opts.verbose:
-        pydarkstar.logutils.setDebug()
-
-    if opts.silent:
-        pydarkstar.logutils.setError()
-
-    pydarkstar.logutils.addRotatingFileHandler(fname='scrub.log')
-    logging.info('start')
-
 def main():
+    """
+    Main function.
+    """
+    # get options
     opts = Options()
-    setup_logging(opts)
-    opts.show()
+    opts.parse_args()
+    pydarkstar.logutils.basicConfig(verbose=opts.verbose, silent=opts.silent, fname='scrub.log')
+    logging.debug('start')
+
+    # log options
+    opts.log_values(level=logging.INFO)
+
+    # save options
+    if opts.save:
+        opts.save = False
+        opts.dump()
+        return
+
+    # check output file name validity
+    oname = os.path.abspath('{}.csv'.format(re.sub(r'\.csv$', '', opts.stub)))
+    if not opts.overwrite and not opts.backup:
+        if os.path.exists(oname):
+            logging.error('output file already exists!\n\t%s', oname)
+            logging.error('please use --overwrite or --backup')
+            exit(-1)
+
+    # scrub data
     scrubber = pydarkstar.scrub.ffxiah.FFXIAHScrubber()
-    data = scrubber.scrub(force=opts.force, threads=opts.threads)
+    data = scrubber.scrub(force=opts.force, threads=opts.threads, urls=['http://www.ffxiah.com/browse/15/ammunition'])
+
+    # create item list from data
     ilist = pydarkstar.itemlist.ItemList()
     for itemid in data:
 
@@ -174,10 +123,11 @@ def main():
             price01=price01, stock01=opts.stock01, sell01=sell01, buy01=True,
             price12=price12, stock12=opts.stock12, sell12=sell12, buy12=True)
 
-    oname = '{}.csv'.format(re.sub(r'\.csv$', '', opts.stub))
-    if os.path.exists(oname):
-        logging.error('file already exists! %s', oname)
+    # buckup file
+    if opts.backup:
+        pydarkstar.common.backup(oname)
 
+    # overwrites if exists, but we checked already
     ilist.savecsv(oname)
 
 def cleanup():
