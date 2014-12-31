@@ -75,6 +75,9 @@ class LoggingObject(object):
     def exception(self, msg, *args, **kwargs):
         logging.exception(self._preprocess(msg), *args, **kwargs)
 
+    def log(self, level, msg, *args, **kwargs):
+        logging.log(level, self._preprocess(msg), *args, **kwargs)
+
     def _preprocess(self, msg):
         return '{}: {}'.format(repr(self), msg)
 
