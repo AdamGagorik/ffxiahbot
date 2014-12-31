@@ -86,7 +86,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
                     warnings.warn('passed ids ignored')
 
                 if os.path.exists(self._pkl_item_ids):
-                    warnings.warn('%s ignored', self._pkl_item_ids)
+                    warnings.warn('%s ignored' % self._pkl_item_ids)
 
                 self.debug('# data = %d', len(data))
                 return data
@@ -118,7 +118,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
 
             # from file
             if os.path.exists(self._pkl_item_dat):
-                raise RuntimeError('%s exists', self._pkl_item_dat)
+                raise RuntimeError('%s exists' % self._pkl_item_dat)
 
             # from internet
             data = self._get_item_data(ids, threads=threads)
@@ -254,22 +254,28 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         # loop table rows
         items = set()
         for j, row in enumerate(trs):
+            # look for 'a' tag
+            a = row.find('a')
 
-            # look for href
-            href = row.find('a').get('href')
+            if not a is None:
+                # look for href attr
+                href = a.get('href')
 
-            if not href is None:
-                # make sure href matches /item/{number}
-                try:
-                    item = int(self._regex_item.match(href).group(1))
-                    items.add(item)
-                    #logging.debug('found %s', href)
+                if not href is None:
+                    # make sure href matches /item/{number}
+                    try:
+                        item = int(self._regex_item.match(href).group(1))
+                        items.add(item)
+                        #logging.debug('found %s', href)
 
-                except (ValueError, IndexError):
-                    self.exception('failed to extract itemid!\n\n\trow %d of %s\n\n%s\n\n',
+                    except (ValueError, IndexError):
+                        self.exception('failed to extract itemid!\n\n\trow %d of %s\n\n%s\n\n',
+                            j, url, row)
+                else:
+                    self.error('failed to extract href!\n\n\trow %d of %s\n\n%s\n\n',
                         j, url, row)
             else:
-                self.error('failed to extract href!\n\n\trow %d of %s\n\n%s\n\n',
+                self.error("failed to extract 'a' tag!\n\n\trow %d of %s\n\n%s\n\n",
                     j, url, row)
 
         # make sure we found something
