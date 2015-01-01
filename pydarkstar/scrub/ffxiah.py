@@ -88,7 +88,7 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
                 if os.path.exists(self._pkl_item_ids):
                     warnings.warn('%s ignored' % self._pkl_item_ids)
 
-                self.debug('# data = %d', len(data))
+                self.debug('data count = %d', len(data))
                 return data
 
             # get ids
@@ -126,8 +126,8 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
             # save to file
             self._save_item_dat(data)
 
-            self.debug('# ids = %d', len(ids))
-            self.debug('# data = %d', len(data))
+            self.debug('item count = %d', len(ids))
+            self.debug('data count = %d', len(data))
             return data
 
         raise RuntimeError('can not load data')
