@@ -91,7 +91,11 @@ class Options(pydarkstar.darkobject.DarkObject):
         Write values to logger.
         """
         for k in self.keys:
-            self.log(level, fmt, k, getattr(self, k))
+            v = self[k]
+            if isinstance(v, (list, tuple)):
+                self.log(level, fmt, k, '[...], size = {}'.format(len(v)))
+            else:
+                self.log(level, fmt, k, v)
 
     def update(self, **kwargs):
         """
