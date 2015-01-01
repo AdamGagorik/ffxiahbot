@@ -40,6 +40,8 @@ class Options(pydarkstar.options.Options):
         self.threads   = -1       # cpu threads during download
         self.stock01   =  5       # default stock for singles
         self.stock12   =  5       # default stock for stacks
+        self.itemids   = []       # a list of item ids
+        self.urls      = []       # a list of category urls
 
         # logging
         self.add_argument('--verbose', action='store_true',
@@ -62,12 +64,35 @@ class Options(pydarkstar.options.Options):
             help='start from scratch')
         self.add_argument('--threads', type=int, default=self.threads, metavar=self.threads,
             help='number of cpu threads to use')
+        self.add_argument('--urls', type=str, nargs='*', action='append', default=self.urls, metavar='url',
+            help='a list of category urls')
+        self.add_argument('--itemids', type=str, nargs='*', action='append', default=self.urls, metavar='itemids',
+            help='a list of item ids')
 
         # defaults
         self.add_argument('--stock01', type=int, default=self.stock01, metavar=self.stock01,
             help='default stock for singles')
         self.add_argument('--stock12', type=int, default=self.stock12, metavar=self.stock12,
             help='default stock for stacks')
+
+    def parse_args(self, args=None):
+        super(Options, self).parse_args(args)
+
+        urls = []
+        for obj in self.urls:
+            if isinstance(obj, list):
+                urls.extend(obj)
+            else:
+                urls.append(obj)
+        self.urls = urls
+
+        itemids = []
+        for obj in self.itemids:
+            if isinstance(obj, list):
+                itemids.extend(obj)
+            else:
+                itemids.append(obj)
+        self.itemids = itemids
 
 def main():
     """
@@ -76,7 +101,8 @@ def main():
     # get options
     opts = Options()
     opts.parse_args()
-    pydarkstar.logutils.basicConfig(verbose=opts.verbose, silent=opts.silent, fname='scrub.log')
+    pydarkstar.logutils.basicConfig(
+        verbose=opts.verbose, silent=opts.silent, fname='scrub.log')
     logging.debug('start')
 
     # log options
@@ -98,22 +124,35 @@ def main():
 
     # scrub data
     scrubber = pydarkstar.scrub.ffxiah.FFXIAHScrubber()
-    data = scrubber.scrub(force=opts.force, threads=opts.threads, urls=['http://www.ffxiah.com/browse/15/ammunition'])
+    data = scrubber.scrub(force=opts.force, threads=opts.threads, urls=opts.urls, ids=opts.itemids)
 
     # create item list from data
     ilist = pydarkstar.itemlist.ItemList()
     for itemid in data:
 
+        # singles
         try:
             price01, sell01 = data[itemid]['median'], True
+
+            # do not sell items without a price
+            if price01 <= 0:
+                price01, sell01 = None, False
+
         except KeyError:
             price01, sell01 = None, False
 
+        # stacks
         try:
             price12, sell12 = data[itemid]['stack price'], True
+
+            # do not sell items without a price
+            if price12 <= 0:
+                price12, sell12 = None, False
+
         except KeyError:
             price12, sell12 = None, False
 
+        # the name doesn't really matter
         try:
             name = data[itemid]['name']
         except KeyError:
@@ -123,7 +162,7 @@ def main():
             price01=price01, stock01=opts.stock01, sell01=sell01, buy01=True,
             price12=price12, stock12=opts.stock12, sell12=sell12, buy12=True)
 
-    # buckup file
+    # backup file
     if opts.backup:
         pydarkstar.common.backup(oname)
 
