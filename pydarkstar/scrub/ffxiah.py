@@ -73,8 +73,8 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
             # save to file
             self._save_item_dat(data)
 
-            self.debug('# ids = %d', len(ids))
-            self.debug('# data = %d', len(data))
+            self.debug('item count = %d', len(ids))
+            self.debug('data count = %d', len(data))
             return data
 
         else:
