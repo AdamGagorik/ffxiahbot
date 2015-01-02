@@ -39,8 +39,11 @@ class Item(pydarkstar.darkobject.DarkObject):
         self._itemid   = int(itemid)
         self._name     = None
 
-        self._sell01  = None
-        self._sell12  = None
+        self._sell01   = None
+        self._sell12   = None
+
+        self._buy01    = None
+        self._buy12    = None
 
         self._price01  = None
         self._price12  = None
