@@ -66,7 +66,7 @@ class Options(pydarkstar.options.Options):
             help='number of cpu threads to use')
         self.add_argument('--urls', type=str, nargs='*', action='append', default=self.urls, metavar='url',
             help='a list of category urls')
-        self.add_argument('--itemids', type=str, nargs='*', action='append', default=self.urls, metavar='itemids',
+        self.add_argument('--itemids', type=str, nargs='*', action='append', default=self.itemids, metavar='itemids',
             help='a list of item ids')
 
         # defaults
