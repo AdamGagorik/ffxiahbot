@@ -124,7 +124,7 @@ def basicConfig(verbose=False, silent=False, fname=None):
         setError()
 
     if fname:
-        addRotatingFileHandler(fname='scrub.log')
+        addRotatingFileHandler(fname=fname)
 
 if __name__ == '__main__':
     pass
