@@ -75,6 +75,9 @@ class Options(pydarkstar.options.Options):
         self.add_argument('--stock12', type=int, default=self.stock12, metavar=self.stock12,
             help='default stock for stacks')
 
+        self.exclude('itemids')
+        self.exclude('urls')
+
     def parse_args(self, args=None):
         super(Options, self).parse_args(args)
 
