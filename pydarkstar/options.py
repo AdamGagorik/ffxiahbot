@@ -6,6 +6,7 @@ import warnings
 import logging
 import yaml
 import os
+import re
 
 import pydarkstar.darkobject
 
@@ -13,6 +14,8 @@ class Options(pydarkstar.darkobject.DarkObject):
     """
     A Namespace object to use with argparse module.
     """
+    regex_tuple = re.compile('([^=]+)=([^=]+)')
+
     def __init__(self, config='config.yaml', description=None):
         super(Options, self).__init__()
         self._ordered_keys = []
@@ -163,6 +166,24 @@ class Options(pydarkstar.darkobject.DarkObject):
         Return namespace as python dict.
         """
         return {k : self[k] for k in self._ordered_keys if not k in self._exclude_keys}
+
+    def parse_tuple(self, string):
+        # make sure string is of the form key=value
+        m = self.regex_tuple.match(string)
+        if not m:
+            raise TypeError('can not parse string: %s' % string)
+
+        # extract key
+        k = m.group(1)
+
+        # extract value
+        try:
+            v = eval(m.group(2))
+        except (NameError, TypeError):
+            v = m.group(2)
+
+        # return key, value tuple
+        return k, v
 
 if __name__ == '__main__':
     pass
