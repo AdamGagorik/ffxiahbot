@@ -1,12 +1,12 @@
 """
 .. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
 """
-from pydarkstar.tables.auction_house import AuctionHouse
-import pydarkstar.auction.auctionbase
+from pydarkstar.tables.auctionhouse import AuctionHouse
+import pydarkstar.auctionhouse.auctionbase
 import pydarkstar.database
 import sqlalchemy
 
-class Browser(pydarkstar.auction.auctionbase.AuctionBase):
+class Browser(pydarkstar.auctionhouse.auctionbase.AuctionBase):
     """
     Auction House buyer.
 

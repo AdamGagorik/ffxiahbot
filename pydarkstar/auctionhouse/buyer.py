@@ -1,10 +1,10 @@
 """
 .. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
 """
-import pydarkstar.auction.auctionbase
+import pydarkstar.auctionhouse.auctionbase
 import pydarkstar.database
 
-class Buyer(pydarkstar.auction.auctionbase.AuctionBase):
+class Buyer(pydarkstar.auctionhouse.auctionbase.AuctionBase):
     """
     Auction House buyer.
 

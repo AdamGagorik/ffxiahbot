@@ -3,13 +3,13 @@
 """
 import unittest
 import pydarkstar.logutils
-import pydarkstar.tables.auction_house
+import pydarkstar.tables.auctionhouse
 
 pydarkstar.logutils.setDebug()
 
 class TestAuctionHouse(unittest.TestCase):
     def test_init(self):
-        row = pydarkstar.tables.auction_house.AuctionHouse()
+        row = pydarkstar.tables.auctionhouse.AuctionHouse()
         pydarkstar.logutils.logging.debug(row)
 
 if __name__ == '__main__':
