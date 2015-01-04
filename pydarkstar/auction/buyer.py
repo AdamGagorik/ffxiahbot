@@ -1,19 +1,17 @@
 """
 .. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
 """
-import pydarkstar.darkobject
+import pydarkstar.auction.auctionbase
 import pydarkstar.database
 
-class Buyer(pydarkstar.darkobject.DarkObject):
+class Buyer(pydarkstar.auction.auctionbase.AuctionBase):
     """
-    Buyer/Seller
+    Auction House buyer.
 
     :param db: database object
     """
     def __init__(self, db, *args, **kwargs):
-        super(Buyer, self).__init__(*args, **kwargs)
-        assert isinstance(db, pydarkstar.database.Database)
-        self.db = db
+        super(Buyer, self).__init__(db, *args, **kwargs)
 
 if __name__ == '__main__':
     pass
