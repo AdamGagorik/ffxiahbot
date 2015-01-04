@@ -81,6 +81,14 @@ class LoggingObject(object):
     def _preprocess(self, msg):
         return '{}: {}'.format(repr(self), msg)
 
+    @contextlib.contextmanager
+    def capture(self, **kwargs):
+        try:
+            with capture(**kwargs):
+                yield
+        finally:
+            pass
+
 def addRotatingFileHandler(level=logging.DEBUG, fname='app.log',
         logger=None, fmt=lfmt, **kwargs):
     """
