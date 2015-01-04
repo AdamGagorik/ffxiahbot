@@ -30,7 +30,7 @@ class Cleaner(pydarkstar.auction.auctionbase.AuctionBase):
         else:
 
             # validate seller
-            with pydarkstar.logutils.capture(fail=self.fail):
+            with self.capture(fail=self.fail):
                 if not isinstance(seller, int) or not seller >= 0:
                     raise RuntimeError('invalid seller: %s', seller)
 
