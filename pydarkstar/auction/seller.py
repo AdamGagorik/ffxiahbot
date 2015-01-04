@@ -31,10 +31,10 @@ class Seller(pydarkstar.auction.auctionbase.AuctionBase):
         :param count: rows
         """
         with self.capture(fail=self.fail):
-            itemid = self._validate_itemid(itemid)
-            stack  = self._validate_stack(stack)
-            price  = self._validate_price(price)
-            date   = self._validate_date(date)
+            itemid = self.validate_itemid(itemid)
+            stack  = self.validate_stack(stack)
+            price  = self.validate_price(price)
+            date   = self.validate_date(date)
 
             # add row
             with self.scopped_session() as session:
@@ -67,10 +67,10 @@ class Seller(pydarkstar.auction.auctionbase.AuctionBase):
         :param count: rows
         """
         with self.capture(fail=self.fail):
-            itemid = self._validate_itemid(itemid)
-            stack  = self._validate_stack(stack)
-            price  = self._validate_price(price)
-            date   = self._validate_date(date)
+            itemid = self.validate_itemid(itemid)
+            stack  = self.validate_stack(stack)
+            price  = self.validate_price(price)
+            date   = self.validate_date(date)
 
             # add row
             with self.scopped_session() as session:

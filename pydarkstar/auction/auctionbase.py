@@ -56,23 +56,23 @@ class AuctionBase(pydarkstar.darkobject.DarkObject):
         self._fail = bool(value)
 
     @staticmethod
-    def _validate_itemid(itemid):
+    def validate_itemid(itemid):
         itemid = int(itemid)
         assert itemid > 0
         return itemid
 
     @staticmethod
-    def _validate_stack(stack):
+    def validate_stack(stack):
         if stack:
             return 1
         return 0
 
     @staticmethod
-    def _validate_date(date):
+    def validate_date(date):
         return pydarkstar.timeutils.timestamp(date)
 
     @staticmethod
-    def _validate_price(price):
+    def validate_price(price):
         price = int(price)
         assert price > 0
         return price
