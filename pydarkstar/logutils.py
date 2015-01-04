@@ -28,7 +28,7 @@ def custom_warning_format(message, category, filename, lineno, *args, **kwargs):
     return '%s:%s\n%s: %s' % (filename, lineno, category.__name__, message)
 
 @contextlib.contextmanager
-def capture(capture_warnings=True, reraise=False):
+def capture(capture_warnings=True, fail=False):
     """
     Log exceptions and warnings.
     """
@@ -41,9 +41,9 @@ def capture(capture_warnings=True, reraise=False):
             yield
         except Exception as e:
             logging.exception('caught unhandled excetion')
-            if reraise:
+            if fail:
                 if not isinstance(e, Warning):
-                    raise
+                    raise RuntimeError('application failure')
     finally:
         if capture_warnings:
             warnings.formatwarning = default_warning_format
