@@ -30,15 +30,15 @@ class Database(pydarkstar.darkobject.DarkObject):
         return self._Session(*args, **kwargs)
 
     @contextlib.contextmanager
-    def scoped_session(self, reraise=False, rollback=True):
+    def scoped_session(self, rollback=True, fail=False):
         """
         Provide a transactional scope around a series of operations.
 
-        :param reraise: raise error after catch
         :param rollback: rollback transactions after catch
+        :param fail: raise error after catch
 
-        :type reraise: bool
         :type rollback: bool
+        :type fail: bool
         """
         session = self._Session()
         try:
@@ -57,8 +57,8 @@ class Database(pydarkstar.darkobject.DarkObject):
                 session.rollback()
 
             # reraise error
-            if reraise:
-                raise
+            if fail:
+                raise RuntimeError('SQL Failed')
 
         # cleanup
         finally:
