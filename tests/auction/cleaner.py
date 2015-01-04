@@ -17,5 +17,10 @@ class TestCleaner(unittest.TestCase):
     def test_init(self):
         pydarkstar.auction.cleaner.Cleaner(self.db)
 
+    def test_clear(self):
+        cleaner = pydarkstar.auction.cleaner.Cleaner(self.db, fail=True)
+        with self.assertRaises(RuntimeError):
+            cleaner.clear(seller=1.1)
+
 if __name__ == '__main__':
     unittest.main()
