@@ -3,6 +3,7 @@
 """
 import pydarkstar.darkobject
 import pydarkstar.database
+import contextlib
 
 class AuctionBase(pydarkstar.darkobject.DarkObject):
     """
@@ -16,6 +17,25 @@ class AuctionBase(pydarkstar.darkobject.DarkObject):
         self._rollback = bool(rollback)
         self._fail = bool(fail)
         self._db = db
+
+    def session(self, *args, **kwargs):
+        """
+        Create database session.
+        """
+        return self._db.session(*args, **kwargs)
+
+    @contextlib.contextmanager
+    def scopped_session(self, **kwargs):
+        """
+        Create scoped database session.
+        """
+        _kwargs = dict(rollback=self.rollback, fail=self.fail)
+        _kwargs.update(**kwargs)
+        try:
+            with self._db.scoped_session(**_kwargs) as session:
+                yield session
+        finally:
+            pass
 
     @property
     def db(self):
