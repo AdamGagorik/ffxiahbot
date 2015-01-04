@@ -56,5 +56,38 @@ class Seller(pydarkstar.auction.auctionbase.AuctionBase):
 
                     session.add(row)
 
+    def sellItem(self, itemid, stack, date, price, count):
+        """
+        Put up a particular item for sale.
+
+        :param itemid: item number
+        :param stack: stack 0|1
+        :param date: timestamp
+        :param price: price
+        :param count: rows
+        """
+        with pydarkstar.logutils.capture():
+            itemid = self._validate_itemid(itemid)
+            stack  = self._validate_stack(stack)
+            price  = self._validate_price(price)
+            date   = self._validate_date(date)
+
+            # add row
+            with self.scopped_session() as session:
+
+                # add the item multiple times
+                for i in range(count):
+
+                    row = AuctionHouse(
+                        itemid      = itemid,
+                        stack       = stack,
+                        seller      = self.seller,
+                        seller_name = self.seller_name,
+                        date        = date,
+                        price       = price,
+                    )
+
+                    session.add(row)
+
 if __name__ == '__main__':
     pass
