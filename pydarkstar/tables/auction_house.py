@@ -3,6 +3,7 @@
 """
 from sqlalchemy import Column, Integer, SmallInteger, String, text
 from pydarkstar.tables.base import Base
+import pydarkstar.timeutils
 
 _template = \
 """
@@ -39,6 +40,34 @@ class AuctionHouse(Base):
 
     def __str__(self):
         return _template.format(self=self, addr=hex(id(self)))
+
+    @staticmethod
+    def validate_itemid(itemid):
+        itemid = int(itemid)
+        assert itemid > 0
+        return itemid
+
+    @staticmethod
+    def validate_stack(stack):
+        if stack:
+            return 1
+        return 0
+
+    @staticmethod
+    def validate_seller(seller):
+        seller = int(seller)
+        assert seller >= 0
+        return seller
+
+    @staticmethod
+    def validate_date(date):
+        return pydarkstar.timeutils.timestamp(date)
+
+    @staticmethod
+    def validate_price(price):
+        price = int(price)
+        assert price >= 0
+        return price
 
 if __name__ == '__main__':
     pass

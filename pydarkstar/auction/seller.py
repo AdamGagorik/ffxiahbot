@@ -3,7 +3,6 @@
 """
 from pydarkstar.tables.auction_house import AuctionHouse
 import pydarkstar.auction.auctionbase
-import pydarkstar.timeutils
 import pydarkstar.database
 import pydarkstar.item
 
@@ -31,10 +30,10 @@ class Seller(pydarkstar.auction.auctionbase.AuctionBase):
         :param count: rows
         """
         with self.capture(fail=self.fail):
-            itemid = self.validate_itemid(itemid)
-            stack  = self.validate_stack(stack)
-            price  = self.validate_price(price)
-            date   = self.validate_date(date)
+            itemid = AuctionHouse.validate_itemid(itemid)
+            stack  = AuctionHouse.validate_stack(stack)
+            price  = AuctionHouse.validate_price(price)
+            date   = AuctionHouse.validate_date(date)
 
             # add row
             with self.scopped_session() as session:
@@ -67,10 +66,10 @@ class Seller(pydarkstar.auction.auctionbase.AuctionBase):
         :param count: rows
         """
         with self.capture(fail=self.fail):
-            itemid = self.validate_itemid(itemid)
-            stack  = self.validate_stack(stack)
-            price  = self.validate_price(price)
-            date   = self.validate_date(date)
+            itemid = AuctionHouse.validate_itemid(itemid)
+            stack  = AuctionHouse.validate_stack(stack)
+            price  = AuctionHouse.validate_price(price)
+            date   = AuctionHouse.validate_date(date)
 
             # add row
             with self.scopped_session() as session:
