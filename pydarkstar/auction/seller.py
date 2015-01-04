@@ -20,7 +20,7 @@ class Seller(pydarkstar.auction.auctionbase.AuctionBase):
         self.seller = int(seller)
         self.seller_name = str(seller_name)
 
-    def setHistory(self, itemid, stack, date, price, count=1):
+    def setHistory(self, itemid, stack, price, date, count=1):
         """
         Set the history of a particular item.
 
@@ -31,23 +31,10 @@ class Seller(pydarkstar.auction.auctionbase.AuctionBase):
         :param count: rows
         """
         with pydarkstar.logutils.capture():
-
-            # validate itemid
-            itemid = int(itemid)
-            assert itemid > 0
-
-            # make sure stack is number
-            if stack:
-                stack = 1
-            else:
-                stack = 0
-
-            # make sure date is timestamp
-            date = pydarkstar.timeutils.timestamp(date)
-
-            # validate price
-            price = int(price)
-            assert price >= 0
+            itemid = self._validate_itemid(itemid)
+            stack  = self._validate_stack(stack)
+            price  = self._validate_price(price)
+            date   = self._validate_date(date)
 
             # add row
             with self.scopped_session() as session:
