@@ -30,7 +30,7 @@ class Seller(pydarkstar.auction.auctionbase.AuctionBase):
         :param price: price
         :param count: rows
         """
-        with pydarkstar.logutils.capture():
+        with self.capture(fail=self.fail):
             itemid = self._validate_itemid(itemid)
             stack  = self._validate_stack(stack)
             price  = self._validate_price(price)
@@ -66,7 +66,7 @@ class Seller(pydarkstar.auction.auctionbase.AuctionBase):
         :param price: price
         :param count: rows
         """
-        with pydarkstar.logutils.capture():
+        with self.capture(fail=self.fail):
             itemid = self._validate_itemid(itemid)
             stack  = self._validate_stack(stack)
             price  = self._validate_price(price)
