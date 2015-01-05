@@ -2,6 +2,25 @@
 .. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
 """
 import pydarkstar.darkobject
+import collections
+
+fmt = collections.OrderedDict()
+fmt['itemid' ] = '{:>8}'
+fmt['name'   ] = '{:>24}'
+fmt['sell01' ] = '{:>8}'
+fmt['buy01'  ] = '{:>8}'
+fmt['price01'] = '{:>16}'
+fmt['stock01'] = '{:>8}'
+fmt['sell12' ] = '{:>8}'
+fmt['buy12'  ] = '{:>8}'
+fmt['price12'] = '{:>16}'
+fmt['stock12'] = '{:>8}'
+
+def titles():
+    return ', '.join([fmt[k].format(k) for k in fmt.keys()]) + '\n'
+
+def values(*objs):
+    return ', '.join([fmt[fmt.keys()[i]].format(objs[i]) for i in range(len(objs))]) + '\n'
 
 class Item(pydarkstar.darkobject.DarkObject):
     """
