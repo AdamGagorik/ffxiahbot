@@ -8,7 +8,7 @@ import sqlalchemy
 
 class Browser(pydarkstar.auctionhouse.auctionbase.AuctionBase):
     """
-    Auction House buyer.
+    Auction House browser.
 
     :param db: database object
     """
