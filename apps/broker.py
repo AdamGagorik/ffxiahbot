@@ -21,6 +21,12 @@ import pydarkstar.logutils
 import pydarkstar.options
 import pydarkstar.common
 
+import pydarkstar.database
+import pydarkstar.auctionhouse.buyer
+import pydarkstar.auctionhouse.seller
+import pydarkstar.auctionhouse.cleaner
+import pydarkstar.auctionhouse.browser
+
 class Options(pydarkstar.options.Options):
     """
     Reads options from config file, then from command line.
@@ -29,11 +35,17 @@ class Options(pydarkstar.options.Options):
         super(Options, self).__init__(config='broker.yaml', description=__doc__)
 
         # logging
-        self.verbose = False # error, info, and debug
-        self.silent  = False # error only
+        self.verbose  = False # error, info, and debug
+        self.silent   = False # error only
 
         # input and output
-        self.save    = False # save config
+        self.save     = False # save config
+
+        # sql
+        self.hostname = '127.0.0.1'
+        self.database = 'dspdb'
+        self.username = 'root'
+        self.password = None
 
         # logging
         self.add_argument('--verbose', action='store_true',
@@ -44,6 +56,17 @@ class Options(pydarkstar.options.Options):
         # output
         self.add_argument('--save', action='store_true',
             help='save config file (and exit)')
+
+        # sql
+        self.add_argument('--hostname', default=self.hostname, type=str,
+            metavar=self.hostname, help='SQL address')
+        self.add_argument('--database', default=self.database, type=str,
+            metavar=self.database, help='SQL database')
+        self.add_argument('--username', default=self.username, type=str,
+            metavar=self.username, help='SQL username')
+        self.add_argument('--password', default=self.password, type=str,
+            metavar='???', help='SQL password')
+        self.exclude('password')
 
 def main():
     """
@@ -64,6 +87,14 @@ def main():
         opts.save = False
         opts.dump()
         return
+
+    # connect to database
+    db = pydarkstar.database.Database.pymysql(
+        hostname=opts.hostname,
+        database=opts.database,
+        username=opts.username,
+        password=opts.password,
+    )
 
 def cleanup():
     logging.info('exit\n')
