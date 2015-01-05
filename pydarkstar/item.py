@@ -7,14 +7,14 @@ import collections
 fmt = collections.OrderedDict()
 fmt['itemid' ] = '{:>8}'
 fmt['name'   ] = '{:>24}'
-fmt['sell01' ] = '{:>8}'
-fmt['buy01'  ] = '{:>8}'
+fmt['sell01' ] = '{:>6}'
+fmt['buy01'  ] = '{:>6}'
 fmt['price01'] = '{:>16}'
-fmt['stock01'] = '{:>8}'
-fmt['sell12' ] = '{:>8}'
-fmt['buy12'  ] = '{:>8}'
+fmt['stock01'] = '{:>7}'
+fmt['sell12' ] = '{:>6}'
+fmt['buy12'  ] = '{:>6}'
 fmt['price12'] = '{:>16}'
-fmt['stock12'] = '{:>8}'
+fmt['stock12'] = '{:>7}'
 
 def titles():
     return ', '.join([fmt[k].format(k) for k in fmt.keys()]) + '\n'
