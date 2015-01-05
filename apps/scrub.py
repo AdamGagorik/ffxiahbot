@@ -89,6 +89,9 @@ class Options(pydarkstar.options.Options):
                 urls.append(obj)
         self.urls = urls
 
+        if not self.urls:
+            self.urls = None
+
         itemids = []
         for obj in self.itemids:
             if isinstance(obj, list):
@@ -96,6 +99,9 @@ class Options(pydarkstar.options.Options):
             else:
                 itemids.append(obj)
         self.itemids = itemids
+
+        if not self.itemids:
+            self.itemids = None
 
 def main():
     """
