@@ -3,7 +3,7 @@ import pydarkstar.logutils
 
 pydarkstar.logutils.setDebug()
 
-class TestLogutils(unittest.TestCase):
+class TestCase(unittest.TestCase):
     pass
 
 if __name__ == '__main__':

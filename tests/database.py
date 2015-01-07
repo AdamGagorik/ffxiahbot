@@ -6,7 +6,7 @@ import sqlalchemy.exc
 
 pydarkstar.logutils.setDebug()
 
-class TestDatabase(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def test_pymysql(self):
         pydarkstar.database.Database.pymysql(**pydarkstar.rc.sql)
 

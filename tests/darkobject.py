@@ -4,7 +4,7 @@ import pydarkstar.darkobject
 
 pydarkstar.logutils.setDebug()
 
-class TestDarkObject(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def test_init(self):
         pydarkstar.darkobject.DarkObject()
 

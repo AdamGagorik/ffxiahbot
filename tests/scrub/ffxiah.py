@@ -4,7 +4,7 @@ import pydarkstar.scrub.ffxiah
 
 pydarkstar.logutils.setInfo()
 
-class TestFFXIAHScrubber(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def test_get_category_urls(self):
         scrubber = pydarkstar.scrub.ffxiah.FFXIAHScrubber()
         scrubber._get_category_urls()

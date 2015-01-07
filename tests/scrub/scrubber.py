@@ -4,7 +4,7 @@ import pydarkstar.scrub.scrubber
 
 pydarkstar.logutils.setDebug()
 
-class TestScrubber(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def test_init(self):
         pydarkstar.scrub.scrubber.Scrubber()
 

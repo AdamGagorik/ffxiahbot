@@ -4,7 +4,7 @@ import pydarkstar.tables.deliverybox
 
 pydarkstar.logutils.setDebug()
 
-class TestDeliveryBox(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def test_init(self):
         row = pydarkstar.tables.deliverybox.DeliveryBox()
         pydarkstar.logutils.logging.debug(row)

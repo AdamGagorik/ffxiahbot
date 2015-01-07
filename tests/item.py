@@ -4,7 +4,7 @@ import pydarkstar.item
 
 pydarkstar.logutils.setDebug()
 
-class TestItem(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def test_init(self):
         i0 = pydarkstar.item.Item(0, 'A')
         self.assertEqual(i0.itemid,  0 )

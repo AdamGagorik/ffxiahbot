@@ -5,7 +5,7 @@ import pydarkstar.options
 
 pydarkstar.logutils.setDebug()
 
-class TestOptions(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def test_init(self):
         pydarkstar.options.Options()
 

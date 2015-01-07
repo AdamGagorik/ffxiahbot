@@ -4,7 +4,7 @@ import pydarkstar.tables.base
 
 pydarkstar.logutils.setDebug()
 
-class TestBase(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def test_init(self):
         pydarkstar.tables.base.Base()
 

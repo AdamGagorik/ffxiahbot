@@ -5,7 +5,7 @@ import os
 
 pydarkstar.logutils.setDebug()
 
-class TestCommon(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def test_backup1(self):
         path = pydarkstar.common.backup('common.pz', copy=False)
         self.assertEqual(path, '')

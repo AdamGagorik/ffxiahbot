@@ -7,7 +7,7 @@ import re
 
 pydarkstar.logutils.setDebug()
 
-class TestItemList(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def test_init(self):
         pydarkstar.itemlist.ItemList()
 
