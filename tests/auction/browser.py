@@ -11,24 +11,22 @@ import logging
 
 pydarkstar.logutils.setDebug()
 
-class TestBrowser(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def setUp(self):
         self.db = pydarkstar.database.Database.pymysql(**pydarkstar.rc.sql)
+        self.ob = pydarkstar.auctionhouse.browser.Browser(self.db, fail=True)
 
     def test_init(self):
-        pydarkstar.auctionhouse.browser.Browser(self.db)
+        pass
 
     def test_count(self):
-        browser = pydarkstar.auctionhouse.browser.Browser(self.db)
-        browser.count()
+        self.ob.count()
 
     def test_getStock(self):
-        browser = pydarkstar.auctionhouse.browser.Browser(self.db)
-        logging.debug('stock = %s', browser.getStock(1, 0))
+        logging.debug('stock = %s', self.ob.getStock(1, 0))
 
     def test_getPrice(self):
-        browser = pydarkstar.auctionhouse.browser.Browser(self.db)
-        logging.debug('price = %s', browser.getPrice(1, 0))
+        logging.debug('price = %s', self.ob.getPrice(1, 0))
 
 if __name__ == '__main__':
     unittest.main()

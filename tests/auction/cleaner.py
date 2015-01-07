@@ -10,17 +10,17 @@ import pydarkstar.rc
 
 pydarkstar.logutils.setDebug()
 
-class TestCleaner(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def setUp(self):
         self.db = pydarkstar.database.Database.pymysql(**pydarkstar.rc.sql)
+        self.ob = pydarkstar.auctionhouse.cleaner.Cleaner(self.db, fail=True)
 
     def test_init(self):
-        pydarkstar.auctionhouse.cleaner.Cleaner(self.db)
+        pass
 
     def test_clear(self):
-        cleaner = pydarkstar.auctionhouse.cleaner.Cleaner(self.db, fail=True)
         with self.assertRaises(RuntimeError):
-            cleaner.clear(seller=1.1)
+            self.ob.clear(seller=1.1)
 
 if __name__ == '__main__':
     unittest.main()

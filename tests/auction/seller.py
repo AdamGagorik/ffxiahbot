@@ -10,12 +10,13 @@ import pydarkstar.rc
 
 pydarkstar.logutils.setDebug()
 
-class TestSeller(unittest.TestCase):
+class TestCase(unittest.TestCase):
     def setUp(self):
         self.db = pydarkstar.database.Database.pymysql(**pydarkstar.rc.sql)
+        self.ob = pydarkstar.auctionhouse.seller.Seller(self.db, fail=True)
 
     def test_init(self):
-        pydarkstar.auctionhouse.seller.Seller(self.db)
+        pass
 
 if __name__ == '__main__':
     unittest.main()
