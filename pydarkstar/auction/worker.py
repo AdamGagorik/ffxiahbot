@@ -5,14 +5,14 @@ import pydarkstar.darkobject
 import pydarkstar.database
 import contextlib
 
-class AuctionBase(pydarkstar.darkobject.DarkObject):
+class Worker(pydarkstar.darkobject.DarkObject):
     """
     Base class for Auction House objects.
 
     :param db: database object
     """
     def __init__(self, db, rollback=True, fail=False, *args, **kwargs):
-        super(AuctionBase, self).__init__(*args, **kwargs)
+        super(Worker, self).__init__(*args, **kwargs)
         assert isinstance(db, pydarkstar.database.Database)
         self._rollback = bool(rollback)
         self._fail = bool(fail)

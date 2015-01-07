@@ -2,11 +2,11 @@
 .. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
 """
 from pydarkstar.tables.auctionhouse import AuctionHouse
-import pydarkstar.auction.auctionbase
+import pydarkstar.auction.worker
 import pydarkstar.database
 import pydarkstar.item
 
-class Seller(pydarkstar.auction.auctionbase.AuctionBase):
+class Seller(pydarkstar.auction.worker.Worker):
     """
     Auction House seller.
 

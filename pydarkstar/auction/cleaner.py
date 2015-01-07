@@ -2,10 +2,10 @@
 .. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
 """
 from pydarkstar.tables.auctionhouse import AuctionHouse
-import pydarkstar.auction.auctionbase
+import pydarkstar.auction.worker
 import pydarkstar.database
 
-class Cleaner(pydarkstar.auction.auctionbase.AuctionBase):
+class Cleaner(pydarkstar.auction.worker.Worker):
     """
     Auction House cleaner.
 
