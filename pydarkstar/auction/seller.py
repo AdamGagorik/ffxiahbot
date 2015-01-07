@@ -2,17 +2,17 @@
 .. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
 """
 from pydarkstar.tables.auctionhouse import AuctionHouse
-import pydarkstar.auctionhouse.auctionbase
+import pydarkstar.auction.auctionbase
 import pydarkstar.database
 import pydarkstar.item
 
-class Seller(pydarkstar.auctionhouse.auctionbase.AuctionBase):
+class Seller(pydarkstar.auction.auctionbase.AuctionBase):
     """
     Auction House seller.
 
     :param db: database object
-    :param seller: auctionhouse house seller id
-    :param seller_name: auctionhouse house seller name
+    :param seller: auction house seller id
+    :param seller_name: auction house seller name
     """
     def __init__(self, db, seller=0, seller_name='Zissou', *args, **kwargs):
         super(Seller, self).__init__(db, *args, **kwargs)

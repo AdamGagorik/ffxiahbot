@@ -2,11 +2,11 @@
 .. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
 """
 from pydarkstar.tables.auctionhouse import AuctionHouse
-import pydarkstar.auctionhouse.auctionbase
+import pydarkstar.auction.auctionbase
 import pydarkstar.database
 import sqlalchemy
 
-class Browser(pydarkstar.auctionhouse.auctionbase.AuctionBase):
+class Browser(pydarkstar.auction.auctionbase.AuctionBase):
     """
     Auction House browser.
 

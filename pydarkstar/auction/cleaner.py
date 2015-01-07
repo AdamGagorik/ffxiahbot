@@ -2,10 +2,10 @@
 .. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
 """
 from pydarkstar.tables.auctionhouse import AuctionHouse
-import pydarkstar.auctionhouse.auctionbase
+import pydarkstar.auction.auctionbase
 import pydarkstar.database
 
-class Cleaner(pydarkstar.auctionhouse.auctionbase.AuctionBase):
+class Cleaner(pydarkstar.auction.auctionbase.AuctionBase):
     """
     Auction House cleaner.
 
@@ -16,7 +16,7 @@ class Cleaner(pydarkstar.auctionhouse.auctionbase.AuctionBase):
 
     def clear(self, seller=None):
         """
-        Clear out auctionhouse house.
+        Clear out auction house.
         """
         # clear rows
         if seller is None:

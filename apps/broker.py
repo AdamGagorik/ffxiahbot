@@ -22,10 +22,10 @@ import pydarkstar.options
 import pydarkstar.common
 
 import pydarkstar.database
-import pydarkstar.auctionhouse.buyer
-import pydarkstar.auctionhouse.seller
-import pydarkstar.auctionhouse.cleaner
-import pydarkstar.auctionhouse.browser
+import pydarkstar.auction.buyer
+import pydarkstar.auction.seller
+import pydarkstar.auction.cleaner
+import pydarkstar.auction.browser
 
 class Options(pydarkstar.options.Options):
     """

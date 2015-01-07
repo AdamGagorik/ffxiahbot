@@ -5,7 +5,7 @@ import unittest
 
 import pydarkstar.logutils
 import pydarkstar.database
-import pydarkstar.auctionhouse.auctionbase
+import pydarkstar.auction.auctionbase
 import pydarkstar.rc
 
 pydarkstar.logutils.setDebug()
@@ -13,7 +13,7 @@ pydarkstar.logutils.setDebug()
 class TestCase(unittest.TestCase):
     def setUp(self):
         self.db = pydarkstar.database.Database.pymysql(**pydarkstar.rc.sql)
-        self.ob = pydarkstar.auctionhouse.auctionbase.AuctionBase(self.db, fail=True)
+        self.ob = pydarkstar.auction.auctionbase.AuctionBase(self.db, fail=True)
 
     def test_init(self):
         pass
