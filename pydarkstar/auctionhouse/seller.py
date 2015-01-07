@@ -17,7 +17,7 @@ class Seller(pydarkstar.auctionhouse.auctionbase.AuctionBase):
     def __init__(self, db, seller=0, seller_name='Zissou', *args, **kwargs):
         super(Seller, self).__init__(db, *args, **kwargs)
         self.seller = int(seller)
-        self.seller_name = AuctionHouse.validate_seller(str(seller_name))
+        self.seller_name = str(seller_name)
 
     def setHistory(self, itemid, stack, price, date, count=1):
         """

@@ -14,7 +14,7 @@ class Buyer(pydarkstar.auctionhouse.auctionbase.AuctionBase):
     """
     def __init__(self, db, buyer_name='Zissou', *args, **kwargs):
         super(Buyer, self).__init__(db, *args, **kwargs)
-        self.buyer_name = AuctionHouse.validate_seller(str(buyer_name))
+        self.buyer_name = str(buyer_name)
         self.browser = pydarkstar.auctionhouse.browser.Browser(db)
         self.blacklist = set()
 
@@ -28,7 +28,7 @@ class Buyer(pydarkstar.auctionhouse.auctionbase.AuctionBase):
         if price <= history_price:
             row.buyer_name = AuctionHouse.validate_seller(self.buyer_name)
             row.sell_date  = AuctionHouse.validate_date(date)
-            row.price      = AuctionHouse.validate_price(price)
+            row.sale       = AuctionHouse.validate_price(price)
 
         else:
             self.error('item price too high: %d > %d, seller=%s', price, history_price, row.seller)
