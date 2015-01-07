@@ -1,6 +1,3 @@
-"""
-.. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
-"""
 import pydarkstar.darkobject
 import pydarkstar.item
 import collections

@@ -1,6 +1,3 @@
-"""
-.. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
-"""
 import contextlib
 import warnings
 import logging

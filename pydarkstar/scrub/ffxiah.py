@@ -1,6 +1,3 @@
-"""
-.. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
-"""
 import pydarkstar.scrub.scrubber
 import warnings
 import pickle

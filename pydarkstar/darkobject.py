@@ -1,6 +1,3 @@
-"""
-.. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
-"""
 import pydarkstar.logutils
 
 class DarkObject(pydarkstar.logutils.LoggingObject):

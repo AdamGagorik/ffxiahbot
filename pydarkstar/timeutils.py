@@ -1,6 +1,3 @@
-"""
-.. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
-"""
 import datetime as _datetime
 import random as _random
 

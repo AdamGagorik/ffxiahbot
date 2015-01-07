@@ -1,6 +1,3 @@
-"""
-.. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
-"""
 from sqlalchemy import Column, Integer, SmallInteger, String, text
 from pydarkstar.tables.base import Base
 import pydarkstar.timeutils

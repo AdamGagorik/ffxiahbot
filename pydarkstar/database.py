@@ -1,6 +1,3 @@
-"""
-.. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
-"""
 import sqlalchemy
 import sqlalchemy.orm
 import sqlalchemy.exc

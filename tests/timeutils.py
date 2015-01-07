@@ -1,6 +1,3 @@
-"""
-.. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
-"""
 import unittest
 import pydarkstar.logutils
 import pydarkstar.timeutils
