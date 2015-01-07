@@ -15,7 +15,6 @@ class Browser(pydarkstar.auctionhouse.auctionbase.AuctionBase):
     def __init__(self, db, *args, **kwargs):
         super(Browser, self).__init__(db, *args, **kwargs)
 
-
     def count(self):
         """
         Get the number of rows.
