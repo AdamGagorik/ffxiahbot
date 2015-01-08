@@ -58,8 +58,9 @@ class Options(pydarkstar.options.Options):
         self.force    = False # clear all items check
 
         # selling
-        self.restock  = 3600  # restock tick
-        self.refill   = False # restock at start
+        self.name     = 'Zissou' # seller name
+        self.restock  = 3600     # restock tick
+        self.refill   = False    # restock at start
 
         # buying
         self.tick     = 30    # buying interval
@@ -102,6 +103,8 @@ class Options(pydarkstar.options.Options):
             help='clear *all* items')
 
         # selling
+        self.add_argument('--name', type=str, default=self.name,
+            metavar='str', help='seller name')
         self.add_argument('--restock', type=int, default=self.restock,
             metavar='int', help='restock interval in seconds')
         self.add_argument('--refill', action='store_true',
@@ -120,6 +123,8 @@ class Options(pydarkstar.options.Options):
             found = list(pydarkstar.common.findFiles(
                 top=os.getcwd(), regex=r'.*\.csv', r=False, ignorecase=True))
             self.data.update(found)
+
+        self.data = list(self.data)
 
 def main():
     """
@@ -160,6 +165,8 @@ def main():
 
     # create auction house manager
     manager = pydarkstar.auction.manager.Manager(db, fail=opts.fail)
+    manager.seller.seller_name = opts.name
+    manager.buyer.buyer_name   = opts.name
 
     if opts.clear:
         # clear all items
