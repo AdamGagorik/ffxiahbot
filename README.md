@@ -61,7 +61,7 @@ Usage
  python setup.py
  ```
 
-*If using options 2, 3, or 4, you can run aps from anywhere.*
+*If using options 2, 3, or 4, you can run apps from anywhere.*
 
  ```bash
  cd /somewhere/else
