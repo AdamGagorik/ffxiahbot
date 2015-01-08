@@ -146,10 +146,14 @@ class Options(pydarkstar.darkobject.DarkObject):
         if stream is None:
             self.debug('save %s', self.config)
             with open(self.config, 'wb') as handle:
-                yaml.dump(self.dict(), handle, default_flow_style=False)
+                for k in self._ordered_keys:
+                    if not k in self._exclude_keys:
+                        yaml.dump({ k : self[k] }, handle, default_flow_style=False)
         else:
             self.debug('save %s', stream)
-            yaml.dump(self.dict(), stream, default_flow_style=False)
+            for k in self._ordered_keys:
+                if not k in self._exclude_keys:
+                    yaml.dump({ k : self[k] }, stream, default_flow_style=False)
 
     def __iter__(self):
         """
