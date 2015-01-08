@@ -49,7 +49,7 @@ class Options(pydarkstar.options.Options):
         self.hostname = '127.0.0.1'
         self.database = 'dspdb'
         self.username = 'root'
-        self.password = None
+        self.password = ''
         self.fail     = False # fail on SQL errors
 
         # cleaning
@@ -154,15 +154,6 @@ def main():
         password=opts.password,
     )
 
-    # make sure there is data
-    if not opts.data:
-        raise RuntimeError('missing item data CSV!')
-
-    # load data
-    idata = pydarkstar.itemlist.ItemList()
-    for f in opts.data:
-        idata.loadcsv(f)
-
     # create auction house manager
     manager = pydarkstar.auction.manager.Manager(db, fail=opts.fail)
     manager.seller.seller_name = opts.name
@@ -183,6 +174,15 @@ def main():
         # exit after clearing
         logging.info('exit after clear')
         return
+
+    # make sure there is data
+    if not opts.data:
+        raise RuntimeError('missing item data CSV!')
+
+    # load data
+    idata = pydarkstar.itemlist.ItemList()
+    for f in opts.data:
+        idata.loadcsv(f)
 
     if opts.refill:
         manager.restockItems(itemdata=idata)
