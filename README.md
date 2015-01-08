@@ -24,6 +24,7 @@ Requires
 pip install sqlalchemy
 pip install pymysql
 pip install beautifulsoup4
+pip install pyyaml
 ```
 
 Usage
