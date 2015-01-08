@@ -53,5 +53,31 @@ def backup(path, copy=False):
 
     return new_path
 
+def findFiles(top, regex=r'.*', r=False, ignorecase=True, **kwargs):
+    """
+    Search for files that match pattern.
+
+    :param top: top level directory
+    :param regex: pattern to match
+    :param r: recursive search
+    """
+    if ignorecase:
+        regex = re.compile(regex, re.IGNORECASE)
+    else:
+        regex = re.compile(regex)
+
+    if r:
+        for root, dirs, files in os.walk(top, **kwargs):
+            for f in files:
+                match = regex.match(f)
+                if match:
+                    yield os.path.join(root, f)
+    else:
+        root, dirs, files = next(os.walk(top, **kwargs))
+        for f in files:
+            match = regex.match(f)
+            if match:
+                yield os.path.join(root, f)
+
 if __name__ == '__main__':
     pass
