@@ -16,6 +16,7 @@ Requires
 * sqlalchemy 0.9.8
 * pymysql 0.6.2
 * bs4 4.3.2
+* pyyaml 3.11
 
 *The requirements can be installed using pip, however, there are many other ways*
 
