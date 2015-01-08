@@ -92,7 +92,47 @@ class Manager(pydarkstar.auction.worker.Worker):
                         self.debug('skipping row %d', row.id)
 
     def restockItems(self, itemdata):
-        pass
+        """
+        The main restock loop.
+        """
+        # loop over items
+        for data in itemdata.items:
+
+            # singles
+            if data.sell01:
+                # check history
+                history_price = self.browser.getPrice(itemid=data.itemid, stack=False, seller=self.seller.seller)
+
+                # set history
+                if history_price is None or history_price <= 0:
+                    now = pydarkstar.timeutils.timestamp(datetime.datetime.now())
+                    self.seller.setHistory(itemid=data.itemid, stack=False, price=data.price01, date=now, count=1)
+
+                # get stock
+                stock = self.browser.getStock(itemid=data.itemid, stack=False, seller=self.seller.seller)
+
+                # restock
+                while stock < data.stock01:
+                    self.seller.sellItem(itemid=data.itemid, stack=False, date=now, price=data.price01, count=1)
+                    stock += 1
+
+            # stacks
+            if data.sell12:
+                # check history
+                history_price = self.browser.getPrice(itemid=data.itemid, stack=True, seller=self.seller.seller)
+
+                # set history
+                if history_price is None or history_price <= 0:
+                    now = pydarkstar.timeutils.timestamp(datetime.datetime.now())
+                    self.seller.setHistory(itemid=data.itemid, stack=True, price=data.price12, date=now, count=1)
+
+                # get stock
+                stock = self.browser.getStock(itemid=data.itemid, stack=True, seller=self.seller.seller)
+
+                # restock
+                while stock < data.stock01:
+                    self.seller.sellItem(itemid=data.itemid, stack=True, date=now, price=data.price12, count=1)
+                    stock += 1
 
 if __name__ == '__main__':
     pass
