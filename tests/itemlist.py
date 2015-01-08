@@ -51,7 +51,10 @@ class TestCase(unittest.TestCase):
         with open(fname, 'rb') as handle:
             line = handle.readline().strip()
             line = handle.readline().strip()
-        os.remove(fname)
+        try:
+            os.remove(fname)
+        except:
+            pass
 
     def test_loadcsv(self):
         ilist1 = pydarkstar.itemlist.ItemList()
@@ -74,7 +77,10 @@ class TestCase(unittest.TestCase):
 
         ilist = pydarkstar.itemlist.ItemList()
         ilist.loadcsv(fname)
-        os.remove(fname)
+        try:
+            os.remove(fname)
+        except:
+            pass
         return ilist
 
     def test_loadcsv2(self):
@@ -104,7 +110,44 @@ itemid, price01
      0,    -1.0
 """[1:-1]
         with self.assertRaises(ValueError):
-            ilist = self._get_ilist(text)
+            self._get_ilist(text)
+
+    def test_loadcsv4(self):
+        text1 = \
+"""
+itemid, name # comment 0
+     0,    A
+"""[1:-1]
+
+        text2 = \
+"""
+itemid, name # comment 0
+     1,    B
+"""[1:-1]
+
+        ilist = pydarkstar.itemlist.ItemList()
+
+        i, fname = tempfile.mkstemp()
+        with open(fname, 'wb') as handle:
+            handle.write(text1)
+
+        ilist.loadcsv(fname)
+        try:
+            os.remove(fname)
+        except:
+            pass
+
+        i, fname = tempfile.mkstemp()
+        with open(fname, 'wb') as handle:
+            handle.write(text2)
+
+        ilist.loadcsv(fname)
+        try:
+            os.remove(fname)
+        except:
+            pass
+
+        self.assertTrue(len(ilist), 2)
 
 if __name__ == '__main__':
     unittest.main()
