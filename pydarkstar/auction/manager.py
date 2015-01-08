@@ -96,7 +96,7 @@ class Manager(pydarkstar.auction.worker.Worker):
         The main restock loop.
         """
         # loop over items
-        for data in itemdata.items:
+        for data in itemdata.items.values():
 
             # singles
             if data.sell01:
@@ -113,6 +113,7 @@ class Manager(pydarkstar.auction.worker.Worker):
 
                 # restock
                 while stock < data.stock01:
+                    now = pydarkstar.timeutils.timestamp(datetime.datetime.now())
                     self.seller.sellItem(itemid=data.itemid, stack=False, date=now, price=data.price01, count=1)
                     stock += 1
 
@@ -131,6 +132,7 @@ class Manager(pydarkstar.auction.worker.Worker):
 
                 # restock
                 while stock < data.stock01:
+                    now = pydarkstar.timeutils.timestamp(datetime.datetime.now())
                     self.seller.sellItem(itemid=data.itemid, stack=True, date=now, price=data.price12, count=1)
                     stock += 1
 
