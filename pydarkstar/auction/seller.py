@@ -11,8 +11,8 @@ class Seller(pydarkstar.auction.worker.Worker):
     :param seller: auction house seller id
     :param seller_name: auction house seller name
     """
-    def __init__(self, db, seller=0, seller_name='Zissou', *args, **kwargs):
-        super(Seller, self).__init__(db, *args, **kwargs)
+    def __init__(self, db, seller=0, seller_name='Zissou', **kwargs):
+        super(Seller, self).__init__(db, **kwargs)
         self.seller = int(seller)
         self.seller_name = str(seller_name)
 

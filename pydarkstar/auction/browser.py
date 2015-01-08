@@ -9,8 +9,8 @@ class Browser(pydarkstar.auction.worker.Worker):
 
     :param db: database object
     """
-    def __init__(self, db, *args, **kwargs):
-        super(Browser, self).__init__(db, *args, **kwargs)
+    def __init__(self, db, **kwargs):
+        super(Browser, self).__init__(db, **kwargs)
 
     def count(self):
         """

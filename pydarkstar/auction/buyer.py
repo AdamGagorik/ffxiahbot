@@ -9,8 +9,8 @@ class Buyer(pydarkstar.auction.worker.Worker):
 
     :param db: database object
     """
-    def __init__(self, db, buyer_name='Zissou', *args, **kwargs):
-        super(Buyer, self).__init__(db, *args, **kwargs)
+    def __init__(self, db, buyer_name='Zissou', **kwargs):
+        super(Buyer, self).__init__(db, **kwargs)
         self.buyer_name = str(buyer_name)
 
     def buyItem(self, row, date, price):

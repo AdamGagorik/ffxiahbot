@@ -8,8 +8,8 @@ class Worker(pydarkstar.darkobject.DarkObject):
 
     :param db: database object
     """
-    def __init__(self, db, rollback=True, fail=False, *args, **kwargs):
-        super(Worker, self).__init__(*args, **kwargs)
+    def __init__(self, db, rollback=True, fail=False):
+        super(Worker, self).__init__()
         assert isinstance(db, pydarkstar.database.Database)
         self._rollback = bool(rollback)
         self._fail = bool(fail)

@@ -8,8 +8,8 @@ class Cleaner(pydarkstar.auction.worker.Worker):
 
     :param db: database object
     """
-    def __init__(self, db, *args, **kwargs):
-        super(Cleaner, self).__init__(db, *args, **kwargs)
+    def __init__(self, db, **kwargs):
+        super(Cleaner, self).__init__(db, **kwargs)
 
     def clear(self, seller=None):
         """
