@@ -137,7 +137,8 @@ class Options(pydarkstar.darkobject.DarkObject):
         try:
             self.update(**data)
         except TypeError:
-            raise RuntimeError('yaml is invalid')
+            logging.exception('yaml is invalid')
+            raise RuntimeError
 
     def dump(self, stream=None):
         """
