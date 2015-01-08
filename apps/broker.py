@@ -1,7 +1,9 @@
 """
 Alter item database.
 """
+import datetime
 import logging
+import time
 import sys
 import os
 
@@ -18,14 +20,12 @@ except ImportError:
         raise
 
 import pydarkstar.logutils
+import pydarkstar.itemlist
 import pydarkstar.options
 import pydarkstar.common
 
 import pydarkstar.database
-import pydarkstar.auction.buyer
-import pydarkstar.auction.seller
-import pydarkstar.auction.cleaner
-import pydarkstar.auction.browser
+import pydarkstar.auction.manager
 
 class Options(pydarkstar.options.Options):
     """
@@ -38,7 +38,11 @@ class Options(pydarkstar.options.Options):
         self.verbose  = False # error, info, and debug
         self.silent   = False # error only
 
-        # input and output
+        # input
+        self.data     = []    # list of itemdata
+        self.find     = False # search for item data
+
+        # output
         self.save     = False # save config
 
         # sql
@@ -46,6 +50,19 @@ class Options(pydarkstar.options.Options):
         self.database = 'dspdb'
         self.username = 'root'
         self.password = None
+        self.fail     = False # fail on SQL errors
+
+        # cleaning
+        self.clear    = False # clear items sold by broker
+        self.all      = False # clear all items
+        self.force    = False # clear all items check
+
+        # selling
+        self.restock  = 3600  # restock tick
+        self.refill   = False # restock at start
+
+        # buying
+        self.tick     = 30    # buying interval
 
         # logging
         self.add_argument('--verbose', action='store_true',
@@ -53,20 +70,56 @@ class Options(pydarkstar.options.Options):
         self.add_argument('--silent', action='store_true',
             help='report error only')
 
+        # input
+        self.add_argument(dest='data', nargs='*', type=str, default=self.data,
+            metavar='str', help='item data CSV file(s)')
+        self.add_argument('--find', action='store_true',
+            help='search for item data files')
+
         # output
         self.add_argument('--save', action='store_true',
             help='save config file (and exit)')
 
         # sql
         self.add_argument('--hostname', default=self.hostname, type=str,
-            metavar=self.hostname, help='SQL address')
+            metavar='str', help='SQL address')
         self.add_argument('--database', default=self.database, type=str,
-            metavar=self.database, help='SQL database')
+            metavar='str', help='SQL database')
         self.add_argument('--username', default=self.username, type=str,
-            metavar=self.username, help='SQL username')
+            metavar='str', help='SQL username')
         self.add_argument('--password', default=self.password, type=str,
-            metavar='???', help='SQL password')
+            metavar='str', help='SQL password')
         self.exclude('password')
+        self.add_argument('--fail', action='store_true',
+            help='fail on SQL errors')
+
+        # cleaning
+        self.add_argument('--clear', action='store_true',
+            help='clear items sold by seller')
+        self.add_argument('--all', action='store_true',
+            help='clear *all* items')
+        self.add_argument('--force', action='store_true',
+            help='clear *all* items')
+
+        # selling
+        self.add_argument('--restock', type=int, default=self.restock,
+            metavar='int', help='restock interval in seconds')
+        self.add_argument('--refill', action='store_true',
+            help='restock items at start and exit')
+
+        # buying
+        self.add_argument('--tick', type=int, default=self.tick,
+            metavar='int', help='buying interval in seconds')
+
+    def parse_args(self, args=None):
+        super(Options, self).parse_args(args)
+        self.data = set(self.data)
+
+        # find data files
+        if self.find:
+            found = list(pydarkstar.common.findFiles(
+                top=os.getcwd(), regex=r'.*\.csv', r=False, ignorecase=True))
+            self.data.update(found)
 
 def main():
     """
@@ -95,6 +148,60 @@ def main():
         username=opts.username,
         password=opts.password,
     )
+
+    # make sure there is data
+    if not opts.data:
+        raise RuntimeError('missing item data CSV!')
+
+    # load data
+    idata = pydarkstar.itemlist.ItemList()
+    for f in opts.data:
+        idata.loadcsv(f)
+
+    # create auction house manager
+    manager = pydarkstar.auction.manager.Manager(db, fail=opts.fail)
+
+    if opts.clear:
+        # clear all items
+        if opts.all:
+            # really?
+            if not opts.force:
+                raise RuntimeError('clearing all items from auction house is dangerous. use --force')
+            else:
+                manager.cleaner.clear(seller=None)
+        # clear seller items
+        else:
+            manager.cleaner.clear(seller=manager.seller.seller)
+
+        # exit after clearing
+        logging.info('exit after clear')
+        return
+
+    if opts.refill:
+        manager.restockItems(itemdata=idata)
+        logging.info('exit after restock')
+        return
+
+    logging.info('starting main loop')
+    start = datetime.datetime.now()
+    last  = start
+    while True:
+        now = datetime.datetime.now()
+        delta = (now - last).total_seconds()
+        elapsed = (now - start).total_seconds()
+        logging.info('time=%012.1f s last restock=%012.1f s next restock=%012.1f s',
+            elapsed, delta, opts.restock - delta)
+
+        if delta >= opts.restock:
+            manager.restockItems(itemdata=idata)
+            last = datetime.datetime.now()
+
+        # buy items
+        manager.buyItems(itemdata=idata)
+
+        # sleep until next tick
+        logging.info('wait=%012.1f s', opts.tick)
+        time.sleep(opts.tick)
 
 def cleanup():
     logging.info('exit\n')
