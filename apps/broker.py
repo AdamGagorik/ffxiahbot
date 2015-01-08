@@ -1,5 +1,5 @@
 """
-Alter item database.
+Buy and sell items on the auction house.
 """
 import datetime
 import logging
