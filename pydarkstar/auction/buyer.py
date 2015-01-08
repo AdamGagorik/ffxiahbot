@@ -18,11 +18,10 @@ class Buyer(pydarkstar.auction.worker.Worker):
         Buy item for given price.
         """
         # validate
-        if row.sale == 0:
-            self.error('item already sold!')
-            return
+        if not row.sale == 0:
+            raise RuntimeError('item already sold!')
 
-        row.buyer_name = AuctionHouse.validate_seller(self.buyer_name)
+        row.buyer_name = self.buyer_name
         row.sell_date  = AuctionHouse.validate_date(date)
         row.sale       = AuctionHouse.validate_price(price)
         self.info('%s', row)
