@@ -1,17 +1,14 @@
-pydarkstar
-==========
+# pydarkstar
 
 A python module for interacting with a darkstar server.
 
-Features
-========
+# Features
 * create prices database
 * human editable price database
 * populate auction house with prices
 * buy items put up for sale by players
 
-Requires
-========
+# Requires
 * python 2.7.8
 * sqlalchemy 0.9.8
 * pymysql 0.6.2
@@ -27,8 +24,7 @@ pip install beautifulsoup4
 pip install pyyaml
 ```
 
-Usage
-=====
+# Usage
 
 * **option 1**
  The main scripts are located in ./path/to/pydarkstar/apps.
@@ -67,7 +63,6 @@ Usage
  cd /somewhere/else
  python ./path/to/pydarkstar/apps/scrub.py
  ```
- 
-Tests
-=====
+
+# Tests
 Tests are in ./path/to/pydarkstar/tests
