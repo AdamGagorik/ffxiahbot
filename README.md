@@ -139,6 +139,38 @@ optional arguments:
 
 ```bash
 python ./path/to/pydarkstar/apps/alter.py --help
+
+usage: alter.py [-h] [--verbose] [--silent] [--overwrite] [--backup] [--save]
+                [--show] [--all] [--lambda lambda : True] [--match .*]
+                [--itemids [itemids [itemids ...]]] [--create] [--reset]
+                [--scrub] [--set key=value] [--execute]
+                [ifile] [ofile]
+
+Alter item database.
+
+positional arguments:
+  ifile                 output file stub
+  ofile                 output file stub
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --verbose             report debug, info, and error
+  --silent              report error only
+  --overwrite           overwrite output file
+  --backup              backup output file
+  --save                save config file (and exit)
+  --show                show itemids and exit
+  --all                 select all itemids
+  --lambda lambda : True
+                        select itemids where lambda evaluates to True
+  --match .*            select itemids where name matches regex
+  --itemids [itemids [itemids ...]]
+                        a list of item ids
+  --create              create a new item (if it doesnt exist)
+  --reset               reset columns to defaults for item
+  --scrub               redownload data for item
+  --set key=value       set column to value for item
+  --execute             actually run commands (default mode is a dry run)
 ```
 
 # Tests
