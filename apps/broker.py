@@ -189,14 +189,14 @@ def main():
         logging.info('exit after restock')
         return
 
-    logging.info('starting main loop')
+    logging.info('starting main loop...')
     start = datetime.datetime.now()
     last  = start
     while True:
         now = datetime.datetime.now()
         delta = (now - last).total_seconds()
         elapsed = (now - start).total_seconds()
-        logging.info('time=%012.1f s last restock=%012.1f s next restock=%012.1f s',
+        logging.debug('time=%012.1f s last restock=%012.1f s next restock=%012.1f s',
             elapsed, delta, opts.restock - delta)
 
         if delta >= opts.restock:
@@ -207,7 +207,7 @@ def main():
         manager.buyItems(itemdata=idata)
 
         # sleep until next tick
-        logging.info('wait=%012.1f s', opts.tick)
+        logging.debug('wait=%012.1f s', opts.tick)
         time.sleep(opts.tick)
 
 def cleanup():
