@@ -64,5 +64,25 @@ pip install pyyaml
  python ./path/to/pydarkstar/apps/scrub.py
  ```
 
+# Apps
+
+###### scrub
+
+```bash
+python ./path/to/pydarkstar/apps/scrub.py --help
+```
+
+###### broker
+
+```bash
+python ./path/to/pydarkstar/apps/broker.py --help
+```
+
+###### alter
+
+```bash
+python ./path/to/pydarkstar/apps/alter.py --help
+```
+
 # Tests
 Tests are in ./path/to/pydarkstar/tests
