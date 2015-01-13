@@ -70,6 +70,33 @@ pip install pyyaml
 
 ```bash
 python ./path/to/pydarkstar/apps/scrub.py --help
+
+usage: scrub.py [-h] [--verbose] [--silent] [--overwrite] [--backup] [--save]
+                [--force] [--threads -1] [--urls [url [url ...]]]
+                [--itemids [itemids [itemids ...]]] [--stock01 5]
+                [--stock12 5]
+                [stub]
+
+Create item database.
+
+positional arguments:
+  stub                  output file stub
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --verbose             report debug, info, and error
+  --silent              report error only
+  --overwrite           overwrite output file
+  --backup              backup output file
+  --save                save config file (and exit)
+  --force               start from scratch
+  --threads -1          number of cpu threads to use
+  --urls [url [url ...]]
+                        a list of category urls
+  --itemids [itemids [itemids ...]]
+                        a list of item ids
+  --stock01 5           default stock for singles
+  --stock12 5           default stock for stacks
 ```
 
 ###### broker
