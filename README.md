@@ -24,6 +24,12 @@ pip install beautifulsoup4
 pip install pyyaml
 ```
 
+# Download
+
+```bash
+git clone git@github.com:AdamGagorik/pydarkstar.git
+```
+
 # Usage
 
 * **option 1**
@@ -216,6 +222,3 @@ optional arguments:
   --set key=value       set column to value for item
   --execute             actually run commands (default mode is a dry run)
 ```
-
-# Tests
-Tests are in ./path/to/pydarkstar/tests
