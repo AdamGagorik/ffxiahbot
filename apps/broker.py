@@ -180,11 +180,13 @@ def main():
         raise RuntimeError('missing item data CSV!')
 
     # load data
+    logging.info('loading item data...')
     idata = pydarkstar.itemlist.ItemList()
     for f in opts.data:
         idata.loadcsv(f)
 
     if opts.refill:
+        logging.info('restocking...')
         manager.restockItems(itemdata=idata)
         logging.info('exit after restock')
         return
@@ -200,6 +202,7 @@ def main():
             elapsed, delta, opts.restock - delta)
 
         if delta >= opts.restock:
+            logging.info('restocking...')
             manager.restockItems(itemdata=idata)
             last = datetime.datetime.now()
 
