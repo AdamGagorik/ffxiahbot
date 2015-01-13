@@ -66,11 +66,23 @@ pip install pyyaml
 
 # Apps
 
-###### scrub
+* The apps can be configured using command line flags or configuration files.
+* The priority of arguments is *defaults < config < command line*
+* Each app has a **--save** command line argument that will create a default configuration file.
+
+#### scrub
 
 This script creates an item database in the form of a simple CSV text file.
 That text file can be used by *broker.py* to stock the auction house as
 well as buy items sold by players.
+
+The script:
+  1.  downloads a list of category urls
+    * **this information is saved and reused** (override reuse with *--force*)
+  2.  extracts item ids from category urls
+    * **this information is saved and reused** (override reuse with *--force*)
+  3.  downloads price information for each item id
+  4.  saves the information in a CSV file
 
 ```bash
 python ./path/to/pydarkstar/apps/scrub.py --help
@@ -103,11 +115,24 @@ optional arguments:
   --stock12 5           default stock for stacks
 ```
 
-###### broker
+###### examples
+
+```
+# basic usage
+python scrub.py --force 
+```
+
+#### broker
 
 This script runs like a server, looking for items that people put up for auction.
 The items are then bought and restocked.  Information on prices is read from
 a simple CSV text file that can be created with *scrub.py*.
+
+The script:
+  1.  loads item data (from text file created by scrub.py)
+  2.  populates AH with items and exits (if using **--refill**)
+  3.  buys items from player every **tick** seconds
+  4.  restocks items every **restock** seconds
 
 ```bash
 python ./path/to/pydarkstar/apps/broker.py --help
@@ -143,7 +168,14 @@ optional arguments:
   --tick int      buying interval in seconds
 ```
 
-###### alter
+###### examples
+
+```
+# basic usage
+python broker.py items.csv
+```
+
+#### alter
 
 This script is meant for altering the item CSV database from the command line,
 if one perfers.  However a text editor or excel can accomplish the same task.
