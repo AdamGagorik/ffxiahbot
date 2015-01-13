@@ -76,6 +76,36 @@ python ./path/to/pydarkstar/apps/scrub.py --help
 
 ```bash
 python ./path/to/pydarkstar/apps/broker.py --help
+
+usage: broker.py [-h] [--verbose] [--silent] [--find] [--save]
+                 [--hostname str] [--database str] [--username str]
+                 [--password str] [--fail] [--clear] [--all] [--force]
+                 [--name str] [--restock int] [--refill] [--tick int]
+                 [str [str ...]]
+
+Buy and sell items on the auction house.
+
+positional arguments:
+  str             item data CSV file(s)
+
+optional arguments:
+  -h, --help      show this help message and exit
+  --verbose       report debug, info, and error
+  --silent        report error only
+  --find          search for item data files
+  --save          save config file (and exit)
+  --hostname str  SQL address
+  --database str  SQL database
+  --username str  SQL username
+  --password str  SQL password
+  --fail          fail on SQL errors
+  --clear         clear items sold by seller
+  --all           clear *all* items
+  --force         clear *all* items
+  --name str      seller name
+  --restock int   restock interval in seconds
+  --refill        restock items at start and exit
+  --tick int      buying interval in seconds
 ```
 
 ###### alter
