@@ -185,7 +185,7 @@ python broker.py items.csv
 
 This script is meant for altering the item CSV database from the command line,
 if one perfers.  However a text editor or excel can accomplish the same task.
-Most of the functionality of *alter.py* has not yet been implemented.
+**The functionality of alter.py has not yet been implemented.**
 
 ```bash
 python ./path/to/pydarkstar/apps/alter.py --help
@@ -221,4 +221,11 @@ optional arguments:
   --scrub               redownload data for item
   --set key=value       set column to value for item
   --execute             actually run commands (default mode is a dry run)
+```
+
+###### examples
+
+```
+# basic usage
+python alter.py --help 
 ```
