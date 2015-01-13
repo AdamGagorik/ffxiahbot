@@ -46,6 +46,7 @@ class Options(pydarkstar.darkobject.DarkObject):
         """
         results, remaining_args = self._parent.parse_known_args(args, namespace=self)
         self.load()
+        self._parser.set_defaults(**self.dict())
         self._parser.parse_args(remaining_args, namespace=self)
 
     def __setattr__(self, key, value):
