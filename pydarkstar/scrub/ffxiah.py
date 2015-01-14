@@ -298,6 +298,12 @@ class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
         self.info('getting data')
         self.info('threads = %d', threads)
 
+        # threads make it faster but I've seen it freeze so disabling this for now
+        if threads > 1:
+            threads = 0
+            self.error('multiprocessing seems fishy')
+            self.error('setting threads=1')
+
         # get data from itemids
         if threads > 1:
             from multiprocessing.dummy import Pool as ThreadPool
