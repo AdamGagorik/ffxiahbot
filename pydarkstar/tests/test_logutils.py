@@ -1,7 +1,6 @@
 import unittest
-import pydarkstar.logutils
-
-pydarkstar.logutils.setDebug()
+import logging
+logging.getLogger().setLevel(logging.DEBUG)
 
 class TestCase(unittest.TestCase):
     pass

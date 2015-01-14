@@ -19,6 +19,14 @@ class FFXIAHScrubber(Scrubber):
         # pickled file names
         self._pkl_item_ids = 'scrub_item_list.pkl'
         self._pkl_item_dat = 'scrub_item_info.pkl'
+        self._save = True
+
+    @property
+    def save(self):
+        return self._save
+    @save.setter
+    def save(self, value):
+        self._save = bool(value)
 
     def scrub(self, force=False, threads=-1, urls=None, ids=None):
         """
@@ -157,17 +165,19 @@ class FFXIAHScrubber(Scrubber):
         """
         save item ids to pkl file.
         """
-        self.debug('save %s', self._pkl_item_ids)
-        with open(self._pkl_item_ids, 'wb') as handle:
-            pickle.dump(ids, handle, pickle.HIGHEST_PROTOCOL)
+        if self._save:
+            self.debug('save %s', self._pkl_item_ids)
+            with open(self._pkl_item_ids, 'wb') as handle:
+                pickle.dump(ids, handle, pickle.HIGHEST_PROTOCOL)
 
     def _save_item_dat(self, dat):
         """
         save item dat to pkl file.
         """
-        self.debug('save %s', self._pkl_item_dat)
-        with open(self._pkl_item_dat, 'wb') as handle:
-            pickle.dump(dat, handle, pickle.HIGHEST_PROTOCOL)
+        if self._save:
+            self.debug('save %s', self._pkl_item_dat)
+            with open(self._pkl_item_dat, 'wb') as handle:
+                pickle.dump(dat, handle, pickle.HIGHEST_PROTOCOL)
 
     # step 1
     def _get_category_urls(self):
