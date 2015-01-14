@@ -1,8 +1,8 @@
-import pydarkstar.darkobject
+from .. import darkobject
 from bs4 import BeautifulSoup
 import urllib2
 
-class Scrubber(pydarkstar.darkobject.DarkObject):
+class Scrubber(darkobject.DarkObject):
     def __init__(self, *args, **kwargs):
         super(Scrubber, self).__init__(*args, **kwargs)
 
