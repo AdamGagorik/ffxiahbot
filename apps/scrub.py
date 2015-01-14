@@ -16,7 +16,7 @@ class Options(pydarkstar.options.Options):
     Reads options from config file, then from command line.
     """
     def __init__(self):
-        super(Options, self).__init__(config='scrubbing.yaml', description=__doc__)
+        super(Options, self).__init__(config='scrub.yaml', description=__doc__)
         self.verbose   =  False   # error, info, and debug
         self.silent    =  False   # error only
         self.stub      =  'items' # output file stub
@@ -24,6 +24,7 @@ class Options(pydarkstar.options.Options):
         self.backup    =  False   # backup output
         self.save      =  False   # save config
         self.force     =  False   # redownload
+        self.pkl       =  False   # save pkl files
         self.threads   = -1       # cpu threads during download
         self.stock01   =  5       # default stock for singles
         self.stock12   =  5       # default stock for stacks
@@ -46,9 +47,11 @@ class Options(pydarkstar.options.Options):
         self.add_argument('--save', action='store_true',
             help='save config file (and exit)')
 
-        # scrubbing parameters
+        # scrub parameters
         self.add_argument('--force', action='store_true',
             help='start from scratch')
+        self.add_argument('--pkl', action='store_true',
+            help='save pkl files')
         self.add_argument('--threads', type=int, default=self.threads, metavar=self.threads,
             help='number of cpu threads to use')
         self.add_argument('--urls', type=str, nargs='*', action='append', default=self.urls, metavar='url',
@@ -98,7 +101,7 @@ def main():
     opts = Options()
     opts.parse_args()
     pydarkstar.logutils.basicConfig(
-        verbose=opts.verbose, silent=opts.silent, fname='scrubbing.log')
+        verbose=opts.verbose, silent=opts.silent, fname='scrub.log')
     logging.info('start')
 
     # log options
@@ -120,6 +123,7 @@ def main():
 
     # scub data
     scrubber = pydarkstar.scrubbing.ffxiah.FFXIAHScrubber()
+    scrubber.save = opts.pkl
     data = scrubber.scrub(force=opts.force, threads=opts.threads, urls=opts.urls, ids=opts.itemids)
 
     # create item list from data
