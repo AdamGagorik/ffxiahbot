@@ -25,5 +25,3 @@ except ImportError as e:
     logging.exception(e.__class__.__name__)
     logging.error('pip install beautifulsoup4')
     exit(-1)
-
-import scrub
