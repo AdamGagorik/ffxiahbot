@@ -55,8 +55,3 @@ target/
 
 # PyCharm
 .idea
-
-# Misc
-*.yaml
-*.csv
-*.pkl
