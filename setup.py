@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='pydarkstar',
     version='0.1',
-    packages=['tests', 'pydarkstar'],
+    packages=['pydarkstar'],
     url='git@github.com:AdamGagorik/pydarkstar.git',
     license='MIT',
     author='Adam Gagorik',
