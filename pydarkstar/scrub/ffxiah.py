@@ -1,10 +1,10 @@
-from . import scrubber
+import pydarkstar.scrub.scrubber
 import warnings
 import pickle
 import re
 import os
 
-class FFXIAHScrubber(scrubber.Scrubber):
+class FFXIAHScrubber(pydarkstar.scrub.scrubber.Scrubber):
     """
     Get item data from ffxiah.com
     """
