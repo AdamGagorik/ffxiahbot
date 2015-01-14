@@ -27,7 +27,7 @@ class Manager(pydarkstar.auction.worker.Worker):
         """
         Add row to blacklist.
         """
-        self.debug('blacklisting: row=%d', rowid)
+        self.info('blacklisting: row=%d', rowid)
         self.blacklist.add(rowid)
 
     def buyItems(self, itemdata):
@@ -63,7 +63,7 @@ class Manager(pydarkstar.auction.worker.Worker):
                                         date = pydarkstar.timeutils.timestamp(datetime.datetime.now())
                                         self.buyer.buyItem(row, date, data.price12)
                                     else:
-                                        self.debug('price too high! itemid=%d %d <= %d',
+                                        self.info('price too high! itemid=%d %d <= %d',
                                             row.itemid, row.price, data.price12)
                                         self.addToBlacklist(row.id)
                                 else:
@@ -78,7 +78,7 @@ class Manager(pydarkstar.auction.worker.Worker):
                                         date = pydarkstar.timeutils.timestamp(datetime.datetime.now())
                                         self.buyer.buyItem(row, date, data.price01)
                                     else:
-                                        self.debug('price too high! itemid=%d %d <= %d',
+                                        self.info('price too high! itemid=%d %d <= %d',
                                             row.itemid, row.price, data.price01)
                                         self.addToBlacklist(row.id)
                                 else:

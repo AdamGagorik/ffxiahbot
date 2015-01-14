@@ -134,7 +134,7 @@ def main():
     opts.parse_args()
     pydarkstar.logutils.basicConfig(
         verbose=opts.verbose, silent=opts.silent, fname='alter.log')
-    logging.debug('start')
+    logging.info('start')
 
     # log options
     opts.log_values(level=logging.INFO)
