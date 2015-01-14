@@ -1,6 +1,10 @@
 import pydarkstar.darkobject
 from bs4 import BeautifulSoup
-import urllib2
+
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib import urlopen
 
 class Scrubber(pydarkstar.darkobject.DarkObject):
     def __init__(self, *args, **kwargs):
@@ -20,7 +24,7 @@ class Scrubber(pydarkstar.darkobject.DarkObject):
         :param url: website string
         :type url: str
         """
-        handle = urllib2.urlopen(url)
+        handle = urlopen(url)
         s = BeautifulSoup(handle.read())
         return s
 
