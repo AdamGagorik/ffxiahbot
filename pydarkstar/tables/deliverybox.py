@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, SmallInteger, String, text
 from sqlalchemy.dialects.mysql.base import BIT
-from pydarkstar.tables.base import Base
+from .base import Base
 
 _template = \
 """

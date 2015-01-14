@@ -5,9 +5,9 @@ import yaml
 import os
 import re
 
-import pydarkstar.darkobject
+from .darkobject import DarkObject
 
-class Options(pydarkstar.darkobject.DarkObject):
+class Options(DarkObject):
     """
     A Namespace object to use with argparse module.
     """

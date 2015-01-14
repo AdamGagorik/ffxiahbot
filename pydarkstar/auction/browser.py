@@ -1,9 +1,8 @@
-from pydarkstar.tables.auctionhouse import AuctionHouse
-import pydarkstar.auction.worker
-import pydarkstar.database
+from ..tables.auctionhouse import AuctionHouse
+from .worker import Worker
 import sqlalchemy
 
-class Browser(pydarkstar.auction.worker.Worker):
+class Browser(Worker):
     """
     Auction House browser.
 

@@ -1,10 +1,10 @@
 from __future__ import absolute_import
 __version__ = 0.1
 
-import pydarkstar.logutils
+from . import logutils
 import logging
 
-pydarkstar.logutils.setError()
+logutils.setError()
 
 try:
     import sqlalchemy
@@ -26,3 +26,19 @@ except ImportError as e:
     logging.exception(e.__class__.__name__)
     logging.error('pip install beautifulsoup4')
     exit(-1)
+
+try:
+    import yaml
+except ImportError as e:
+    logging.exception(e.__class__.__name__)
+    logging.error('pip install pyyaml')
+    exit(-1)
+
+from . import common
+from . import darkobject
+from . import database
+from . import item
+from . import itemlist
+from . import options
+from . import rc
+from . import timeutils

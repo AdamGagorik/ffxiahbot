@@ -1,4 +1,4 @@
-import pydarkstar.darkobject
+from ..darkobject import DarkObject
 from bs4 import BeautifulSoup
 
 try:
@@ -6,7 +6,7 @@ try:
 except ImportError:
     from urllib import urlopen
 
-class Scrubber(pydarkstar.darkobject.DarkObject):
+class Scrubber(DarkObject):
     def __init__(self, *args, **kwargs):
         super(Scrubber, self).__init__(*args, **kwargs)
 

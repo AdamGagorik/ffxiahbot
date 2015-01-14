@@ -1,4 +1,4 @@
-import pydarkstar.darkobject
+from .darkobject import DarkObject
 import collections
 
 fmt = collections.OrderedDict()
@@ -19,7 +19,7 @@ def titles():
 def values(*objs):
     return ', '.join([fmt[fmt.keys()[i]].format(objs[i]) for i in range(len(objs))]) + '\n'
 
-class Item(pydarkstar.darkobject.DarkObject):
+class Item(DarkObject):
     """
     Item properties.
 

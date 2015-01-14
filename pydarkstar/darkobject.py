@@ -1,6 +1,6 @@
-import pydarkstar.logutils
+from .logutils import LoggingObject
 
-class DarkObject(pydarkstar.logutils.LoggingObject):
+class DarkObject(LoggingObject):
     """
     Base class for all objects in pydarkstar.
     """
