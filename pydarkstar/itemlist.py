@@ -1,10 +1,10 @@
-import pydarkstar.darkobject
-import pydarkstar.item
+from . import darkobject
+from . import item
 import collections
 import re
 import os
 
-class ItemList(pydarkstar.darkobject.DarkObject):
+class ItemList(darkobject.DarkObject):
     """
     Container for Item objects.
     """
@@ -18,7 +18,7 @@ class ItemList(pydarkstar.darkobject.DarkObject):
 
         .. seealso:: py:class:`pydarkstar.item.Item`
         """
-        i = pydarkstar.item.Item(itemid, *args, **kwargs)
+        i = item.Item(itemid, *args, **kwargs)
         if i.itemid in self.items:
             raise KeyError('duplicate item found: %d' % i.itemid)
         self.items[i.itemid] = i
@@ -78,7 +78,7 @@ class ItemList(pydarkstar.darkobject.DarkObject):
 
             # make sure keys are valid
             for k in keys:
-                if not k in pydarkstar.item.Item.keys:
+                if not k in item.Item.keys:
                     raise RuntimeError('unknown column: %s' % k)
 
             # check for primary key
@@ -101,7 +101,7 @@ class ItemList(pydarkstar.darkobject.DarkObject):
                     tokens = map(lambda x : x.strip(), line.split(','))
 
                     # check for new title line
-                    if set(tokens).issubset(pydarkstar.item.Item.keys):
+                    if set(tokens).issubset(item.Item.keys):
                         keys = tokens
 
                         # check for primary key
@@ -109,7 +109,7 @@ class ItemList(pydarkstar.darkobject.DarkObject):
                             raise RuntimeError('missing itemid column')
 
                     # validate line
-                    elif set(tokens).intersection(pydarkstar.item.Item.keys):
+                    elif set(tokens).intersection(item.Item.keys):
                         raise RuntimeError('something wrong with line')
 
                     # process normal line
@@ -155,8 +155,8 @@ class ItemList(pydarkstar.darkobject.DarkObject):
         with open(fname, 'wb') as handle:
             for j, i in enumerate(self.items):
                 if j % itertitle == 0:
-                    handle.write(pydarkstar.item.titles())
-                handle.write(pydarkstar.item.values(*self.items[i].values))
+                    handle.write(item.titles())
+                handle.write(item.values(*self.items[i].values))
 
 if __name__ == '__main__':
     pass

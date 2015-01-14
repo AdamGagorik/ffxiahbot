@@ -1,8 +1,7 @@
-from pydarkstar.tables.auctionhouse import AuctionHouse
-import pydarkstar.auction.worker
-import pydarkstar.database
+from ..tables.auctionhouse import AuctionHouse
+from . import worker
 
-class Cleaner(pydarkstar.auction.worker.Worker):
+class Cleaner(worker.Worker):
     """
     Auction House cleaner.
 

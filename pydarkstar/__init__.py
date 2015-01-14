@@ -1,9 +1,9 @@
 __version__ = 0.1
 
-import pydarkstar.logutils
+from . import logutils
 import logging
 
-pydarkstar.logutils.setError()
+logutils.setError()
 
 try:
     import sqlalchemy
@@ -26,4 +26,16 @@ except ImportError as e:
     logging.error('pip install beautifulsoup4')
     exit(-1)
 
-import scrub
+from . import common
+from . import darkobject
+from . import database
+from . import item
+from . import itemlist
+from . import logutils
+from . import options
+from . import rc
+from . import timeutils
+
+from . import scrub
+from . import tables
+from . import auction
