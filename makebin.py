@@ -57,7 +57,6 @@ r"""
 @ECHO OFF
 set PYTHONPATH=%PYTHONPATH%;{path}
 {interp} {script} %*
-PAUSE
 """[1:-1]
 
 # select template based on platform
