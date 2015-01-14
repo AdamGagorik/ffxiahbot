@@ -39,3 +39,7 @@ scrubbing:
 .PHONY : imports
 imports:
 	@${NOSE} ./tests/test_imports.py
+
+.PHONY : clean
+clean:
+	find . -name \*.pyc | xargs rm
