@@ -1,0 +1,17 @@
+config: broker.yaml
+verbose: false
+silent: false
+data: []
+find: false
+save: false
+hostname: 127.0.0.1
+database: dspdb
+username: root
+fail: false
+clear: false
+all: false
+force: false
+name: Zissou
+restock: 3600
+refill: false
+tick: 30

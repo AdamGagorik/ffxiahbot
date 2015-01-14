@@ -1,0 +1,11 @@
+config: scrub.yaml
+verbose: false
+silent: false
+stub: items
+overwrite: false
+backup: false
+save: false
+force: false
+threads: -1
+stock01: 5
+stock12: 5
