@@ -43,3 +43,7 @@ imports:
 .PHONY : clean
 clean:
 	find . -name \*.pyc | xargs rm
+
+.PHONY : bin
+bin:
+	python ./makebin.py
