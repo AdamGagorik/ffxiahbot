@@ -31,6 +31,3 @@ class TestCase(unittest.TestCase):
 
     def test_scrub(self):
         self.scrubber.scrub(force=True, threads=4, ids=[1, 2, 3, 4])
-
-if __name__ == '__main__':
-    unittest.main()

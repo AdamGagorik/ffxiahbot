@@ -143,6 +143,3 @@ itemid, name # comment 0
             pass
 
         self.assertTrue(len(ilist), 2)
-
-if __name__ == '__main__':
-    unittest.main()

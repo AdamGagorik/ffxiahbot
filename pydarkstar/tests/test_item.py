@@ -37,6 +37,3 @@ class TestCase(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             Item(0, stock12=-1)
-
-if __name__ == '__main__':
-    unittest.main()

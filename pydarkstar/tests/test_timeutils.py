@@ -150,6 +150,3 @@ class TestFunc_timestamp(BaseTest):
         self.assertEqual(dobj1.day, 2)
         self.assertEqual(dobj1.year, 1971)
         self.assertEqual(dobj1.microsecond, 1)
-
-if __name__ == '__main__':
-    unittest.main()

@@ -13,6 +13,3 @@ class TestCase(unittest.TestCase):
 
     def test_str(self):
         logging.debug(self.db)
-
-if __name__ == '__main__':
-    unittest.main()
