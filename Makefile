@@ -35,3 +35,7 @@ tables:
 .PHONY : scrubbing
 scrubbing:
 	@${NOSE} -w ./pydarkstar/tests/scrubbing
+
+.PHONY : imports
+imports:
+	@${NOSE} ./tests/test_imports.py
