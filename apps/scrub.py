@@ -6,7 +6,7 @@ import os
 import re
 
 import pydarkstar.logutils
-import pydarkstar.scrub.ffxiah
+import pydarkstar.scrubbing.ffxiah
 import pydarkstar.itemlist
 import pydarkstar.options
 import pydarkstar.common
@@ -16,7 +16,7 @@ class Options(pydarkstar.options.Options):
     Reads options from config file, then from command line.
     """
     def __init__(self):
-        super(Options, self).__init__(config='scrub.yaml', description=__doc__)
+        super(Options, self).__init__(config='scrubbing.yaml', description=__doc__)
         self.verbose   =  False   # error, info, and debug
         self.silent    =  False   # error only
         self.stub      =  'items' # output file stub
@@ -98,7 +98,7 @@ def main():
     opts = Options()
     opts.parse_args()
     pydarkstar.logutils.basicConfig(
-        verbose=opts.verbose, silent=opts.silent, fname='scrub.log')
+        verbose=opts.verbose, silent=opts.silent, fname='scrubbing.log')
     logging.info('start')
 
     # log options
@@ -118,8 +118,8 @@ def main():
             logging.error('please use --overwrite or --backup')
             exit(-1)
 
-    # scrub data
-    scrubber = pydarkstar.scrub.ffxiah.FFXIAHScrubber()
+    # scub data
+    scrubber = pydarkstar.scrubbing.ffxiah.FFXIAHScrubber()
     data = scrubber.scrub(force=opts.force, threads=opts.threads, urls=opts.urls, ids=opts.itemids)
 
     # create item list from data
