@@ -15,7 +15,7 @@ _template = \
     price       = {self.price}
     buyer_name  = {self.buyer_name}
     sale        = {self.sale}
-    sell_date   = {self.sell_date}
+    sell_date   = {self.sell_datestr}
 """[:-1]
 
 class AuctionHouse(Base):
@@ -65,6 +65,14 @@ class AuctionHouse(Base):
         price = int(price)
         assert price >= 0
         return price
+
+    @property
+    def sell_datetime(self):
+        return pydarkstar.timeutils.timestamp_to_datetime(self.sell_date)
+
+    @property
+    def sell_datestr(self):
+        return pydarkstar.timeutils.datetime_to_str(self.sell_datetime)
 
 if __name__ == '__main__':
     pass
