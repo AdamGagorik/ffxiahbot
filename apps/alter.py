@@ -2,21 +2,7 @@
 Alter item database.
 """
 import logging
-import sys
 import os
-import re
-
-# import hack to avoid PYTHONPATH
-try:
-    import pydarkstar
-except ImportError:
-    root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-    root, dirs, files = next(os.walk(root))
-    if 'pydarkstar' in dirs:
-        sys.path.insert(1, root)
-        import pydarkstar
-    else:
-        raise
 
 import pydarkstar.logutils
 import pydarkstar.itemlist
