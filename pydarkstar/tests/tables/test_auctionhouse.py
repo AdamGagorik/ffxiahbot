@@ -12,4 +12,5 @@ class TestCase(unittest.TestCase):
         pass
 
     def test_str(self):
-        logging.debug(self.ah)
+        s = str(self.ah)
+        logging.debug(s)

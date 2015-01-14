@@ -67,12 +67,10 @@ class AuctionHouse(Base):
         return price
 
     @property
-    def sell_datetime(self):
-        return timeutils.timestamp_to_datetime(self.sell_date)
-
-    @property
     def sell_datestr(self):
-        return timeutils.datetime_to_str(self.sell_datetime)
+        if self.sell_date is None:
+            return str(None)
+        return timeutils.datetime_to_str(timeutils.timestamp_to_datetime(self.sell_date))
 
 if __name__ == '__main__':
     pass
