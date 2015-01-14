@@ -1,7 +1,9 @@
-from ..tables.auctionhouse import AuctionHouse
-from . import worker
+from pydarkstar.tables.auctionhouse import AuctionHouse
+import pydarkstar.auction.worker
+import pydarkstar.database
+import pydarkstar.item
 
-class Seller(worker.Worker):
+class Seller(pydarkstar.auction.worker.Worker):
     """
     Auction House seller.
 

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, SmallInteger, String, text
 from sqlalchemy.dialects.mysql.base import BIT
-from . import base
+from pydarkstar.tables.base import Base
 
 _template = \
 """
@@ -18,7 +18,7 @@ _template = \
     sent        = {self.sent}
 """[:-1]
 
-class DeliveryBox(base.Base):
+class DeliveryBox(Base):
     __tablename__ = 'delivery_box'
 
     charid    = Column(Integer, primary_key=True, nullable=False)

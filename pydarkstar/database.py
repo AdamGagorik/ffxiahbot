@@ -1,11 +1,11 @@
 import sqlalchemy
 import sqlalchemy.orm
 import sqlalchemy.exc
-from . import darkobject
+import pydarkstar.darkobject
 import contextlib
 import logging
 
-class Database(darkobject.DarkObject):
+class Database(pydarkstar.darkobject.DarkObject):
     """
     Database connection using sqlalchemy.
 

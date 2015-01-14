@@ -1,8 +1,8 @@
-from .. import darkobject
-from .. import database
+import pydarkstar.darkobject
+import pydarkstar.database
 import contextlib
 
-class Worker(darkobject.DarkObject):
+class Worker(pydarkstar.darkobject.DarkObject):
     """
     Base class for Auction House objects.
 
@@ -10,7 +10,7 @@ class Worker(darkobject.DarkObject):
     """
     def __init__(self, db, rollback=True, fail=False):
         super(Worker, self).__init__()
-        assert isinstance(db, database.Database)
+        assert isinstance(db, pydarkstar.database.Database)
         self._rollback = bool(rollback)
         self._fail = bool(fail)
         self._db = db

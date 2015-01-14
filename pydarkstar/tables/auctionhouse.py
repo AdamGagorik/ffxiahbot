@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, SmallInteger, String, text
-from .. import timeutils
-from . import base
+from pydarkstar.tables.base import Base
+import pydarkstar.timeutils
 
 _template = \
 """
@@ -18,7 +18,7 @@ _template = \
     sell_date   = {self.sell_datestr}
 """[:-1]
 
-class AuctionHouse(base.Base):
+class AuctionHouse(Base):
     __tablename__ = 'auction_house'
 
     id          = Column(Integer, primary_key=True)
@@ -58,7 +58,7 @@ class AuctionHouse(base.Base):
 
     @staticmethod
     def validate_date(date):
-        return timeutils.timestamp(date)
+        return pydarkstar.timeutils.timestamp(date)
 
     @staticmethod
     def validate_price(price):
@@ -68,11 +68,11 @@ class AuctionHouse(base.Base):
 
     @property
     def sell_datetime(self):
-        return timeutils.timestamp_to_datetime(self.sell_date)
+        return pydarkstar.timeutils.timestamp_to_datetime(self.sell_date)
 
     @property
     def sell_datestr(self):
-        return timeutils.datetime_to_str(self.sell_datetime)
+        return pydarkstar.timeutils.datetime_to_str(self.sell_datetime)
 
 if __name__ == '__main__':
     pass
