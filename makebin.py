@@ -3,7 +3,9 @@ import logging
 import stat
 import os
 
-logging.basicConfig(level=logging.DEBUG)
+lfmt = '[%(asctime)s][%(process)5d][%(levelname)-5s]: %(message)s'
+dfmt = "%Y-%m-%d %H:%M:%S"
+logging.basicConfig(level=logging.INFO, format=lfmt, datefmt=dfmt)
 
 def chmod(path):
     os.chmod(path,
@@ -35,6 +37,7 @@ assert os.path.exists(adir)
 
 # find apps
 apps = []
+logging.info('looking for apps')
 for root, dirs, files in os.walk(adir):
     for f in files:
         stub, ext = os.path.splitext(f)
@@ -59,12 +62,12 @@ PAUSE
 
 # select template based on platform
 if platform in ['linux', 'linux2', 'darwin']:
-    logging.info('LINUX')
+    logging.info('platform = LINUX')
     template = LTEMPLATE
     ostub = '{}.sh'
 
 elif platform in ['win32', 'win64']:
-    logging.debug('WINDOWS')
+    logging.debug('platform = WINDOWS')
     template = WTEMPLATE
     ostub = '{}.bat'
 
@@ -73,9 +76,11 @@ else:
 
 # create bin directory
 if not os.path.exists(bdir):
+    logging.info('mkdir %s', bdir)
     os.mkdir(bdir)
 
 # create app scripts
+logging.info('creating batch scripts')
 for app in apps:
 
     # create output name
