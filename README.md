@@ -43,6 +43,8 @@ Create shell scripts (using the included makebin.py)
 ```bash
 cd ./path/to/pydarkstar/
 python ./makebin.py
+cd ./bin
+./scrub.sh --help
 ```
 
 ###### WINDOWS
@@ -50,6 +52,8 @@ python ./makebin.py
 ```bash
 cd .\path\to\pydarkstar\
 python .\makebin.py
+cd .\bin
+.\scrub.bat --help
 ```
 
 ## option 2
@@ -70,15 +74,23 @@ python /path/to/pydarkstar/apps/scrub.py $*
 ```bash
 chmod +x scrub.sh
 ```
- 
+
+```bash
+.\scrub.sh --help
+```
+
 ###### WINDOWS
 
 Create scrub.bat
 
-```bash
+```bat
 @ECHO OFF
 set PYTHONPATH=%PYTHONPATH%;C:\Path\To\pydarkstar
 python C:\Path\To\pydarkstar\apps\scrub.py %*
+```
+
+```bat
+.\scrub.bat --help
 ```
 
 ## option 3
@@ -112,6 +124,11 @@ echo "PYTHONPATH=$PYTHONPATH:/path/to/pydarkstar/" >> ~/.bashrc
 source ~/.bashrc
 ```
 
+```bash
+cd ./path/to/pydarkstar/apps
+python ./scrub.py --help
+```
+
 ###### WINDOWS
 
 Edit your environment variables using the control panel, setting the PYTHONPATH.
@@ -125,6 +142,8 @@ Install module.
 ```bash
 cd ./path/to/pydarkstar/
 python setup.py
+cd ./apps
+python scrub.py --help
 ```
 
 # Apps
