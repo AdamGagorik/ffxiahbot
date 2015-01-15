@@ -32,43 +32,85 @@ git clone git@github.com:AdamGagorik/pydarkstar.git
 
 # Usage
 
-* **option 1**
- The main scripts are located in ./path/to/pydarkstar/apps.
- They should work if run *from that directory*.
+They main scripts, located in ./path/to/pydarkstar/apps, **will not work** unless you do one of the following:
 
- ```bash
- cd ./path/to/pydarkstar/apps
- python ./scrub.py --help
- ```
+* **option 1** : Create shell scripts (using the included makebin.py)
 
-*To run the script from another directory, you must tell python where the pydarkstar module is.*
+###### LINUX
 
-* **option 2** : add to PYTHONPATH temporarily
+```bash
+cd ./path/to/pydarkstar/
+python ./makebin.py
+```
 
- ```bash
- export PYTHONPATH=$PYTHONPATH:/path/to/pydarkstar/
- ```
+###### WINDOWS
 
-* **option 3** : add to PYTHONPATH permanently, on Linux
+```bash
+cd .\path\to\pydarkstar\
+python .\makebin.py
+```
 
- ```bash
- echo "PYTHONPATH=$PYTHONPATH:/path/to/pydarkstar/" >> ~/.bashrc
- source ~/.bashrc
- ```
+* **option 2** : Create shell scripts (manually)
+
+ Create the following using a txt editor, **with the correct paths**:
+
+###### LINUX (scrub.sh)
+
+```bash
+#!/bin/bash
+export PYTHONPATH=$PYTHONPATH:/path/to/pydarkstar
+python /path/to/pydarkstar/apps/scrub.py $*
+```
+
+```bash
+chmod +x scrub.sh
+```
+ 
+###### WINDOWS (scrub.bat)
+
+```bash
+@ECHO OFF
+set PYTHONPATH=%PYTHONPATH%;C:\Path\To\pydarkstar
+python C:\Path\To\pydarkstar\apps\scrub.py %*
+```
+
+* **option 2** : add to PYTHONPATH temporarily, before calling a script
+
+###### LINUX
+
+```bash
+cd ./path/to/pydarkstar/
+export PYTHONPATH=$PYTHONPATH:/path/to/pydarkstar/
+python ./scrub.py --help
+```
+
+###### WINDOWS
+
+```bash
+cd C:\Path\To\pydarkstar\apps
+set PYTHONPATH=%PYTHONPATH%;C:\Path\To\pydarkstar
+python .\scrub.py --help
+```
+
+* **option 3** : add to PYTHONPATH permanently
+
+###### LINUX
+
+```bash
+echo "PYTHONPATH=$PYTHONPATH:/path/to/pydarkstar/" >> ~/.bashrc
+source ~/.bashrc
+```
+
+###### WINDOWS
+
+Edit your environment variables using the control panel, setting the PYTHONPATH.
 
 * **option 4** : install module
 
- ```bash
- cd ./path/to/pydarkstar/
- python setup.py
- ```
-
-*If using options 2, 3, or 4, you can run apps from anywhere.*
-
- ```bash
- cd /somewhere/else
- python ./path/to/pydarkstar/apps/scrub.py
- ```
+```bash
+cd ./path/to/pydarkstar/
+python setup.py
+```
 
 # Apps
 
