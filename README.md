@@ -2,6 +2,35 @@
 
 A python module for interacting with a darkstar server.
 
+# Quickstart
+
+###### LINUX
+
+```bash
+sudo pip install sqlalchemy
+sudo pip install pymysql
+sudo pip install beautifulsoup4
+sudo pip install pyyaml
+
+git clone git@github.com:AdamGagorik/pydarkstar.git
+
+cd ./pydarkstar
+python ./makebin.py
+cd ./bin
+./scrub.sh --help
+```
+
+###### WINDOWS
+
+```bash
+*&#@$*&#@%!!! MAGIC WINDOWS GIT & PYTHON CRAZYNESS
+
+cd .\pydarkstar
+python .\makebin.py
+cd .\bin
+.\scrub.bat --help
+```
+
 # Features
 * create prices database
 * human editable price database
