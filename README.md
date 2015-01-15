@@ -23,7 +23,7 @@ cd ./bin
 ###### WINDOWS
 
 ```bash
-*&#@$*&#@%!!! MAGIC WINDOWS GIT & PYTHON CRAZYNESS
+*&#@$*&#@%!!! MAGIC WINDOWS GIT & PYTHON SETUP
 
 cd .\pydarkstar
 python .\makebin.py
