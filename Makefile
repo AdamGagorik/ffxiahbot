@@ -3,7 +3,14 @@ NOSE=nosetests --nologcapture --verbosity ${VERB}
 
 help:
 	@echo "[targets]"
-	@echo "    make tests"
+	@echo "    make tests     : tests : all"
+	@echo "    make core      : tests : module"
+	@echo "    make auction   : tests : subpackage"
+	@echo "    make tables    : tests : subpackage"
+	@echo "    make scrubbing : tests : subpackage"
+	@echo "    make imports   : tests : imports"
+	@echo "    make clean     : tidy up"
+	@echo "    make bin       : create batch scripts"
 
 .PHONY : test
 test: tests
@@ -12,8 +19,8 @@ test: tests
 tests:
 	${NOSE} -w ./pydarkstar/tests/
 
-.PHONY : pydarkstar
-pydarkstar:
+.PHONY : core
+core:
 	@${NOSE} -w ./pydarkstar/tests/ \
 		test_common.py     \
 		test_darkobject.py \
@@ -42,7 +49,9 @@ imports:
 
 .PHONY : clean
 clean:
-	find . -name \*.pyc | xargs rm
+	-find ./pydarkstar -type f -name \*.pyc | xargs -I xxx rm xxx
+	-find ./pydarkstar -type d -name __pycache__ | xargs -I xxx rm -rf xxx
+	-rm -rf ./bin
 
 .PHONY : bin
 bin:
