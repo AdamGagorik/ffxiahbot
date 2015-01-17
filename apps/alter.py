@@ -37,7 +37,6 @@ class Options(pydarkstar.options.Options):
 
         # commands
         self.show      = False
-        self.reset     = False
         self.scrub     = False
         self.set       = []
 
@@ -77,8 +76,6 @@ class Options(pydarkstar.options.Options):
         group = self.add_mutually_exclusive_group()
         group.add_argument('--show', action='store_true',
             help='show itemids and exit')
-        group.add_argument('--reset', action='store_true',
-            help='reset columns to defaults for item')
         group.add_argument('--scrub', action='store_true',
             help='redownload data for item')
         group.add_argument('--set', type=self.parse_tuple, metavar='key=value',
@@ -91,7 +88,7 @@ class Options(pydarkstar.options.Options):
     def parse_args(self, args=None):
         super(Options, self).parse_args(args)
 
-        if not self.show and not self.reset and not self.scrub and not self.set:
+        if not self.show and not self.scrub and not self.set:
             raise RuntimeError('nothing to do! use --show --reset --scrub or --set')
 
         itemids = []
@@ -188,10 +185,6 @@ def main(args=None):
         for i in itemids:
             logging.info(str(ilist[i]))
         exit(0)
-
-    # reset to defaults
-    if opts.reset:
-        raise RuntimeError('not yet implemented')
 
     # rescrub data
     if opts.scrub:
