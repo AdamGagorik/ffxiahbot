@@ -93,10 +93,7 @@ class Options(DarkObject):
         """
         for k in self.keys:
             v = self[k]
-            if isinstance(v, (list, tuple)):
-                self.log(level, fmt, k, '[...], size = {}'.format(len(v)))
-            else:
-                self.log(level, fmt, k, v)
+            self.log(level, fmt, k, v)
 
     def update(self, **kwargs):
         """
