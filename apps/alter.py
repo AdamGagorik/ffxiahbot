@@ -120,13 +120,13 @@ class Options(pydarkstar.options.Options):
                 logging.error('please use --overwrite or --backup')
                 exit(-1)
 
-def main():
+def main(args=None):
     """
     Main function.
     """
     # get options
     opts = Options()
-    opts.parse_args()
+    opts.parse_args(args)
     pydarkstar.logutils.basicConfig(
         verbose=opts.verbose, silent=opts.silent, fname='alter.log')
     logging.info('start')
