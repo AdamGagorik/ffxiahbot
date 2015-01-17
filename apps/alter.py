@@ -192,7 +192,13 @@ def main(args=None):
 
     # set values
     if opts.set:
-        raise RuntimeError('not yet implemented')
+        logging.info('--set %s=%s', *opts.set)
+        for i in itemids:
+            if hasattr(ilist[i], opts.set[0]):
+                setattr(ilist[i], opts.set[0], opts.set[1])
+                logging.debug('Item(%06d) %s=%s', i, opts.set[0], getattr(ilist[i], opts.set[0]))
+            else:
+                raise RuntimeError('Item does not have attribute %s', opts.set[0])
 
 def cleanup():
     logging.info('exit\n')
