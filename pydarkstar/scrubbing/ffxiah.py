@@ -399,5 +399,44 @@ class FFXIAHScrubber(Scrubber):
 
         return data
 
+def extract(data, itemid, **kwargs):
+    """
+    Extract item data from scrubbed info.
+    """
+    # singles
+    try:
+        price01, sell01 = data[itemid]['median'], True
+
+        # do not sell items without a price
+        if price01 <= 0:
+            price01, sell01 = None, False
+
+    except KeyError:
+        price01, sell01 = None, False
+
+    # stacks
+    try:
+        price12, sell12 = data[itemid]['stack price'], True
+
+        # do not sell items without a price
+        if price12 <= 0:
+            price12, sell12 = None, False
+
+    except KeyError:
+        price12, sell12 = None, False
+
+    # the name doesn't really matter
+    try:
+        name = data[itemid]['name']
+    except KeyError:
+        name=None
+
+    result = dict(name=name,
+        price01=price01, stock01=5, sell01=sell01, buy01=True,
+        price12=price12, stock12=5, sell12=sell12, buy12=True)
+    result.update(**kwargs)
+
+    return result
+
 if __name__ == '__main__':
     pass
