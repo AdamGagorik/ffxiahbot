@@ -151,21 +151,27 @@ def main(args=None):
 
     # from items
     if opts.all:
+        logging.info('select: --all')
         itemids.update(ilist.items.keys())
 
     # filter itemids
     if opts.lambda_:
+        logging.info('select: lambda x : %s', opts.lambda_)
         func = eval('lambda x : {}'.format(opts.lambda_))
         itemids.update([i for i in ilist.items.keys() if func(i)])
 
     # filter names
     if opts.match:
+        logging.info('select: name %s', opts.match)
         regex = re.compile(opts.match, re.IGNORECASE)
         itemids.update([i for i in ilist.items.keys() if regex.match(ilist[i].name)])
 
     # passed
     if opts.itemids:
+        logging.info('select: %d itemids passed', len(opts.itemids))
         itemids.update(opts.itemids)
+
+    logging.info('%d items selected', len(itemids))
 
     # validate
     if not itemids.issubset(ilist.items.keys()):
