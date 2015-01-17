@@ -19,6 +19,22 @@ def titles():
 def values(*objs):
     return ', '.join([fmt[fmt.keys()[i]].format(objs[i]) for i in range(len(objs))]) + '\n'
 
+_template = \
+"""
+[Item]
+    addr        = {addr}
+    itemid      = {self.itemid}
+    name        = {self.name}
+    sell01      = {self.sell01}
+    buy01       = {self.buy01}
+    price01     = {self.price01}
+    stock01     = {self.stock01}
+    sell12      = {self.sell12}
+    buy12       = {self.buy12}
+    price12     = {self.price12}
+    stock12     = {self.stock12}
+"""[:-1]
+
 class Item(DarkObject):
     """
     Item properties.
@@ -86,7 +102,7 @@ class Item(DarkObject):
         pass
 
     def __str__(self):
-        return 'Item({self.itemid})'.format(self=self)
+        return _template.format(self=self, addr=hex(id(self)))
 
     @property
     def itemid(self):
