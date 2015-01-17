@@ -3,6 +3,7 @@ Alter item database.
 """
 import logging
 import os
+import re
 
 import pydarkstar.logutils
 import pydarkstar.itemlist
@@ -34,10 +35,12 @@ class Options(pydarkstar.options.Options):
         self.itemids   = []      # explicit list of ids
 
         # commands
-        self.set       = []
+        self.show      = False
         self.reset     = False
-        self.create    = False
         self.scrub     = False
+        self.set       = []
+
+        # run
         self.execute   = False
 
         # logging
@@ -58,32 +61,37 @@ class Options(pydarkstar.options.Options):
         self.add_argument('--save', action='store_true',
             help='save config file (and exit)')
 
-        # itemids
-        self.add_argument('--show', action='store_true',
-            help='show itemids and exit')
-        self.add_argument('--all', action='store_true',
+        # itemids selection
+        group = self.add_mutually_exclusive_group()
+        group.add_argument('--all', action='store_true',
             help='select all itemids')
-        self.add_argument('--lambda', dest='lambda_', type=str, default=self.lambda_, metavar='lambda : True',
+        group.add_argument('--lambda', dest='lambda_', type=str, default=self.lambda_, metavar='lambda : True',
             help='select itemids where lambda evaluates to True')
-        self.add_argument('--match', type=str, default=self.match, metavar='.*',
+        group.add_argument('--match', type=str, default=self.match, metavar='.*',
             help='select itemids where name matches regex')
-        self.add_argument('--itemids', type=int, nargs='*', action='append', default=self.itemids, metavar='itemids',
+        group.add_argument('--itemids', type=int, nargs='*', action='append', default=self.itemids, metavar='itemids',
             help='a list of item ids')
 
         # commands
-        self.add_argument('--create', action='store_true',
-            help='create a new item (if it doesnt exist)')
-        self.add_argument('--reset', action='store_true',
+        group = self.add_mutually_exclusive_group()
+        group.add_argument('--show', action='store_true',
+            help='show itemids and exit')
+        group.add_argument('--reset', action='store_true',
             help='reset columns to defaults for item')
-        self.add_argument('--scrub', action='store_true',
+        group.add_argument('--scrub', action='store_true',
             help='redownload data for item')
-        self.add_argument('--set', type=self.parse_tuple, metavar='key=value',
+        group.add_argument('--set', type=self.parse_tuple, metavar='key=value',
             help='set column to value for item')
+
+        # run
         self.add_argument('--execute', action='store_true',
             help='actually run commands (default mode is a dry run)')
 
     def parse_args(self, args=None):
         super(Options, self).parse_args(args)
+
+        if not self.show and not self.reset and not self.scrub and not self.set:
+            raise RuntimeError('nothing to do! use --show --reset --scrub or --set')
 
         itemids = []
         for obj in self.itemids:
@@ -105,6 +113,13 @@ class Options(pydarkstar.options.Options):
                 self.ofile = self.ifile
             # ifile=xxx, ofile=xxx
 
+        # check output file
+        if not self.overwrite and not self.backup:
+            if os.path.exists(self.ofile):
+                logging.error('output file already exists!\n\t%s', self.ofile)
+                logging.error('please use --overwrite or --backup')
+                exit(-1)
+
 def main():
     """
     Main function.
@@ -125,48 +140,54 @@ def main():
         opts.dump()
         return
 
-    # check output file
-    if not opts.overwrite and not opts.backup:
-        if os.path.exists(opts.ofile):
-            logging.error('output file already exists!\n\t%s', opts.ofile)
-            logging.error('please use --overwrite or --backup')
-            exit(-1)
-
     # load data
     ilist = pydarkstar.itemlist.ItemList()
     if opts.ifile:
         ilist.loadcsv(opts.ifile)
     ilist.info('loaded %d items', len(ilist))
 
+    # collect itemids
+    itemids = set()
+
+    # from items
     if opts.all:
-        opts.itemids = ilist.items.keys()
-    else:
-        tmp = opts.itemids
-        opts.itemids = tmp
+        itemids.update(ilist.items.keys())
+
+    # filter itemids
+    if opts.lambda_:
+        func = eval('lambda x : {}'.format(opts.lambda_))
+        itemids.update([i for i in ilist.items.keys() if func(i)])
+
+    # filter names
+    if opts.match:
+        regex = re.compile(opts.match, re.IGNORECASE)
+        itemids.update([i for i in ilist.items.keys() if regex.match(ilist[i].name)])
+
+    # passed
+    if opts.itemids:
+        assert opts.itemids.issubset(ilist.items.keys())
+        itemids.update(opts.itemids)
 
     # exit if there are no itemids
-    if not opts.itemids:
+    if not itemids:
         raise RuntimeError('no itemids passed or found!')
 
     # show itemids
     if opts.show:
-        logging.info('%d itemids', len(opts.itemids))
-        for i in opts.itemids:
-            logging.info('exists=%d id=%d', i in ilist.items.keys(), i)
+        logging.info('%d itemids', len(itemids))
+        for i in itemids:
+            logging.info('id=%d', i)
         exit(0)
 
-    if not opts.create and not opts.reset and not opts.scrub and not opts.set:
-        raise RuntimeError('nothing to do...')
-
-    if opts.create:
-        raise RuntimeError('not yet implemented')
-
+    # reset to defaults
     if opts.reset:
         raise RuntimeError('not yet implemented')
 
+    # rescrub data
     if opts.scrub:
         raise RuntimeError('not yet implemented')
 
+    # set values
     if opts.set:
         raise RuntimeError('not yet implemented')
 
