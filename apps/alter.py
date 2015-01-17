@@ -105,12 +105,6 @@ class Options(pydarkstar.options.Options):
                 self.ofile = self.ifile
             # ifile=xxx, ofile=xxx
 
-        if not self.overwrite and not self.backup:
-            if os.path.exists(self.ofile):
-                logging.error('output file already exists!\n\t%s', self.ofile)
-                logging.error('please use --overwrite or --backup')
-                exit(-1)
-
 def main():
     """
     Main function.
@@ -131,13 +125,19 @@ def main():
         opts.dump()
         return
 
+    # check output file
+    if not opts.overwrite and not opts.backup:
+        if os.path.exists(opts.ofile):
+            logging.error('output file already exists!\n\t%s', opts.ofile)
+            logging.error('please use --overwrite or --backup')
+            exit(-1)
+
     # load data
     ilist = pydarkstar.itemlist.ItemList()
     if opts.ifile:
         ilist.loadcsv(opts.ifile)
     ilist.info('loaded %d items', len(ilist))
 
-    # select itemids
     if opts.all:
         opts.itemids = ilist.items.keys()
     else:
