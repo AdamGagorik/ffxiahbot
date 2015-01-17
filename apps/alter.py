@@ -165,8 +165,11 @@ def main(args=None):
 
     # passed
     if opts.itemids:
-        assert opts.itemids.issubset(ilist.items.keys())
         itemids.update(opts.itemids)
+
+    # validate
+    if not itemids.issubset(ilist.items.keys()):
+        raise RuntimeError('invalid itemids')
 
     # exit if there are no itemids
     if not itemids:
@@ -176,7 +179,7 @@ def main(args=None):
     if opts.show:
         logging.info('%d itemids', len(itemids))
         for i in itemids:
-            logging.info('id=%d', i)
+            logging.info(str(ilist[i]))
         exit(0)
 
     # reset to defaults
