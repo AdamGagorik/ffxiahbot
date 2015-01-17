@@ -5,6 +5,7 @@ import logging
 import os
 import re
 
+import pydarkstar.scrubbing.ffxiah
 import pydarkstar.logutils
 import pydarkstar.itemlist
 import pydarkstar.options
@@ -194,7 +195,12 @@ def main(args=None):
 
     # rescrub data
     if opts.scrub:
-        raise RuntimeError('not yet implemented')
+        scrubber = pydarkstar.scrubbing.ffxiah.FFXIAHScrubber()
+        scrubber.save = False
+        data = scrubber.scrub(force=True, threads=-1, urls=None, ids=itemids)
+        for i in data:
+            logging.debug('Item(%06d) updated', i)
+            ilist.set(i, **pydarkstar.scrubbing.ffxiah.extract(data, i))
 
     # set values
     if opts.set:
