@@ -129,38 +129,7 @@ def main():
     # create item list from data
     ilist = pydarkstar.itemlist.ItemList()
     for itemid in data:
-
-        # singles
-        try:
-            price01, sell01 = data[itemid]['median'], True
-
-            # do not sell items without a price
-            if price01 <= 0:
-                price01, sell01 = None, False
-
-        except KeyError:
-            price01, sell01 = None, False
-
-        # stacks
-        try:
-            price12, sell12 = data[itemid]['stack price'], True
-
-            # do not sell items without a price
-            if price12 <= 0:
-                price12, sell12 = None, False
-
-        except KeyError:
-            price12, sell12 = None, False
-
-        # the name doesn't really matter
-        try:
-            name = data[itemid]['name']
-        except KeyError:
-            name=None
-
-        ilist.add(itemid, name=name,
-            price01=price01, stock01=opts.stock01, sell01=sell01, buy01=True,
-            price12=price12, stock12=opts.stock12, sell12=sell12, buy12=True)
+        ilist.add(itemid, pydarkstar.scrubbing.ffxiah.extract(data, itemid, stock01=opts.stock01, stock12=opts.stock12))
 
     # backup file
     if opts.backup:
