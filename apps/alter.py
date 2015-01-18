@@ -123,10 +123,6 @@ def main(args=None):
         opts.dump()
         return
 
-    # check action validity
-    if not any([opts.show, opts.scrub, opts.set]):
-        raise RuntimeError('nothing to do! use --show --reset --scrub or --set')
-
     # check output file name validity
     if not opts.overwrite and not opts.backup:
         if os.path.exists(opts.ofile):
@@ -174,6 +170,10 @@ def main(args=None):
     # exit if there are no itemids
     if not itemids:
         raise RuntimeError('no itemids passed or found!')
+
+    # check action validity
+    if not any([opts.show, opts.scrub, opts.set]):
+        raise RuntimeError('nothing to do! use --show --reset --scrub or --set')
 
     # show itemids
     if opts.show:
