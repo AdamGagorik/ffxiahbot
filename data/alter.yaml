@@ -1,18 +1,10 @@
 config: alter.yaml
 verbose: false
 silent: false
-ifile: null
 ofile: items.csv
 overwrite: false
 backup: false
 save: false
 all: false
-lambda_: null
-match: null
-itemids: !!set {}
-set: []
-reset: false
-create: false
-scrub: false
-execute: false
 show: false
+scrub: false
