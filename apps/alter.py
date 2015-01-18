@@ -106,10 +106,12 @@ class Options(pydarkstar.options.Options):
                 self.ofile = 'items.csv'
             # ifile=???, ofile=xxx
         else:
+            self.ifile = os.path.abspath(os.path.expanduser(self.ifile))
             # ifile=xxx, ofile=???
             if self.ofile is None:
                 self.ofile = self.ifile
             # ifile=xxx, ofile=xxx
+        self.ofile = os.path.abspath(os.path.expanduser(self.ofile))
 
         # check output file
         if not self.overwrite and not self.backup:
