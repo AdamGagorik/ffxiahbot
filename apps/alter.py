@@ -40,9 +40,6 @@ class Options(pydarkstar.options.Options):
         self.scrub     = False
         self.set       = []
 
-        # run
-        self.execute   = False
-
         # logging
         self.add_argument('--verbose', action='store_true',
             help='report debug, info, and error')
@@ -80,10 +77,6 @@ class Options(pydarkstar.options.Options):
             help='redownload data for item')
         group.add_argument('--set', type=self.parse_tuple, metavar='key=value',
             help='set column to value for item')
-
-        # run
-        self.add_argument('--execute', action='store_true',
-            help='actually run commands (default mode is a dry run)')
 
     def parse_args(self, args=None):
         super(Options, self).parse_args(args)
