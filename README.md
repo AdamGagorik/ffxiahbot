@@ -199,7 +199,7 @@ The script:
 python ./path/to/pydarkstar/apps/scrub.py --help
 
 usage: scrub.py [-h] [--verbose] [--silent] [--overwrite] [--backup] [--save]
-                [--force] [--threads -1] [--urls [url [url ...]]]
+                [--force] [--pkl] [--threads -1] [--urls [url [url ...]]]
                 [--itemids [itemids [itemids ...]]] [--stock01 5]
                 [--stock12 5]
                 [stub]
@@ -217,6 +217,7 @@ optional arguments:
   --backup              backup output file
   --save                save config file (and exit)
   --force               start from scratch
+  --pkl                 save pkl files
   --threads -1          number of cpu threads to use
   --urls [url [url ...]]
                         a list of category urls
@@ -228,7 +229,7 @@ optional arguments:
 
 ###### examples
 
-```
+```bash
 # basic usage
 python scrub.py --force 
 ```
@@ -281,7 +282,7 @@ optional arguments:
 
 ###### examples
 
-```
+```bash
 # basic usage
 python broker.py items.csv
 ```
@@ -290,15 +291,13 @@ python broker.py items.csv
 
 This script is meant for altering the item CSV database from the command line,
 if one perfers.  However a text editor or excel can accomplish the same task.
-**The functionality of alter.py has not yet been implemented.**
 
 ```bash
 python ./path/to/pydarkstar/apps/alter.py --help
 
 usage: alter.py [-h] [--verbose] [--silent] [--overwrite] [--backup] [--save]
-                [--show] [--all] [--lambda lambda : True] [--match .*]
-                [--itemids [itemids [itemids ...]]] [--create] [--reset]
-                [--scrub] [--set key=value] [--execute]
+                [--all | --lambda lambda : True | --match .* | --itemids [itemids [itemids ...]]]
+                [--show | --scrub | --set key=value]
                 [ifile] [ofile]
 
 Alter item database.
@@ -314,23 +313,20 @@ optional arguments:
   --overwrite           overwrite output file
   --backup              backup output file
   --save                save config file (and exit)
-  --show                show itemids and exit
   --all                 select all itemids
   --lambda lambda : True
                         select itemids where lambda evaluates to True
   --match .*            select itemids where name matches regex
   --itemids [itemids [itemids ...]]
                         a list of item ids
-  --create              create a new item (if it doesnt exist)
-  --reset               reset columns to defaults for item
+  --show                show itemids and exit
   --scrub               redownload data for item
   --set key=value       set column to value for item
-  --execute             actually run commands (default mode is a dry run)
 ```
 
 ###### examples
 
-```
+```bash
 # basic usage
 python alter.py --help 
 ```
