@@ -207,6 +207,13 @@ def main(args=None):
             else:
                 raise RuntimeError('Item does not have attribute %s', opts.set[0])
 
+    # backup file
+    if opts.backup:
+        pydarkstar.common.backup(opts.ofile, copy=True)
+
+    # overwrites if exists, but we checked already
+    ilist.savecsv(opts.ofile)
+
 def cleanup():
     logging.info('exit\n')
 
