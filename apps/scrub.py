@@ -133,7 +133,7 @@ def main():
 
     # backup file
     if opts.backup:
-        pydarkstar.common.backup(oname)
+        pydarkstar.common.backup(oname, copy=True)
 
     # overwrites if exists, but we checked already
     ilist.savecsv(oname)
