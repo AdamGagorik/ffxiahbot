@@ -23,11 +23,11 @@ class Options(pydarkstar.options.Options):
         self.silent    = False   # error only
 
         # input and output
-        self.ifile     = None    # input file name
-        self.ofile     = None    # output file name
-        self.overwrite = False   # overwrite output
-        self.backup    = False   # backup output
-        self.save      = False   # save config
+        self.ifile     = 'items.csv' # input file name
+        self.ofile     = None        # output file name
+        self.overwrite = False       # overwrite output
+        self.backup    = False       # backup output
+        self.save      = False       # save config
 
         # itemids
         self.all       = False   # all keys
