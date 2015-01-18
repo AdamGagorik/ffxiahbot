@@ -81,9 +81,6 @@ class Options(pydarkstar.options.Options):
     def parse_args(self, args=None):
         super(Options, self).parse_args(args)
 
-        if not self.show and not self.scrub and not self.set:
-            raise RuntimeError('nothing to do! use --show --reset --scrub or --set')
-
         itemids = []
         for obj in self.itemids:
             if isinstance(obj, list):
@@ -106,13 +103,6 @@ class Options(pydarkstar.options.Options):
             # ifile=xxx, ofile=xxx
         self.ofile = os.path.abspath(os.path.expanduser(self.ofile))
 
-        # check output file
-        if not self.overwrite and not self.backup:
-            if os.path.exists(self.ofile):
-                logging.error('output file already exists!\n\t%s', self.ofile)
-                logging.error('please use --overwrite or --backup')
-                exit(-1)
-
 def main(args=None):
     """
     Main function.
@@ -132,6 +122,17 @@ def main(args=None):
         opts.save = False
         opts.dump()
         return
+
+    # check action validity
+    if not any([opts.show, opts.scrub, opts.set]):
+        raise RuntimeError('nothing to do! use --show --reset --scrub or --set')
+
+    # check output file name validity
+    if not opts.overwrite and not opts.backup:
+        if os.path.exists(opts.ofile):
+            logging.error('output file already exists!\n\t%s', opts.ofile)
+            logging.error('please use --overwrite or --backup')
+            exit(-1)
 
     # load data
     ilist = pydarkstar.itemlist.ItemList()
