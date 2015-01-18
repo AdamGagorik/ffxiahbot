@@ -330,3 +330,33 @@ optional arguments:
 # basic usage
 python alter.py --help 
 ```
+
+```bash
+# show all items
+python alter.py items.csv --backup --all --show
+```
+
+```bash
+# show items whose name contains Bed
+python alter.py items.csv --backup --match ".*Bed.*" --show
+```
+
+```bash
+# show items between 1 and 10
+python alter.py items.csv --backup --lambda "x <= 10" --show
+```
+
+```bash
+# show specific items
+python alter.py items.csv --backup --itemids 1 2 3 4 --show
+```
+
+```bash
+# set buy01 flag to false for all items
+python alter.py items.csv --backup --all --set buy01=False
+```
+
+```bash
+# rescrub data for items
+python alter.py items.csv --backup --itemids 1 2 3 --scrub
+```
