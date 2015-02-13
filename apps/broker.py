@@ -189,7 +189,7 @@ def main():
             elapsed, delta, opts.restock - delta)
 
         if delta >= opts.restock:
-            logging.info('restocking...')
+            logging.debug('restocking...')
             manager.restockItems(itemdata=idata)
             last = datetime.datetime.now()
 
