@@ -129,7 +129,8 @@ def main():
     # create item list from data
     ilist = pydarkstar.itemlist.ItemList()
     for itemid in data:
-        ilist.add(itemid, pydarkstar.scrubbing.ffxiah.extract(data, itemid, stock01=opts.stock01, stock12=opts.stock12))
+        kwargs = pydarkstar.scrubbing.ffxiah.extract(data, itemid, stock01=opts.stock01, stock12=opts.stock12)
+        ilist.add(itemid, **kwargs)
 
     # backup file
     if opts.backup:
