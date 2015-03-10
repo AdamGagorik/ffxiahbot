@@ -189,9 +189,7 @@ well as buy items sold by players.
 
 The script:
   1.  downloads a list of category urls
-    * **this information is saved and reused** (override reuse with *--force*)
   2.  extracts item ids from category urls
-    * **this information is saved and reused** (override reuse with *--force*)
   3.  downloads price information for each item id
   4.  saves the information in a CSV file
 
