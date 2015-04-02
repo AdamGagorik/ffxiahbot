@@ -1,13 +1,13 @@
 config: broker.yaml
-verbose: false
+verbose: true
 silent: false
-data: []
+data: ['items.csv']
 find: false
 save: false
 hostname: 127.0.0.1
 database: dspdb
 username: root
-fail: false
+fail: true
 clear: false
 all: false
 force: false

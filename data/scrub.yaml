@@ -3,7 +3,7 @@ verbose: false
 silent: false
 stub: items
 overwrite: false
-backup: false
+backup: true
 save: false
 force: false
 pkl: false
