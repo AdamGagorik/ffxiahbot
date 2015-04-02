@@ -129,7 +129,7 @@ class Manager(Worker):
                 stock = self.browser.getStock(itemid=data.itemid, stack=True, seller=self.seller.seller)
 
                 # restock
-                while stock < data.stock01:
+                while stock < data.stock12:
                     now = timeutils.timestamp(datetime.datetime(2020, 1, 1))
                     self.seller.sellItem(itemid=data.itemid, stack=True, date=now, price=data.price12, count=1)
                     stock += 1
