@@ -61,11 +61,12 @@ git clone git@github.com:AdamGagorik/pydarkstar.git
 
 # Usage
 
-They main scripts, located in ./path/to/pydarkstar/apps, **will not work** unless you do one of the following:
+The main scripts, located in ./path/to/pydarkstar/apps, **will not work** unless you tell python
+where the pydarkstar module is located.
 
 ## option 1
 
-Create shell scripts (using the included makebin.py)
+Create shell scripts, using the included makebin.py
 
 ###### LINUX
 
@@ -120,59 +121,6 @@ python C:\Path\To\pydarkstar\apps\scrub.py %*
 
 ```bat
 .\scrub.bat --help
-```
-
-## option 3
-
-Add to PYTHONPATH temporarily, before calling a script.
-
-###### LINUX
-
-```bash
-cd ./path/to/pydarkstar/
-export PYTHONPATH=$PYTHONPATH:/path/to/pydarkstar/
-python ./scrub.py --help
-```
-
-###### WINDOWS
-
-```bash
-cd C:\Path\To\pydarkstar\apps
-set PYTHONPATH=%PYTHONPATH%;C:\Path\To\pydarkstar
-python .\scrub.py --help
-```
-
-## option 4
-
-Add to PYTHONPATH permanently.
-
-###### LINUX
-
-```bash
-echo "PYTHONPATH=$PYTHONPATH:/path/to/pydarkstar/" >> ~/.bashrc
-source ~/.bashrc
-```
-
-```bash
-cd ./path/to/pydarkstar/apps
-python ./scrub.py --help
-```
-
-###### WINDOWS
-
-Edit your environment variables using the control panel, setting the PYTHONPATH.
-
-## option 5
-
-Install module.
-
-###### LINUX
-
-```bash
-cd ./path/to/pydarkstar/
-python setup.py
-cd ./apps
-python scrub.py --help
 ```
 
 # Apps
