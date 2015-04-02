@@ -6,7 +6,12 @@ A python module for interacting with a darkstar server.
 
 ###### LINUX
 
+* Linux already comes with python.
+
 ```bash
+sudo apt-get install git
+sudo apt-get install pip
+
 sudo pip install sqlalchemy
 sudo pip install pymysql
 sudo pip install beautifulsoup4
@@ -14,7 +19,9 @@ sudo pip install pyyaml
 
 git clone git@github.com:AdamGagorik/pydarkstar.git
 
-cd ./pydarkstar
+# enter the correct path!
+  
+cd ./path/to/pydarkstar
 python ./makebin.py
 cd ./bin
 ./scrub.sh --help
@@ -22,14 +29,34 @@ cd ./bin
 
 ###### WINDOWS
 
-```bash
-*&#@$*&#@%!!! MAGIC WINDOWS GIT & PYTHON SETUP
+* Setting up Python on Windows can be painful if you are not familiar with shell scripting, PATH variables, etc.
+* It may be easier to install a Python distribution such as Anaconda (http://continuum.io/downloads).
 
-cd .\pydarkstar
-python .\makebin.py
-cd .\bin
-.\scrub.bat --help
-```
+1.  Install Git
+2.  Install Python Anaconda (http://continuum.io/downloads)
+3.  Open Anaconda command prompt from the start menu
+
+  ```bash
+  > conda update conda
+  
+  # when prompted, enter 'y' for yes
+  
+  > conda install sqlalchemy
+  > conda install pymysql
+  > conda install beautiful-soup
+  > conda install pymysql
+  ```
+
+4.  Create pydarkstar shell scripts (see Usage section for more info)
+
+  ```bash
+  # enter the correct path!
+
+  cd C:\path\to\pydarkstar
+  python .\makebin.py
+  cd .\bin
+  .\scrub.bat --help
+  ```
 
 # Features
 * create prices database
