@@ -33,7 +33,7 @@ cd ./bin
 * It may be easier to install a Python distribution such as Anaconda (http://continuum.io/downloads).
 
 1.  Install Git
-2.  Install Python Anaconda (http://continuum.io/downloads)
+2.  Install Python Anaconda
 3.  Open Anaconda command prompt from the start menu
 
   ```bash
