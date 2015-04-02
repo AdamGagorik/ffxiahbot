@@ -24,7 +24,15 @@ git clone git@github.com:AdamGagorik/pydarkstar.git
 cd ./path/to/pydarkstar
 python ./makebin.py
 cd ./bin
-./scrub.sh --help
+
+# copy scrub.yaml, broker.yaml, items.csv from the data to the bin directory
+# edit scrub.yaml, broker.yaml with your settings
+
+# to download new data from ffxiah.com (takes forever)
+./scrub.sh
+
+# to start the broker
+./broker.sh
 ```
 
 ###### WINDOWS
@@ -55,7 +63,15 @@ cd ./bin
   cd C:\path\to\pydarkstar
   python .\makebin.py
   cd .\bin
-  .\scrub.bat --help
+  
+  # copy scrub.yaml, broker.yaml, items.csv from the data to the bin directory
+  # edit scrub.yaml, broker.yaml with your settings
+
+  # to download new data from ffxiah.com (takes forever)
+  .\scrub.bat
+
+  # to start the broker
+  .\broker.bat
   ```
 
 # Features
