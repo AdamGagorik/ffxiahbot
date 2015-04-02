@@ -32,9 +32,9 @@ cd ./bin
 * Setting up Python on Windows can be painful if you are not familiar with shell scripting, PATH variables, etc.
 * It may be easier to install a Python distribution such as Anaconda (http://continuum.io/downloads).
 
-1.  Install Git
-2.  Install Python Anaconda
-3.  Open Anaconda command prompt from the start menu
+* Install Git
+* Install Python Anaconda
+* Open Anaconda command prompt from the start menu
 
   ```bash
   > conda update conda
@@ -46,8 +46,8 @@ cd ./bin
   > conda install beautiful-soup
   > conda install pymysql
   ```
-
-4.  Create pydarkstar shell scripts (see Usage section for more info)
+* Clone pydarkstar repository
+* Create pydarkstar shell scripts (see Usage section for more info)
 
   ```bash
   # enter the correct path!
