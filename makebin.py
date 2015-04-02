@@ -1,5 +1,6 @@
 from sys import platform
 import logging
+import shutil
 import stat
 import os
 
@@ -30,10 +31,12 @@ work = os.getcwd()
 pdir = os.path.join(work, 'pydarkstar')
 adir = os.path.join(work, 'apps')
 bdir = os.path.join(work, 'bin')
+ddir = os.path.join(work, 'data')
 
 # check paths
 assert os.path.exists(pdir)
 assert os.path.exists(adir)
+assert os.path.exists(ddir)
 
 # find apps
 apps = []
@@ -94,3 +97,12 @@ for app in apps:
             interp='python', script=app))
 
     chmod(oname)
+
+# copy items from data folder
+root, dirs, files = next(os.walk(ddir))
+for f in files:
+    opath = os.path.join(root, f)
+    npath = os.path.join(bdir, f)
+    if not os.path.exists(npath):
+        logging.info('cp %s %s', opath, npath)
+        shutil.copy(opath, npath)
