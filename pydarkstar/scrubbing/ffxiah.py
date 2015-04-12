@@ -1,5 +1,6 @@
 from .scrubber import Scrubber
 import warnings
+import logging
 import pickle
 import re
 import os
@@ -393,9 +394,10 @@ class FFXIAHScrubber(Scrubber):
         """
         old_key = u'stack\xa0price'
         new_key = r'stack price'
-        if data.has_key(old_key):
-            data[new_key] = data[old_key]
-            del data[old_key]
+
+        for key in data.keys():
+            if 'stack' in key.lower():
+                data[new_key] = data[key]
 
         return data
 
