@@ -1,14 +1,21 @@
 import unittest
-import logging
 
-logging.getLogger().setLevel(logging.DEBUG)
+import_error = False
+try:
+    from ..options import Options
+except ImportError:
+    import_error = True
+    Options = None
 
-from ..options import Options
+
+class TestCase00(unittest.TestCase):
+    def test_import(self):
+        self.assertFalse(import_error)
 
 
-class TestCase(unittest.TestCase):
+class TestCase01(unittest.TestCase):
     def setUp(self):
-        self.opts = Options()
-
-    def test_init(self):
-        pass
+        if import_error:
+            self.skipTest('ImportError')
+        else:
+            self.opts = Options()

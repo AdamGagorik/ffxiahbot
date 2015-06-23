@@ -1,15 +1,25 @@
 import unittest
-import logging
 
-logging.getLogger().setLevel(logging.DEBUG)
+import_error = False
+try:
+    from ...scrubbing.ffxiah import FFXIAHScrubber
+except ImportError:
+    import_error = True
+    FFXIAHScrubber = None
 
-from ...scrubbing.ffxiah import FFXIAHScrubber
+
+class TestCase00(unittest.TestCase):
+    def test_import(self):
+        self.assertFalse(import_error)
 
 
-class TestCase(unittest.TestCase):
+class TestCase01(unittest.TestCase):
     def setUp(self):
-        self.scrubber = FFXIAHScrubber()
-        self.scrubber.save = False
+        if import_error:
+            self.skipTest('ImportError')
+        else:
+            self.scrubber = FFXIAHScrubber()
+            self.scrubber.save = False
 
     def test_get_category_urls(self):
         self.scrubber._get_category_urls()
@@ -32,4 +42,4 @@ class TestCase(unittest.TestCase):
         self.scrubber._get_item_data(list(range(1, 9)), threads=4)
 
     def test_scrub(self):
-        self.scrubber.scrub(force=True, threads=4, ids=[1, 2, 3, 4])
+        self.scrubber.scrub(force=True, threads=4, ids={1, 2, 3, 4})

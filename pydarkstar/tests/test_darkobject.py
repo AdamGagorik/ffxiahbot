@@ -1,14 +1,24 @@
 import unittest
-import logging
 
-logging.getLogger().setLevel(logging.DEBUG)
+import_error = False
+try:
+    from ..darkobject import DarkObject
+except ImportError:
+    import_error = True
+    DarkObject = None
 
-from ..darkobject import DarkObject
+
+class TestCase00(unittest.TestCase):
+    def test_import(self):
+        self.assertFalse(import_error)
 
 
-class TestCase(unittest.TestCase):
+class TestCase01(unittest.TestCase):
     def setUp(self):
-        self.do = DarkObject()
+        if import_error:
+            self.skipTest('ImportError')
+        else:
+            self.do = DarkObject()
 
     def test_init(self):
         pass

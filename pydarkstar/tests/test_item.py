@@ -1,12 +1,23 @@
 import unittest
-import logging
 
-logging.getLogger().setLevel(logging.DEBUG)
+import_error = False
+try:
+    from ..item import Item
+except ImportError:
+    import_error = True
+    Item = None
 
-from ..item import Item
+
+class TestCase00(unittest.TestCase):
+    def test_import(self):
+        self.assertFalse(import_error)
 
 
-class TestCase(unittest.TestCase):
+class TestCase01(unittest.TestCase):
+    def setUp(self):
+        if import_error:
+            self.skipTest('ImportError')
+
     def test_init(self):
         i0 = Item(0, 'A')
         self.assertEqual(i0.itemid, 0)

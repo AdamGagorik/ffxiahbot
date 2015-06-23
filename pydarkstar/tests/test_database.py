@@ -1,19 +1,27 @@
-import unittest
-import logging
-
-logging.getLogger().setLevel(logging.DEBUG)
-
-from ..database import Database
-from ..rc import sql
 import sqlalchemy.exc
+import unittest
+
+from . import sqltest
+
+import_error = False
+try:
+    from ..database import Database
+except ImportError:
+    import_error = True
+    Database = None
 
 
-class TestCase(unittest.TestCase):
+class TestCase00(unittest.TestCase):
+    def test_import(self):
+        self.assertFalse(import_error)
+
+
+class TestCase01(sqltest.TestSQL):
     def setUp(self):
-        self.db = Database.pymysql(**sql)
-
-    def test_init(self):
-        pass
+        if import_error:
+            self.skipTest('ImportError')
+        else:
+            super(TestCase01, self).setUp()
 
     def test_scoped_session1(self):
         with self.assertRaises(RuntimeError):

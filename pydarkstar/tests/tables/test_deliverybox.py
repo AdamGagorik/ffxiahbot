@@ -1,12 +1,19 @@
 import unittest
-import logging
 
-logging.getLogger().setLevel(logging.DEBUG)
+import_error = False
+try:
+    from ...tables.deliverybox import DeliveryBox
+except ImportError:
+    import_error = True
+    DeliveryBox = None
 
-from ...tables.deliverybox import DeliveryBox
+
+class TestCase00(unittest.TestCase):
+    def test_import(self):
+        self.assertFalse(import_error)
 
 
-class TestCase(unittest.TestCase):
+class TestCase01(unittest.TestCase):
     def setUp(self):
         self.db = DeliveryBox()
 
@@ -14,5 +21,4 @@ class TestCase(unittest.TestCase):
         pass
 
     def test_str(self):
-        s = str(self.db)
-        logging.debug(s)
+        str(self.db)

@@ -1,12 +1,19 @@
 import unittest
-import logging
 
-logging.getLogger().setLevel(logging.DEBUG)
+import_error = False
+try:
+    from ...tables.base import Base
+except ImportError:
+    import_error = True
+    Base = None
 
-from ...tables.base import Base
+
+class TestCase00(unittest.TestCase):
+    def test_import(self):
+        self.assertFalse(import_error)
 
 
-class TestCase(unittest.TestCase):
+class TestCase01(unittest.TestCase):
     def setUp(self):
         self.base = Base()
 

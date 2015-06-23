@@ -1,21 +1,32 @@
 import unittest
-import logging
-
-logging.getLogger().setLevel(logging.DEBUG)
-
-from .. import timeutils
 import datetime
+
+import_error = False
+try:
+    from .. import timeutils
+except ImportError:
+    import_error = True
+    timeutils = None
+
+
+class TestCase00(unittest.TestCase):
+    def test_import(self):
+        self.assertFalse(import_error)
 
 
 class BaseTest(unittest.TestCase):
     N = 10000
+
+    def setUp(self):
+        if import_error:
+            self.skipTest('ImportError')
 
     def assertInRange(self, n, a, b):
         self.assertGreaterEqual(n, a)
         self.assertLessEqual(n, b)
 
 
-class TestRandomdt(BaseTest):
+class TestCase01(BaseTest):
     def test_construct(self):
         for i in range(self.N):
             timeutils.randomdt()
@@ -34,7 +45,7 @@ class TestRandomdt(BaseTest):
             self.assertEqual(n, v)
 
 
-class TestConvertStr(BaseTest):
+class TestCase02(BaseTest):
     def test_str_to_datetime(self):
         dobj = timeutils.str_to_datetime('1/2/1971 04:05:06')
         self.assertTrue(isinstance(dobj, datetime.datetime))
@@ -53,7 +64,7 @@ class TestConvertStr(BaseTest):
         self.assertEqual(sobj, '01/02/1971 04:05:06')
 
 
-class TestConvertTimestamp(BaseTest):
+class TestCase03(BaseTest):
     def test_datetime_timestamp_conversion(self):
         for i in range(self.N):
             dobj1 = timeutils.randomdt(year_range=(1971, 2015))
@@ -64,7 +75,7 @@ class TestConvertTimestamp(BaseTest):
             self.assertEqual(stmp1, stmp2)
 
 
-class TestFuncDatetime(BaseTest):
+class TestCase04(BaseTest):
     def test_str(self):
         dobj = timeutils.datetime('1/2/1903 04:05:06')
         self.assertTrue(isinstance(dobj, datetime.datetime))
@@ -107,7 +118,7 @@ class TestFuncDatetime(BaseTest):
         self.assertEqual(dobj.microsecond, 1)
 
 
-class TestFuncTimestamp(BaseTest):
+class TestCase05(BaseTest):
     def test_str(self):
         stmp1 = timeutils.timestamp('1/2/1971 04:05:06')
         self.assertTrue(isinstance(stmp1, float))

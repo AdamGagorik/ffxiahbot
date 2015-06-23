@@ -1,13 +1,24 @@
 import unittest
-import logging
-
-logging.getLogger().setLevel(logging.DEBUG)
-
-from .. import common
 import os
 
+import_error = False
+try:
+    from .. import common
+except ImportError:
+    import_error = True
+    common = None
 
-class TestCase(unittest.TestCase):
+
+class TestCase00(unittest.TestCase):
+    def test_import(self):
+        self.assertFalse(import_error)
+
+
+class TestCase01(unittest.TestCase):
+    def setUp(self):
+        if import_error:
+            self.skipTest('ImportError')
+
     def test_backup1(self):
         path = common.backup('common.pz', copy=False)
         self.assertEqual(path, '')
