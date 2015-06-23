@@ -49,8 +49,8 @@ imports:
 
 .PHONY : clean
 clean:
-	-find ./pydarkstar -type f -name \*.pyc | xargs -I xxx rm xxx
-	-find ./pydarkstar -type d -name __pycache__ | xargs -I xxx rm -rf xxx
+	-find . -type f -name \*.pyc | xargs -I xxx rm xxx
+	-find . -type d -name __pycache__ | xargs -I xxx rm -rf xxx
 	-rm -rf ./bin
 
 .PHONY : bin
