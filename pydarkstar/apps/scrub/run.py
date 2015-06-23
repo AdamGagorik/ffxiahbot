@@ -27,12 +27,6 @@ def main():
     # log options
     opts.log_values(level=logging.INFO)
 
-    # save options
-    if opts.save:
-        opts.save = False
-        opts.dump()
-        return
-
     # check output file name validity
     oname = os.path.abspath('{}.csv'.format(re.sub(r'\.csv$', '', opts.stub)))
     if not opts.overwrite and not opts.backup:

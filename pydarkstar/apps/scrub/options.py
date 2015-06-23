@@ -11,13 +11,12 @@ class Options(options.Options):
     """
 
     def __init__(self):
-        super(Options, self).__init__(config='scrub.yaml', description=__doc__)
+        super(Options, self).__init__(config='config.yaml', description=__doc__)
         self.verbose = False  # error, info, and debug
         self.silent = False  # error only
         self.stub = 'items'  # output file stub
         self.overwrite = False  # overwrite output
         self.backup = False  # backup output
-        self.save = False  # save config
         self.force = False  # redownload
         self.pkl = False  # save pkl files
         self.threads = -1  # cpu threads during download
@@ -39,8 +38,6 @@ class Options(options.Options):
                           help='overwrite output file')
         self.add_argument('--backup', action='store_true',
                           help='backup output file')
-        self.add_argument('--save', action='store_true',
-                          help='save config file (and exit)')
 
         # scrub parameters
         self.add_argument('--force', action='store_true',

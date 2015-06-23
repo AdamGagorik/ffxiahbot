@@ -27,12 +27,6 @@ def main(args=None):
     # log options
     opts.log_values(level=logging.INFO)
 
-    # save options
-    if opts.save:
-        opts.save = False
-        opts.dump()
-        return
-
     # check output file name validity
     if not opts.overwrite and not opts.backup:
         if os.path.exists(opts.ofile):

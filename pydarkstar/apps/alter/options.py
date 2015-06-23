@@ -12,7 +12,7 @@ class Options(options.Options):
     """
 
     def __init__(self):
-        super(Options, self).__init__(config='alter.yaml', description=__doc__)
+        super(Options, self).__init__(config='config.yaml', description=__doc__)
 
         # logging
         self.verbose = False  # error, info, and debug
@@ -23,7 +23,6 @@ class Options(options.Options):
         self.ofile = None  # output file name
         self.overwrite = False  # overwrite output
         self.backup = False  # backup output
-        self.save = False  # save config
 
         # itemids
         self.all = False  # all keys
@@ -51,8 +50,6 @@ class Options(options.Options):
                           help='overwrite output file')
         self.add_argument('--backup', action='store_true',
                           help='backup output file')
-        self.add_argument('--save', action='store_true',
-                          help='save config file (and exit)')
 
         # itemids selection
         group = self.add_mutually_exclusive_group()

@@ -27,12 +27,6 @@ def main():
     # log options
     opts.log_values(level=logging.INFO)
 
-    # save options
-    if opts.save:
-        opts.save = False
-        opts.dump()
-        return
-
     # connect to database
     db = Database.pymysql(
         hostname=opts.hostname,

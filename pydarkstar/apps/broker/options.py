@@ -20,9 +20,6 @@ class Options(options.Options):
         # input
         self.data = []  # list of itemdata
 
-        # output
-        self.save = False  # save config
-
         # sql
         self.hostname = '127.0.0.1'
         self.database = 'dspdb'
@@ -52,10 +49,6 @@ class Options(options.Options):
         # input
         self.add_argument(dest='data', nargs='*', type=str, default=self.data,
                           metavar='str', help='item data CSV file(s)')
-
-        # output
-        self.add_argument('--save', action='store_true',
-                          help='save config file (and exit)')
 
         # sql
         self.add_argument('--hostname', default=self.hostname, type=str,
