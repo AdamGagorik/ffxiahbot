@@ -45,5 +45,5 @@ from . import database
 from . import item
 from . import itemlist
 from . import options
-from . import rc
+from pydarkstar.tests import sqltest
 from . import timeutils
