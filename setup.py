@@ -8,5 +8,6 @@ setup(
     license='MIT',
     author='Adam Gagorik',
     author_email='adam.gagorik@gmail.com',
-    description='A python module for interacting with a darkstar server.'
+    description='A python module for interacting with a darkstar server.',
+    requires=['sqlalchemy', 'pymysql']
 )
