@@ -52,7 +52,7 @@ cd ./bin
   > conda install sqlalchemy
   > conda install pymysql
   > conda install beautiful-soup
-  > conda install pymysql
+  > conda install pyyaml
   ```
 * Clone pydarkstar repository
 * Create pydarkstar shell scripts (see Usage section for more info)
