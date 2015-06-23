@@ -58,7 +58,7 @@ class TestCase01(unittest.TestCase):
         self.ilist.add(*self._test_item1)
         i, fname = tempfile.mkstemp()
         self.ilist.savecsv(fname)
-        with open(fname, 'rb') as handle:
+        with open(fname, 'rU') as handle:
             handle.readline().strip()
             handle.readline().strip()
         try:
@@ -82,7 +82,7 @@ class TestCase01(unittest.TestCase):
 
     def _get_ilist(self, text, ilist):
         i, fname = tempfile.mkstemp()
-        with open(fname, 'wb') as handle:
+        with open(fname, 'w') as handle:
             handle.write(text)
 
         ilist.loadcsv(fname)
@@ -136,7 +136,7 @@ itemid, name # comment 0
         ilist = ItemList()
 
         i, fname = tempfile.mkstemp()
-        with open(fname, 'wb') as handle:
+        with open(fname, 'w') as handle:
             handle.write(text1)
 
         ilist.loadcsv(fname)
@@ -146,7 +146,7 @@ itemid, name # comment 0
             pass
 
         i, fname = tempfile.mkstemp()
-        with open(fname, 'wb') as handle:
+        with open(fname, 'w') as handle:
             handle.write(text2)
 
         ilist.loadcsv(fname)

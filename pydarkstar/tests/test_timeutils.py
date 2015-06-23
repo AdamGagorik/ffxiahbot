@@ -156,10 +156,9 @@ class TestCase05(BaseTest):
         self.assertEqual(dobj1.year, 1971)
 
     def test_kwargs(self):
-        stmp1 = timeutils.timestamp(1971, 1, 2, microsecond=1)
+        stmp1 = timeutils.timestamp(1971, 1, 2)
         dobj1 = timeutils.timestamp_to_datetime(stmp1)
         self.assertTrue(isinstance(dobj1, datetime.datetime))
         self.assertEqual(dobj1.month, 1)
         self.assertEqual(dobj1.day, 2)
         self.assertEqual(dobj1.year, 1971)
-        self.assertEqual(dobj1.microsecond, 1)
