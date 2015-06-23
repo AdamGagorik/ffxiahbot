@@ -20,7 +20,7 @@ class TestSQL(unittest.TestCase):
         self.db = Database.pymysql(**mysql_params)
         try:
             self.db.engine.connect()
-        except sqlalchemy.exc.OperationalError as e:
+        except sqlalchemy.exc.OperationalError:
             logging.exception('SQL')
             self.skipTest('OperationalError')
 

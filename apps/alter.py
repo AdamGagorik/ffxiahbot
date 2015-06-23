@@ -11,72 +11,74 @@ import pydarkstar.itemlist
 import pydarkstar.options
 import pydarkstar.common
 
+
 class Options(pydarkstar.options.Options):
     """
     Reads options from config file, then from command line.
     """
+
     def __init__(self):
         super(Options, self).__init__(config='alter.yaml', description=__doc__)
 
         # logging
-        self.verbose   = False   # error, info, and debug
-        self.silent    = False   # error only
+        self.verbose = False  # error, info, and debug
+        self.silent = False  # error only
 
         # input and output
-        self.ifile     = 'items.csv' # input file name
-        self.ofile     = None        # output file name
-        self.overwrite = False       # overwrite output
-        self.backup    = False       # backup output
-        self.save      = False       # save config
+        self.ifile = 'items.csv'  # input file name
+        self.ofile = None  # output file name
+        self.overwrite = False  # overwrite output
+        self.backup = False  # backup output
+        self.save = False  # save config
 
         # itemids
-        self.all       = False   # all keys
-        self.lambda_   = None    # ids that satisfy test
-        self.match     = None    # names that match regex
-        self.itemids   = []      # explicit list of ids
+        self.all = False  # all keys
+        self.lambda_ = None  # ids that satisfy test
+        self.match = None  # names that match regex
+        self.itemids = []  # explicit list of ids
 
         # commands
-        self.show      = False
-        self.scrub     = False
-        self.set       = []
+        self.show = False
+        self.scrub = False
+        self.set = []
 
         # logging
         self.add_argument('--verbose', action='store_true',
-            help='report debug, info, and error')
+                          help='report debug, info, and error')
         self.add_argument('--silent', action='store_true',
-            help='report error only')
+                          help='report error only')
 
         # output
         self.add_argument(dest='ifile', nargs='?', type=str, default=self.ifile,
-            help='output file stub')
+                          help='output file stub')
         self.add_argument(dest='ofile', nargs='?', type=str, default=self.ofile,
-            help='output file stub')
+                          help='output file stub')
         self.add_argument('--overwrite', action='store_true',
-            help='overwrite output file')
+                          help='overwrite output file')
         self.add_argument('--backup', action='store_true',
-            help='backup output file')
+                          help='backup output file')
         self.add_argument('--save', action='store_true',
-            help='save config file (and exit)')
+                          help='save config file (and exit)')
 
         # itemids selection
         group = self.add_mutually_exclusive_group()
         group.add_argument('--all', action='store_true',
-            help='select all itemids')
+                           help='select all itemids')
         group.add_argument('--lambda', dest='lambda_', type=str, default=self.lambda_, metavar='lambda : True',
-            help='select itemids where lambda evaluates to True')
+                           help='select itemids where lambda evaluates to True')
         group.add_argument('--match', type=str, default=self.match, metavar='.*',
-            help='select itemids where name matches regex')
+                           help='select itemids where name matches regex')
         group.add_argument('--itemids', type=int, nargs='*', action='append', default=self.itemids, metavar='itemids',
-            help='a list of item ids')
+                           help='a list of item ids')
 
         # commands
         group = self.add_mutually_exclusive_group()
         group.add_argument('--show', action='store_true',
-            help='show itemids and exit')
+                           help='show itemids and exit')
         group.add_argument('--scrub', action='store_true',
-            help='redownload data for item')
+                           help='redownload data for item')
         group.add_argument('--set', type=self.parse_tuple, metavar='key=value',
-            help='set column to value for item')
+                           help='set column to value for item')
 
     def parse_args(self, args=None):
         super(Options, self).parse_args(args)
@@ -94,14 +96,15 @@ class Options(pydarkstar.options.Options):
             # ifile=???, ofile=???
             if self.ofile is None:
                 self.ofile = 'items.csv'
-            # ifile=???, ofile=xxx
+                # ifile=???, ofile=xxx
         else:
             self.ifile = os.path.abspath(os.path.expanduser(self.ifile))
             # ifile=xxx, ofile=???
             if self.ofile is None:
                 self.ofile = self.ifile
-            # ifile=xxx, ofile=xxx
+                # ifile=xxx, ofile=xxx
         self.ofile = os.path.abspath(os.path.expanduser(self.ofile))
+
 
 def main(args=None):
     """
@@ -208,8 +211,10 @@ def main(args=None):
     # overwrites if exists, but we checked already
     ilist.savecsv(opts.ofile)
 
+
 def cleanup():
     logging.info('exit\n')
+
 
 if __name__ == '__main__':
     with pydarkstar.logutils.capture():

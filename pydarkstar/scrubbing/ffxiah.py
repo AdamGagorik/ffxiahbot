@@ -50,7 +50,7 @@ class FFXIAHScrubber(Scrubber):
         :type force: bool
         :type threads: int
         :type urls: list
-        :type ids: set
+        :type ids: set, list
         """
         # force a redownload of all data
         if force:

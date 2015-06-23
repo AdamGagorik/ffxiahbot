@@ -11,59 +11,61 @@ import pydarkstar.itemlist
 import pydarkstar.options
 import pydarkstar.common
 
+
 class Options(pydarkstar.options.Options):
     """
     Reads options from config file, then from command line.
     """
+
     def __init__(self):
         super(Options, self).__init__(config='scrub.yaml', description=__doc__)
-        self.verbose   =  False   # error, info, and debug
-        self.silent    =  False   # error only
-        self.stub      =  'items' # output file stub
-        self.overwrite =  False   # overwrite output
-        self.backup    =  False   # backup output
-        self.save      =  False   # save config
-        self.force     =  False   # redownload
-        self.pkl       =  False   # save pkl files
-        self.threads   = -1       # cpu threads during download
-        self.stock01   =  5       # default stock for singles
-        self.stock12   =  5       # default stock for stacks
-        self.itemids   = []       # a list of item ids
-        self.urls      = []       # a list of category urls
+        self.verbose = False  # error, info, and debug
+        self.silent = False  # error only
+        self.stub = 'items'  # output file stub
+        self.overwrite = False  # overwrite output
+        self.backup = False  # backup output
+        self.save = False  # save config
+        self.force = False  # redownload
+        self.pkl = False  # save pkl files
+        self.threads = -1  # cpu threads during download
+        self.stock01 = 5  # default stock for singles
+        self.stock12 = 5  # default stock for stacks
+        self.itemids = []  # a list of item ids
+        self.urls = []  # a list of category urls
 
         # logging
         self.add_argument('--verbose', action='store_true',
-            help='report debug, info, and error')
+                          help='report debug, info, and error')
         self.add_argument('--silent', action='store_true',
-            help='report error only')
+                          help='report error only')
 
         # output
         self.add_argument(dest='stub', nargs='?', type=str, default=self.stub,
-            help='output file stub')
+                          help='output file stub')
         self.add_argument('--overwrite', action='store_true',
-            help='overwrite output file')
+                          help='overwrite output file')
         self.add_argument('--backup', action='store_true',
-            help='backup output file')
+                          help='backup output file')
         self.add_argument('--save', action='store_true',
-            help='save config file (and exit)')
+                          help='save config file (and exit)')
 
         # scrub parameters
         self.add_argument('--force', action='store_true',
-            help='start from scratch')
+                          help='start from scratch')
         self.add_argument('--pkl', action='store_true',
-            help='save pkl files')
+                          help='save pkl files')
         self.add_argument('--threads', type=int, default=self.threads, metavar=self.threads,
-            help='number of cpu threads to use')
+                          help='number of cpu threads to use')
         self.add_argument('--urls', type=str, nargs='*', action='append', default=self.urls, metavar='url',
-            help='a list of category urls')
+                          help='a list of category urls')
         self.add_argument('--itemids', type=int, nargs='*', action='append', default=self.itemids, metavar='itemids',
-            help='a list of item ids')
+                          help='a list of item ids')
 
         # defaults
         self.add_argument('--stock01', type=int, default=self.stock01, metavar=self.stock01,
-            help='default stock for singles')
+                          help='default stock for singles')
         self.add_argument('--stock12', type=int, default=self.stock12, metavar=self.stock12,
-            help='default stock for stacks')
+                          help='default stock for stacks')
 
         self.exclude('itemids')
         self.exclude('urls')
@@ -92,6 +94,7 @@ class Options(pydarkstar.options.Options):
 
         if not self.itemids:
             self.itemids = None
+
 
 def main():
     """
@@ -139,8 +142,10 @@ def main():
     # overwrites if exists, but we checked already
     ilist.savecsv(oname)
 
+
 def cleanup():
     logging.info('exit\n')
+
 
 if __name__ == '__main__':
     with pydarkstar.logutils.capture():

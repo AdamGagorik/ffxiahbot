@@ -8,23 +8,24 @@ lfmt = '[%(asctime)s][%(process)5d][%(levelname)-5s]: %(message)s'
 dfmt = "%Y-%m-%d %H:%M:%S"
 logging.basicConfig(level=logging.INFO, format=lfmt, datefmt=dfmt)
 
+
 def chmod(path):
     os.chmod(path,
-        # user
-        stat.S_IRUSR | # read
-        stat.S_IWUSR | # write
-        stat.S_IXUSR | # execute
+             # user
+             stat.S_IRUSR |  # read
+             stat.S_IWUSR |  # write
+             stat.S_IXUSR |  # execute
 
-        # group
-        stat.S_IRGRP | # read
-        stat.S_IWGRP | # write
-        stat.S_IXGRP | # execute
+             # group
+             stat.S_IRGRP |  # read
+             stat.S_IWGRP |  # write
+             stat.S_IXGRP |  # execute
 
-        # other
-        stat.S_IROTH | # read
-       #stat.S_IWOTH | # write
-        stat.S_IXOTH   # execute
-    )
+             # other
+             stat.S_IROTH |  # read
+             # stat.S_IWOTH | # write
+             stat.S_IXOTH  # execute
+             )
 
 # set paths
 work = os.getcwd()
@@ -49,18 +50,18 @@ for root, dirs, files in os.walk(adir):
 
 # batch script templates
 LTEMPLATE = \
-r"""
-#!/bin/bash
-export PYTHONPATH=$PYTHONPATH:{path}
-{interp} {script} $*
-"""[1:-1]
+    r"""
+    #!/bin/bash
+    export PYTHONPATH=$PYTHONPATH:{path}
+    {interp} {script} $*
+    """[1:-1]
 
 WTEMPLATE = \
-r"""
-@ECHO OFF
-set PYTHONPATH=%PYTHONPATH%;{path}
-{interp} {script} %*
-"""[1:-1]
+    r"""
+    @ECHO OFF
+    set PYTHONPATH=%PYTHONPATH%;{path}
+    {interp} {script} %*
+    """[1:-1]
 
 # select template based on platform
 if platform in ['linux', 'linux2', 'darwin']:
@@ -84,7 +85,6 @@ if not os.path.exists(bdir):
 # create app scripts
 logging.info('creating batch scripts')
 for app in apps:
-
     # create output name
     base = os.path.basename(app)
     stub, ext = os.path.splitext(base)
@@ -94,11 +94,12 @@ for app in apps:
     logging.info(oname)
     with open(oname, 'wb') as handle:
         handle.write(template.format(path=work,
-            interp='python', script=app))
+                                     interp='python', script=app))
 
     chmod(oname)
 
 # copy items from data folder
+# noinspection PyRedeclaration
 root, dirs, files = next(os.walk(ddir))
 for f in files:
     opath = os.path.join(root, f)
