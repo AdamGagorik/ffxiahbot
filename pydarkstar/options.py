@@ -6,16 +6,24 @@ import os
 import re
 
 from .darkobject import DarkObject
+from .logutils import basic_config
+basic_config(verbose=True)
 
 
-class Options(DarkObject):
-    """
-    A Namespace object to use with argparse module.
-    """
+class MetaOptions(type):
+    def __call__(cls, *args, **kwargs):
+        obj = type.__call__(cls, *args, **kwargs)
+        getattr(obj, '__after__', lambda: 1)()
+        return obj
+
+
+class BaseOptions(DarkObject):
     regex_tuple = re.compile('([^=]+)=([^=]+)')
+    __metaclass__ = MetaOptions
 
     def __init__(self, config='config.yaml', description=None):
-        super(Options, self).__init__()
+        super(BaseOptions, self).__init__()
+        logging.debug('BaseOptions.__init__')
         self._ordered_keys = []
         self._exclude_keys = set()
 
@@ -24,11 +32,44 @@ class Options(DarkObject):
                                                description=description,
                                                formatter_class=argparse.RawDescriptionHelpFormatter)
 
+        # config file option
         self.config = config
 
         # config file
         self._parent.add_argument('--config', type=str, default=self.config, metavar=self.config,
                                   help='configuration file name')
+
+    def __after__(self):
+        results, remaining_args = self._parse_known_args()
+        self._parse_config()
+        self._parse_args(args=remaining_args)
+
+    def _parse_known_args(self, args=None):
+        return self._parent.parse_known_args(args, namespace=self)
+
+    def _parse_config(self):
+        self.load()
+        self._parser.set_defaults(**self.dict())
+
+    def _parse_args(self, args=None):
+        self._parser.parse_args(args, namespace=self)
+
+    def __setattr__(self, key, value):
+        super(BaseOptions, self).__setattr__(key, value)
+        if not key.startswith('_'):
+            if key not in self._ordered_keys:
+                self._ordered_keys.append(key)
+
+    def __setitem__(self, key, value):
+        if key not in self._ordered_keys:
+            raise KeyError('unknown key : %s' % key)
+        setattr(self, key, value)
+
+    def __getitem__(self, item):
+        try:
+            return super(BaseOptions, self).__getattribute__(item)
+        except AttributeError:
+            raise KeyError('unknown key : %s' % item)
 
     def add_argument(self, *args, **kwargs):
         """
@@ -41,32 +82,6 @@ class Options(DarkObject):
         Add argument group.
         """
         return self._parser.add_mutually_exclusive_group()
-
-    def parse_args(self, args=None):
-        """
-        Parse config file and then command line.
-        """
-        results, remaining_args = self._parent.parse_known_args(args, namespace=self)
-        self.load()
-        self._parser.set_defaults(**self.dict())
-        self._parser.parse_args(remaining_args, namespace=self)
-
-    def __setattr__(self, key, value):
-        super(Options, self).__setattr__(key, value)
-        if not key.startswith('_'):
-            if key not in self._ordered_keys:
-                self._ordered_keys.append(key)
-
-    def __setitem__(self, key, value):
-        if key not in self._ordered_keys:
-            raise KeyError('unknown key : %s' % key)
-        setattr(self, key, value)
-
-    def __getitem__(self, item):
-        try:
-            return super(Options, self).__getattribute__(item)
-        except AttributeError:
-            raise KeyError('unknown key : %s' % item)
 
     def include(self, key):
         """
@@ -81,42 +96,6 @@ class Options(DarkObject):
         """
         self._exclude_keys.add(key)
         self._exclude_keys.intersection_update(self._ordered_keys)
-
-    @property
-    def keys(self):
-        """
-        Return the ordered keys.
-        """
-        return self._ordered_keys
-
-    def log_values(self, level=logging.DEBUG, fmt='%-10s = %s'):
-        """
-        Write values to logger.
-        """
-        for k in self.keys:
-            v = self[k]
-            if k in self._exclude_keys:
-                self.log(level, fmt, k, '????')
-            else:
-                self.log(level, fmt, k, v)
-
-    def update(self, **kwargs):
-        """
-        Update values.
-        """
-        for k in kwargs:
-            v = kwargs[k]
-
-            if not hasattr(self, k):
-                logging.error('ignoring key in update: {}'.format(k))
-            else:
-                t = type(getattr(self, k))
-
-                if not isinstance(v, t):
-                    warnings.warn('key={} is {}, expecting {}'.format(
-                        k, type(v).__name__, t.__name__))
-
-                self[k] = t(v)
 
     def load(self, stream=None, **kwargs):
         """
@@ -159,18 +138,54 @@ class Options(DarkObject):
                 if k not in self._exclude_keys:
                     yaml.dump({k: self[k]}, stream, default_flow_style=False)
 
-    def __iter__(self):
+    def update(self, **kwargs):
         """
-        Iterate over keys.
+        Update values.
         """
-        for k in self._ordered_keys:
-            yield k
+        for k in kwargs:
+            v = kwargs[k]
+
+            if not hasattr(self, k):
+                logging.error('ignoring key in update: {}'.format(k))
+            else:
+                t = type(getattr(self, k))
+
+                if not isinstance(v, t):
+                    warnings.warn('key={} is {}, expecting {}'.format(
+                        k, type(v).__name__, t.__name__))
+
+                self[k] = t(v)
 
     def dict(self):
         """
         Return namespace as python dict.
         """
         return {k: self[k] for k in self._ordered_keys if k not in self._exclude_keys}
+
+    def log_values(self, level=logging.DEBUG, fmt='%-10s = %s'):
+        """
+        Write values to logger.
+        """
+        for k in self.keys:
+            v = self[k]
+            if k in self._exclude_keys:
+                self.log(level, fmt, k, '????')
+            else:
+                self.log(level, fmt, k, v)
+
+    @property
+    def keys(self):
+        """
+        Return the ordered keys.
+        """
+        return self._ordered_keys
+
+    def __iter__(self):
+        """
+        Iterate over keys.
+        """
+        for k in self._ordered_keys:
+            yield k
 
     def parse_tuple(self, string):
         # make sure string is of the form key=value
@@ -192,4 +207,4 @@ class Options(DarkObject):
 
 
 if __name__ == '__main__':
-    pass
+    opts = BaseOptions()

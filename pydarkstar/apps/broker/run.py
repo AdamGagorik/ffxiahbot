@@ -20,11 +20,7 @@ def main():
     """
     # get options
     opts = Options()
-    opts.parse_args()
     logutils.basic_config(verbose=opts.verbose, silent=opts.silent, fname='pydarkstar.log')
-    logging.info('start')
-
-    # log options
     opts.log_values(level=logging.INFO)
 
     # connect to database
@@ -50,12 +46,7 @@ def main():
     for f in opts.data:
         idata.loadcsv(f)
 
-    if opts.refill:
-        logging.info('restocking...')
-        manager.restock_items(itemdata=idata)
-        logging.info('exit after restock')
-        return
-
+    # main loop
     logging.info('starting main loop...')
     start = datetime.datetime.now()
     last = start

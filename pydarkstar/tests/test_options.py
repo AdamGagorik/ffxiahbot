@@ -2,10 +2,10 @@ import unittest
 
 import_error = False
 try:
-    from ..options import Options
+    from ..options import BaseOptions
 except ImportError:
     import_error = True
-    Options = None
+    BaseOptions = None
 
 
 class TestCase00(unittest.TestCase):
@@ -18,4 +18,4 @@ class TestCase01(unittest.TestCase):
         if import_error:
             self.skipTest('ImportError')
         else:
-            self.opts = Options()
+            self.opts = BaseOptions()

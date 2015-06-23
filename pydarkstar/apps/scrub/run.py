@@ -20,11 +20,7 @@ def main():
     """
     # get options
     opts = Options()
-    opts.parse_args()
     logutils.basic_config(verbose=opts.verbose, silent=opts.silent, fname='pydarkstar.log')
-    logging.info('start')
-
-    # log options
     opts.log_values(level=logging.INFO)
 
     # check output file name validity
@@ -37,8 +33,8 @@ def main():
 
     # scub data
     scrubber = ffxiah.FFXIAHScrubber()
-    scrubber.save = opts.pkl
-    data = scrubber.scrub(force=opts.force, threads=opts.threads, urls=opts.urls, ids=opts.itemids)
+    scrubber.save = False
+    data = scrubber.scrub(force=True, threads=-1, urls=opts.urls, ids=opts.itemids)
 
     # create item list from data
     ilist = ItemList()

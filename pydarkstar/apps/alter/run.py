@@ -14,30 +14,28 @@ from ...scrubbing import ffxiah
 from ...itemlist import ItemList
 
 
-def main(args=None):
+def main():
     """
     Main function.
     """
     # get options
     opts = Options()
-    opts.parse_args(args)
     logutils.basic_config(verbose=opts.verbose, silent=opts.silent, fname='pydarkstar.log')
-    logging.info('start')
-
-    # log options
     opts.log_values(level=logging.INFO)
 
     # check output file name validity
+    oname = os.path.abspath('{}.csv'.format(re.sub(r'\.csv$', '', opts.stub)))
     if not opts.overwrite and not opts.backup:
-        if os.path.exists(opts.ofile):
-            logging.error('output file already exists!\n\t%s', opts.ofile)
+        if os.path.exists(oname):
+            logging.error('output file already exists!\n\t%s', oname)
             logging.error('please use --overwrite or --backup')
             exit(-1)
 
     # load data
+    logging.info('loading item data...')
     ilist = ItemList()
-    if opts.ifile:
-        ilist.loadcsv(opts.ifile)
+    for f in opts.data:
+        ilist.loadcsv(f)
     ilist.info('loaded %d items', len(ilist))
 
     # collect itemids
@@ -107,10 +105,10 @@ def main(args=None):
 
     # backup file
     if opts.backup:
-        common.backup(opts.ofile, copy=True)
+        common.backup(oname, copy=True)
 
     # overwrites if exists, but we checked already
-    ilist.savecsv(opts.ofile)
+    ilist.savecsv(oname)
 
 
 def cleanup():
