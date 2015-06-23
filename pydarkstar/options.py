@@ -95,7 +95,10 @@ class Options(DarkObject):
         """
         for k in self.keys:
             v = self[k]
-            self.log(level, fmt, k, v)
+            if k in self._exclude_keys:
+                self.log(level, fmt, k, '????')
+            else:
+                self.log(level, fmt, k, v)
 
     def update(self, **kwargs):
         """
@@ -105,15 +108,15 @@ class Options(DarkObject):
             v = kwargs[k]
 
             if not hasattr(self, k):
-                warnings.warn('key={} is unknown'.format(k))
+                logging.error('ignoring key in update: {}'.format(k))
+            else:
+                t = type(getattr(self, k))
 
-            t = type(getattr(self, k))
+                if not isinstance(v, t):
+                    warnings.warn('key={} is {}, expecting {}'.format(
+                        k, type(v).__name__, t.__name__))
 
-            if not isinstance(v, t):
-                warnings.warn('key={} is {}, expecting {}'.format(
-                    k, type(v).__name__, t.__name__))
-
-            self[k] = t(v)
+                self[k] = t(v)
 
     def load(self, stream=None, **kwargs):
         """
