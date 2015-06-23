@@ -14,12 +14,21 @@ fmt['price12'] = '{:>16}'
 fmt['stock12'] = '{:>7}'
 
 
-def titles():
-    return ', '.join([fmt[k].format(k) for k in fmt.keys()]) + '\n'
+def title_str():
+    objs = []
+    for key in fmt.keys():
+        objs.append(fmt[key].format(key))
+
+    return ', '.join(objs) + '\n'
 
 
-def values(*objs):
-    return ', '.join([fmt[fmt.keys()[i]].format(objs[i]) for i in range(len(objs))]) + '\n'
+def value_str(item):
+    objs = []
+    for key in fmt.keys():
+        value = getattr(item, key, None)
+        objs.append(fmt[key].format(value))
+
+    return ', '.join(objs) + '\n'
 
 
 _template = \

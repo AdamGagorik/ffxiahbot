@@ -67,7 +67,7 @@ class ItemList(DarkObject):
         regex_f = re.compile(regex_f, re.IGNORECASE)
 
         self.info('load %s', fname)
-        with open(fname, 'rb') as handle:
+        with open(fname, 'rU') as handle:
             # first line is item titles
             line = handle.readline()
 
@@ -76,7 +76,7 @@ class ItemList(DarkObject):
 
             # split into tokens
             keys = line.split(',')
-            keys = map(lambda x: x.strip().lower(), keys)
+            keys = list(map(lambda x: x.strip().lower(), keys))
 
             # make sure keys are valid
             for k in keys:
@@ -85,7 +85,7 @@ class ItemList(DarkObject):
 
             # check for primary key
             if 'itemid' not in keys:
-                raise RuntimeError('missing itemid column')
+                raise RuntimeError('missing itemid column:\n\t%s' % keys)
 
             # other lines are items
             line = handle.readline()
@@ -100,7 +100,7 @@ class ItemList(DarkObject):
                 # ignore empty lines
                 if line:
                     # split into tokens
-                    tokens = map(lambda x: x.strip(), line.split(','))
+                    tokens = list(map(lambda x: x.strip(), line.split(',')))
 
                     # check for new title line
                     if set(tokens).issubset(item.Item.keys):
@@ -108,7 +108,7 @@ class ItemList(DarkObject):
 
                         # check for primary key
                         if 'itemid' not in keys:
-                            raise RuntimeError('missing itemid column')
+                            raise RuntimeError('missing itemid column:\n\t%s' % keys)
 
                     # validate line
                     elif set(tokens).intersection(item.Item.keys):
@@ -154,11 +154,11 @@ class ItemList(DarkObject):
         else:
             self.info('save %s', fname)
 
-        with open(fname, 'wb') as handle:
+        with open(fname, 'w') as handle:
             for j, i in enumerate(self.items):
                 if j % itertitle == 0:
-                    handle.write(item.titles())
-                handle.write(item.values(*self.items[i].values))
+                    handle.write(item.title_str())
+                handle.write(item.value_str(self.items[i]))
 
 
 if __name__ == '__main__':
