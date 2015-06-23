@@ -40,22 +40,6 @@ def main():
     manager.seller.seller_name = opts.name
     manager.buyer.buyer_name = opts.name
 
-    if opts.clear:
-        # clear all items
-        if opts.all:
-            # really?
-            if not opts.force:
-                raise RuntimeError('clearing all items from auction house is dangerous. use --force')
-            else:
-                manager.cleaner.clear(seller=None)
-        # clear seller items
-        else:
-            manager.cleaner.clear(seller=manager.seller.seller)
-
-        # exit after clearing
-        logging.info('exit after clear')
-        return
-
     # make sure there is data
     if not opts.data:
         raise RuntimeError('missing item data CSV!')

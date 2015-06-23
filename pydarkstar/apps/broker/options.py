@@ -27,11 +27,6 @@ class Options(options.Options):
         self.password = ''
         self.fail = False  # fail on SQL errors
 
-        # cleaning
-        self.clear = False  # clear items sold by broker
-        self.all = False  # clear all items
-        self.force = False  # clear all items check
-
         # selling
         self.name = 'Zissou'  # seller name
         self.restock = 3600  # restock tick
@@ -62,14 +57,6 @@ class Options(options.Options):
         self.exclude('password')
         self.add_argument('--fail', action='store_true',
                           help='fail on SQL errors')
-
-        # cleaning
-        self.add_argument('--clear', action='store_true',
-                          help='clear items sold by seller')
-        self.add_argument('--all', action='store_true',
-                          help='clear *all* items')
-        self.add_argument('--force', action='store_true',
-                          help='clear *all* items')
 
         # selling
         self.add_argument('--name', type=str, default=self.name,
