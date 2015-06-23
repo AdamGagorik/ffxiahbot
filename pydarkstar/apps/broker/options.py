@@ -72,8 +72,7 @@ class Options(options.Options):
 
     def parse_args(self, args=None):
         super(Options, self).parse_args(args)
-        self.data = set(self.data)
-        self.data = list(self.data)
+        self.data = list(set(self.data))
 
 
 if __name__ == '__main__':
