@@ -1,0 +1,27 @@
+# logging
+verbose: true
+silent: false
+
+# sql
+hostname: 127.0.0.1
+database: dspdb
+username: root
+password: ????
+fail: true
+
+# input
+data: ['items.csv']
+
+# output
+stub: items
+overwrite: false
+backup: true
+
+# broker
+name: Zissou
+restock: 3600
+tick: 30
+
+# scrub
+stock01: 5
+stock12: 5
