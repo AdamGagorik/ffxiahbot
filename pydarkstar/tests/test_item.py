@@ -1,14 +1,16 @@
 import unittest
 import logging
+
 logging.getLogger().setLevel(logging.DEBUG)
 
 from ..item import Item
 
+
 class TestCase(unittest.TestCase):
     def test_init(self):
         i0 = Item(0, 'A')
-        self.assertEqual(i0.itemid,  0 )
-        self.assertEqual(i0.name  , 'A')
+        self.assertEqual(i0.itemid, 0)
+        self.assertEqual(i0.name, 'A')
 
     def test_price01(self):
         Item(0, price01=+1)

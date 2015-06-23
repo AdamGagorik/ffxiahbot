@@ -6,12 +6,14 @@ import logging
 
 from .darkobject import DarkObject
 
+
 class Database(DarkObject):
     """
     Database connection using sqlalchemy.
 
     :param url: sql database connection url
     """
+
     def __init__(self, url, **kwargs):
         super(Database, self).__init__()
 
@@ -82,7 +84,7 @@ class Database(DarkObject):
         Create connection url.
         """
         return '{}://{u}:{p}@{h}/{d}'.format('+'.join([dialect, driver]),
-            h=hostname, d=database, u=username, p=password)
+                                             h=hostname, d=database, u=username, p=password)
 
     def __str__(self):
         return repr(self.engine)

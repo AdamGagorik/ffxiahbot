@@ -1,21 +1,22 @@
 from .scrubber import Scrubber
 import warnings
-import logging
 import pickle
 import re
 import os
+
 
 class FFXIAHScrubber(Scrubber):
     """
     Get item data from ffxiah.com
     """
-    def __init__(self, *args, **kwargs):
-        super(FFXIAHScrubber, self).__init__(*args, **kwargs)
+
+    def __init__(self):
+        super(FFXIAHScrubber, self).__init__()
 
         # regular expressions
         self._regex_category = re.compile(r'/browse/(\d+)/?.*')
-        self._regex_item     = re.compile(r'/item/(\d+)')
-        self._regex_name     = re.compile(r'(.*?)\s*-?\s*(FFXIAH)?\.(com)?')
+        self._regex_item = re.compile(r'/item/(\d+)')
+        self._regex_name = re.compile(r'(.*?)\s*-?\s*(FFXIAH)?\.(com)?')
 
         # pickled file names
         self._pkl_item_ids = 'scrub_item_list.pkl'
@@ -25,6 +26,7 @@ class FFXIAHScrubber(Scrubber):
     @property
     def save(self):
         return self._save
+
     @save.setter
     def save(self, value):
         self._save = bool(value)
@@ -70,7 +72,7 @@ class FFXIAHScrubber(Scrubber):
                 self.debug('using passed ids')
                 ids = set(ids)
 
-                if not urls is None:
+                if urls is not None:
                     warnings.warn('passed urls ignored')
 
             # from internet
@@ -88,7 +90,7 @@ class FFXIAHScrubber(Scrubber):
             if os.path.exists(self._pkl_item_dat):
                 data = self._load_item_dat()
 
-                if not ids is None:
+                if ids is not None:
                     warnings.warn('passed ids ignored')
 
                 if os.path.exists(self._pkl_item_ids):
@@ -119,7 +121,7 @@ class FFXIAHScrubber(Scrubber):
                 self.debug('using passed ids')
                 ids = set(ids)
 
-                if not urls is None:
+                if urls is not None:
                     warnings.warn('passed urls ignored')
 
             # from file
@@ -135,8 +137,6 @@ class FFXIAHScrubber(Scrubber):
             self.debug('item count = %d', len(ids))
             self.debug('data count = %d', len(data))
             return data
-
-        raise RuntimeError('can not load data')
 
     def _load_item_ids(self):
         """
@@ -213,7 +213,7 @@ class FFXIAHScrubber(Scrubber):
                     self.debug('ignoring %s', href)
 
         # sort the urls
-        urls.sort(key=lambda x : map(float, re.findall('\d+', x)))
+        urls.sort(key=lambda x: map(float, re.findall('\d+', x)))
 
         return urls
 
@@ -267,26 +267,26 @@ class FFXIAHScrubber(Scrubber):
             # look for 'a' tag
             a = row.find('a')
 
-            if not a is None:
+            if a is not None:
                 # look for href attr
                 href = a.get('href')
 
-                if not href is None:
+                if href is not None:
                     # make sure href matches /item/{number}
                     try:
                         item = int(self._regex_item.match(href).group(1))
                         items.add(item)
-                        #logging.debug('found %s', href)
+                        # logging.debug('found %s', href)
 
                     except (ValueError, IndexError):
                         self.exception('failed to extract itemid!\n\n\trow %d of %s\n\n%s\n\n',
-                            j, url, row)
+                                       j, url, row)
                 else:
                     self.error('failed to extract href!\n\n\trow %d of %s\n\n%s\n\n',
-                        j, url, row)
+                               j, url, row)
             else:
                 self.error("failed to extract 'a' tag!\n\n\trow %d of %s\n\n%s\n\n",
-                    j, url, row)
+                           j, url, row)
 
         # make sure we found something
         if not items:
@@ -303,7 +303,7 @@ class FFXIAHScrubber(Scrubber):
         :param itemids: item numbers
         :param threads: number of cpu threads to use
 
-        :type itemids: list
+        :type itemids: list, set
         :type threads: int
         """
         self.info('getting data')
@@ -319,10 +319,11 @@ class FFXIAHScrubber(Scrubber):
         if threads > 1:
             from multiprocessing.dummy import Pool as ThreadPool
             import itertools
+
             params = zip(itemids, range(len(itemids)), itertools.repeat(len(itemids)))
             pool = ThreadPool(threads)
             data = pool.map(self._get_item_data_for_itemid_map, params)
-            data = {d['itemid'] : d for d in data}
+            data = {d['itemid']: d for d in data}
         else:
             data = {}
             for i, itemid in enumerate(itemids):
@@ -343,7 +344,7 @@ class FFXIAHScrubber(Scrubber):
         else:
             percent = 0.0
 
-        data = {'name' : None, 'itemid' : itemid}
+        data = {'name': None, 'itemid': itemid}
         url = self._create_item_url(itemid)
 
         # create tag soup
@@ -392,7 +393,6 @@ class FFXIAHScrubber(Scrubber):
         :param data: dictionary
         :type data: dict
         """
-        old_key = u'stack\xa0price'
         new_key = r'stack price'
 
         for key in data.keys():
@@ -400,6 +400,7 @@ class FFXIAHScrubber(Scrubber):
                 data[new_key] = data[key]
 
         return data
+
 
 def extract(data, itemid, **kwargs):
     """
@@ -431,14 +432,15 @@ def extract(data, itemid, **kwargs):
     try:
         name = data[itemid]['name']
     except KeyError:
-        name=None
+        name = None
 
     result = dict(name=name,
-        price01=price01, stock01=5, sell01=sell01, buy01=True,
-        price12=price12, stock12=5, sell12=sell12, buy12=True)
+                  price01=price01, stock01=5, sell01=sell01, buy01=True,
+                  price12=price12, stock12=5, sell12=sell12, buy12=True)
     result.update(**kwargs)
 
     return result
+
 
 if __name__ == '__main__':
     pass

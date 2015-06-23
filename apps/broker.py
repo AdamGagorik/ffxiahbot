@@ -107,7 +107,7 @@ class Options(pydarkstar.options.Options):
 
         # find data files
         if self.find:
-            found = list(pydarkstar.common.findFiles(
+            found = list(pydarkstar.common.find_files(
                 top=os.getcwd(), regex=r'.*\.csv', r=False, ignorecase=True))
             self.data.update(found)
 
@@ -120,7 +120,7 @@ def main():
     # get options
     opts = Options()
     opts.parse_args()
-    pydarkstar.logutils.basicConfig(
+    pydarkstar.logutils.basic_config(
         verbose=opts.verbose, silent=opts.silent, fname='broker.log')
     logging.info('start')
 
@@ -174,7 +174,7 @@ def main():
 
     if opts.refill:
         logging.info('restocking...')
-        manager.restockItems(itemdata=idata)
+        manager.restock_items(itemdata=idata)
         logging.info('exit after restock')
         return
 
@@ -190,11 +190,11 @@ def main():
 
         if delta >= opts.restock:
             logging.debug('restocking...')
-            manager.restockItems(itemdata=idata)
+            manager.restock_items(itemdata=idata)
             last = datetime.datetime.now()
 
         # buy items
-        manager.buyItems(itemdata=idata)
+        manager.buy_items(itemdata=idata)
 
         # sleep until next tick
         logging.debug('wait=%012.1f s', opts.tick)

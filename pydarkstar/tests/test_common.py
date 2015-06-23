@@ -1,9 +1,11 @@
 import unittest
 import logging
+
 logging.getLogger().setLevel(logging.DEBUG)
 
 from .. import common
 import os
+
 
 class TestCase(unittest.TestCase):
     def test_backup1(self):

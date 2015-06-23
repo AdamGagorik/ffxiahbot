@@ -100,7 +100,7 @@ def main():
     # get options
     opts = Options()
     opts.parse_args()
-    pydarkstar.logutils.basicConfig(
+    pydarkstar.logutils.basic_config(
         verbose=opts.verbose, silent=opts.silent, fname='scrub.log')
     logging.info('start')
 

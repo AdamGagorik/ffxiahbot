@@ -7,6 +7,7 @@ import re
 
 from .darkobject import DarkObject
 
+
 class Options(DarkObject):
     """
     A Namespace object to use with argparse module.
@@ -20,13 +21,14 @@ class Options(DarkObject):
 
         self._parent = argparse.ArgumentParser(add_help=False)
         self._parser = argparse.ArgumentParser(parents=[self._parent],
-            description=description, formatter_class=argparse.RawDescriptionHelpFormatter)
+                                               description=description,
+                                               formatter_class=argparse.RawDescriptionHelpFormatter)
 
-        self.config  = config
+        self.config = config
 
         # config file
         self._parent.add_argument('--config', type=str, default=self.config, metavar=self.config,
-            help='configuration file name')
+                                  help='configuration file name')
 
     def add_argument(self, *args, **kwargs):
         """
@@ -52,11 +54,11 @@ class Options(DarkObject):
     def __setattr__(self, key, value):
         super(Options, self).__setattr__(key, value)
         if not key.startswith('_'):
-            if not key in self._ordered_keys:
+            if key not in self._ordered_keys:
                 self._ordered_keys.append(key)
 
     def __setitem__(self, key, value):
-        if not key in self._ordered_keys:
+        if key not in self._ordered_keys:
             raise KeyError('unknown key : %s' % key)
         setattr(self, key, value)
 
@@ -146,13 +148,13 @@ class Options(DarkObject):
             self.debug('save %s', self.config)
             with open(self.config, 'wb') as handle:
                 for k in self._ordered_keys:
-                    if not k in self._exclude_keys:
-                        yaml.dump({ k : self[k] }, handle, default_flow_style=False)
+                    if k not in self._exclude_keys:
+                        yaml.dump({k: self[k]}, handle, default_flow_style=False)
         else:
             self.debug('save %s', stream)
             for k in self._ordered_keys:
-                if not k in self._exclude_keys:
-                    yaml.dump({ k : self[k] }, stream, default_flow_style=False)
+                if k not in self._exclude_keys:
+                    yaml.dump({k: self[k]}, stream, default_flow_style=False)
 
     def __iter__(self):
         """
@@ -165,7 +167,7 @@ class Options(DarkObject):
         """
         Return namespace as python dict.
         """
-        return {k : self[k] for k in self._ordered_keys if not k in self._exclude_keys}
+        return {k: self[k] for k in self._ordered_keys if k not in self._exclude_keys}
 
     def parse_tuple(self, string):
         # make sure string is of the form key=value
@@ -184,6 +186,7 @@ class Options(DarkObject):
 
         # return key, value tuple
         return k, v
+
 
 if __name__ == '__main__':
     pass

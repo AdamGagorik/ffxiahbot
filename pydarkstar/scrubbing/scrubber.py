@@ -6,9 +6,10 @@ try:
 except ImportError:
     from urllib import urlopen
 
+
 class Scrubber(DarkObject):
-    def __init__(self, *args, **kwargs):
-        super(Scrubber, self).__init__(*args, **kwargs)
+    def __init__(self):
+        super(Scrubber, self).__init__()
 
     def scrub(self):
         """
@@ -27,6 +28,7 @@ class Scrubber(DarkObject):
         handle = urlopen(url)
         s = BeautifulSoup(handle.read())
         return s
+
 
 if __name__ == '__main__':
     pass

@@ -8,7 +8,7 @@ class TestCase0(unittest.TestCase):
 
     def test_pydarkstar_logutils(self):
         import pydarkstar.logutils
-        pydarkstar.logutils.setDebug()
+        pydarkstar.logutils.set_debug()
         logging.debug(pydarkstar.logutils.__name__)
 
 class TestCase1(unittest.TestCase):

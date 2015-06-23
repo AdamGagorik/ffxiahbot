@@ -4,10 +4,12 @@ import collections
 import re
 import os
 
+
 class ItemList(DarkObject):
     """
     Container for Item objects.
     """
+
     def __init__(self):
         super(ItemList, self).__init__()
         self.items = collections.OrderedDict()
@@ -56,13 +58,13 @@ class ItemList(DarkObject):
 
         :param fname: name of file
         """
-        regex_C = re.compile(r'#.*$')
+        regex_c = re.compile(r'#.*$')
 
-        regex_T = '[{0}{1}]?True[{0}{1}]?'.format('"', "'")
-        regex_T = re.compile(regex_T, re.IGNORECASE)
+        regex_t = '[{0}{1}]?True[{0}{1}]?'.format('"', "'")
+        regex_t = re.compile(regex_t, re.IGNORECASE)
 
-        regex_F = '[{0}{1}]?False[{0}{1}]?'.format('"', "'")
-        regex_F = re.compile(regex_F, re.IGNORECASE)
+        regex_f = '[{0}{1}]?False[{0}{1}]?'.format('"', "'")
+        regex_f = re.compile(regex_f, re.IGNORECASE)
 
         self.info('load %s', fname)
         with open(fname, 'rb') as handle:
@@ -70,42 +72,42 @@ class ItemList(DarkObject):
             line = handle.readline()
 
             # ignore comments
-            line = regex_C.sub('', line).strip()
+            line = regex_c.sub('', line).strip()
 
             # split into tokens
             keys = line.split(',')
-            keys = map(lambda x : x.strip().lower(), keys)
+            keys = map(lambda x: x.strip().lower(), keys)
 
             # make sure keys are valid
             for k in keys:
-                if not k in item.Item.keys:
+                if k not in item.Item.keys:
                     raise RuntimeError('unknown column: %s' % k)
 
             # check for primary key
-            if not 'itemid' in keys:
+            if 'itemid' not in keys:
                 raise RuntimeError('missing itemid column')
 
             # other lines are items
             line = handle.readline()
             while line:
                 # remove comments
-                line = regex_C.sub('', line).strip()
+                line = regex_c.sub('', line).strip()
 
                 # fix True and False
-                line = regex_T.sub('1', line)
-                line = regex_F.sub('0', line)
+                line = regex_t.sub('1', line)
+                line = regex_f.sub('0', line)
 
                 # ignore empty lines
                 if line:
                     # split into tokens
-                    tokens = map(lambda x : x.strip(), line.split(','))
+                    tokens = map(lambda x: x.strip(), line.split(','))
 
                     # check for new title line
                     if set(tokens).issubset(item.Item.keys):
                         keys = tokens
 
                         # check for primary key
-                        if not 'itemid' in keys:
+                        if 'itemid' not in keys:
                             raise RuntimeError('missing itemid column')
 
                     # validate line
@@ -130,7 +132,7 @@ class ItemList(DarkObject):
                             tokens[i] = token
 
                         # map values
-                        kwargs = { k : None for k in keys }
+                        kwargs = {k: None for k in keys}
                         for i in range(len(tokens)):
                             kwargs[keys[i]] = tokens[i]
 
@@ -157,6 +159,7 @@ class ItemList(DarkObject):
                 if j % itertitle == 0:
                     handle.write(item.titles())
                 handle.write(item.values(*self.items[i].values))
+
 
 if __name__ == '__main__':
     pass

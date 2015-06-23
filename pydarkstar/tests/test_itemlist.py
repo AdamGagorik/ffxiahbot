@@ -1,11 +1,13 @@
 import unittest
 import logging
+
 logging.getLogger().setLevel(logging.DEBUG)
 
 from ..itemlist import ItemList
 from ..item import Item
 import tempfile
 import os
+
 
 class TestCase(unittest.TestCase):
     def setUp(self):
@@ -80,7 +82,7 @@ class TestCase(unittest.TestCase):
 
     def test_loadcsv2(self):
         text = \
-"""
+            """
 itemid, name # comment 0
      0,    A
      2,    B
@@ -93,14 +95,14 @@ itemid, name, price01
         self.assertEqual(self.ilist[2].name, 'B')
         self.assertEqual(self.ilist[4].name, 'C')
         self.assertEqual(self.ilist[6].name, 'D')
-        self.assertEqual(self.ilist[0].price01,  1)
-        self.assertEqual(self.ilist[2].price01,  1)
-        self.assertEqual(self.ilist[4].price01,  1)
+        self.assertEqual(self.ilist[0].price01, 1)
+        self.assertEqual(self.ilist[2].price01, 1)
+        self.assertEqual(self.ilist[4].price01, 1)
         self.assertEqual(self.ilist[6].price01, 10)
 
     def test_loadcsv3(self):
         text = \
-"""
+            """
 itemid, price01
      0,    -1.0
 """[1:-1]
@@ -109,13 +111,13 @@ itemid, price01
 
     def test_loadcsv4(self):
         text1 = \
-"""
+            """
 itemid, name # comment 0
      0,    A
 """[1:-1]
 
         text2 = \
-"""
+            """
 itemid, name # comment 0
      1,    B
 """[1:-1]

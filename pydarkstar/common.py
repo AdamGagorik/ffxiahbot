@@ -3,6 +3,7 @@ import shutil
 import os
 import re
 
+
 def backup(path, copy=False):
     """
     Create backup file name.
@@ -53,7 +54,8 @@ def backup(path, copy=False):
 
     return new_path
 
-def findFiles(top, regex=r'.*', r=False, ignorecase=True, **kwargs):
+
+def find_files(top, regex=r'.*', r=False, ignorecase=True, **kwargs):
     """
     Search for files that match pattern.
 
@@ -78,6 +80,7 @@ def findFiles(top, regex=r'.*', r=False, ignorecase=True, **kwargs):
             match = regex.match(f)
             if match:
                 yield os.path.join(root, f)
+
 
 if __name__ == '__main__':
     pass

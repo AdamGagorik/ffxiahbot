@@ -1,8 +1,10 @@
 import unittest
 import logging
+
 logging.getLogger().setLevel(logging.DEBUG)
 
 from ...tables.auctionhouse import AuctionHouse
+
 
 class TestCase(unittest.TestCase):
     def setUp(self):

@@ -1,10 +1,12 @@
 import unittest
 import logging
+
 logging.getLogger().setLevel(logging.DEBUG)
 
 from ..database import Database
 from ..rc import sql
 import sqlalchemy.exc
+
 
 class TestCase(unittest.TestCase):
     def setUp(self):

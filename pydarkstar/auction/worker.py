@@ -2,12 +2,14 @@ from ..darkobject import DarkObject
 from ..database import Database
 import contextlib
 
+
 class Worker(DarkObject):
     """
     Base class for Auction House objects.
 
     :param db: database object
     """
+
     def __init__(self, db, rollback=True, fail=False):
         super(Worker, self).__init__()
         assert isinstance(db, Database)
@@ -41,6 +43,7 @@ class Worker(DarkObject):
     @property
     def rollback(self):
         return self._rollback
+
     @rollback.setter
     def rollback(self, value):
         self._rollback = bool(value)
@@ -48,9 +51,11 @@ class Worker(DarkObject):
     @property
     def fail(self):
         return self._fail
+
     @fail.setter
     def fail(self, value):
         self._fail = bool(value)
+
 
 if __name__ == '__main__':
     pass

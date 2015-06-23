@@ -1,10 +1,11 @@
 import datetime as _datetime
 import random as _random
 
+
 def randomdt(month=None, day=None, year=None, hour=None, minute=None, second=None,
-        microsecond=None, tzinfo=None, month_range=(1, 12), day_range=(1, 31),
-        year_range=(1900, 2000), hour_range=(0, 23), minute_range=(0, 59),
-        second_range=(0, 59), microsecond_range=(0, 0)):
+             microsecond=None, tzinfo=None, month_range=(1, 12), day_range=(1, 31),
+             year_range=(1900, 2000), hour_range=(0, 23), minute_range=(0, 59),
+             second_range=(0, 59), microsecond_range=(0, 0)):
     """
     Create a random datetime object.
 
@@ -57,11 +58,13 @@ def randomdt(month=None, day=None, year=None, hour=None, minute=None, second=Non
 
     return _datetime.datetime(year, month, day - 3, hour, minute, second, microsecond)
 
+
 def str_to_datetime(date_string):
     """
     Convert string to datetime object.
     """
     return _datetime.datetime.strptime(date_string, '%m/%d/%Y %H:%M:%S')
+
 
 def datetime_to_str(datetime_obj):
     """
@@ -69,7 +72,8 @@ def datetime_to_str(datetime_obj):
     """
     return '{dt.month:>02}/{dt.day:>02}/{dt.year} {dt.hour:>02}:{dt.minute:>02}:{dt.second:>02}'.format(dt=datetime_obj)
 
-class _datetime_to_timestamp(object):
+
+class DatetimeToTimestamp(object):
     """
     Convert datetime object to timestamp.
     """
@@ -78,13 +82,16 @@ class _datetime_to_timestamp(object):
     def __call__(self, datetime_obj):
         return float((datetime_obj - self.epoch).total_seconds())
 
-datetime_to_timestamp = _datetime_to_timestamp()
+
+datetime_to_timestamp = DatetimeToTimestamp()
+
 
 def timestamp_to_datetime(stamp):
     """
     Convert timestamp to datetime object.
     """
     return _datetime.datetime.utcfromtimestamp(stamp)
+
 
 def datetime(*args, **kwargs):
     """
@@ -112,11 +119,13 @@ def datetime(*args, **kwargs):
 
     raise TypeError('unknown type: %s' % type(obj))
 
+
 def timestamp(obj, *args, **kwargs):
     """
     Convert anything (within reason) to a timestamp.
     """
     return datetime_to_timestamp(datetime(obj, *args, **kwargs))
+
 
 if __name__ == '__main__':
     pass

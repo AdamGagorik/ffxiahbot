@@ -1,10 +1,12 @@
 import unittest
 import logging
+
 logging.getLogger().setLevel(logging.DEBUG)
 
 from ...auction.buyer import Buyer
 from ...database import Database
 from ...rc import sql
+
 
 class TestCase(unittest.TestCase):
     def setUp(self):

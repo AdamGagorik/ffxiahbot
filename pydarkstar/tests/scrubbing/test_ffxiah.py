@@ -1,8 +1,10 @@
 import unittest
 import logging
+
 logging.getLogger().setLevel(logging.DEBUG)
 
 from ...scrubbing.ffxiah import FFXIAHScrubber
+
 
 class TestCase(unittest.TestCase):
     def setUp(self):
@@ -17,7 +19,7 @@ class TestCase(unittest.TestCase):
         self.scrubber._get_itemids_for_category_url(url)
 
     def test_get_itemids(self):
-        urls=[
+        urls = [
             r'http://www.ffxiah.com/browse/49/ninja-tools',
             r'http://www.ffxiah.com/browse/56/breads-rice',
         ]

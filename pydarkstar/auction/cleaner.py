@@ -1,12 +1,14 @@
 from ..tables.auctionhouse import AuctionHouse
 from .worker import Worker
 
+
 class Cleaner(Worker):
     """
     Auction House cleaner.
 
     :param db: database object
     """
+
     def __init__(self, db, **kwargs):
         super(Cleaner, self).__init__(db, **kwargs)
 
@@ -19,8 +21,8 @@ class Cleaner(Worker):
 
             # perform query
             with self.scopped_session() as session:
-                N = session.query(AuctionHouse).delete()
-                self.info('%d rows dropped', N)
+                n = session.query(AuctionHouse).delete()
+                self.info('%d rows dropped', n)
 
         # clear rows of seller
         else:
@@ -32,10 +34,11 @@ class Cleaner(Worker):
 
                 # perform query
                 with self.scopped_session() as session:
-                    N = session.query(AuctionHouse).filter(
+                    n = session.query(AuctionHouse).filter(
                         AuctionHouse.seller == seller,
                     ).delete()
-                    self.info('%d rows dropped', N)
+                    self.info('%d rows dropped', n)
+
 
 if __name__ == '__main__':
     pass

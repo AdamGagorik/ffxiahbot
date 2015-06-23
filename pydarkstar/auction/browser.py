@@ -2,12 +2,14 @@ from ..tables.auctionhouse import AuctionHouse
 from .worker import Worker
 import sqlalchemy
 
+
 class Browser(Worker):
     """
     Auction House browser.
 
     :param db: database object
     """
+
     def __init__(self, db, **kwargs):
         super(Browser, self).__init__(db, **kwargs)
 
@@ -18,7 +20,7 @@ class Browser(Worker):
         with self.scopped_session() as session:
             return session.query(AuctionHouse).count()
 
-    def getStock(self, itemid, stack=False, seller=None):
+    def get_stock(self, itemid, stack=False, seller=None):
         """
         Get stock of item.
 
@@ -33,32 +35,32 @@ class Browser(Worker):
         with self.capture(fail=self.fail):
             # validate
             itemid = AuctionHouse.validate_itemid(itemid)
-            stack  = AuctionHouse.validate_stack(stack)
+            stack = AuctionHouse.validate_stack(stack)
 
             # perform query
             with self.scopped_session() as session:
 
                 # ignore seller
                 if seller is None:
-                    N = session.query(AuctionHouse).filter(
+                    n = session.query(AuctionHouse).filter(
                         AuctionHouse.itemid == itemid,
-                        AuctionHouse.stack  == stack,
-                        AuctionHouse.sale   == 0,
+                        AuctionHouse.stack == stack,
+                        AuctionHouse.sale == 0,
                     ).count()
-                    return N
+                    return n
 
                 # consider seller
                 else:
                     seller = AuctionHouse.validate_seller(seller)
-                    N = session.query(AuctionHouse).filter(
+                    n = session.query(AuctionHouse).filter(
                         AuctionHouse.itemid == itemid,
                         AuctionHouse.seller == seller,
-                        AuctionHouse.stack  == stack,
-                        AuctionHouse.sale   == 0,
+                        AuctionHouse.stack == stack,
+                        AuctionHouse.sale == 0,
                     ).count()
-                    return N
+                    return n
 
-    def getPrice(self, itemid, stack=False, seller=None, func=sqlalchemy.func.min):
+    def get_price(self, itemid, stack=False, seller=None, func=sqlalchemy.func.min):
         """
         Get price of item.
 
@@ -73,30 +75,31 @@ class Browser(Worker):
         with self.capture(fail=self.fail):
             # validate
             itemid = AuctionHouse.validate_itemid(itemid)
-            stack  = AuctionHouse.validate_stack(stack)
+            stack = AuctionHouse.validate_stack(stack)
 
             # perform query
             with self.scopped_session() as session:
 
                 # ignore seller
                 if seller is None:
-                    N = session.query(func(AuctionHouse.sale)).filter(
+                    n = session.query(func(AuctionHouse.sale)).filter(
                         AuctionHouse.itemid == itemid,
-                        AuctionHouse.stack  == stack,
-                        AuctionHouse.sale   != 0,
+                        AuctionHouse.stack == stack,
+                        AuctionHouse.sale != 0,
                     ).scalar()
-                    return N
+                    return n
 
                 # consider seller
                 else:
                     seller = AuctionHouse.validate_seller(seller)
-                    N = session.query(func(AuctionHouse.sale)).filter(
+                    n = session.query(func(AuctionHouse.sale)).filter(
                         AuctionHouse.itemid == itemid,
                         AuctionHouse.seller == seller,
-                        AuctionHouse.stack  == stack,
-                        AuctionHouse.sale   != 0,
+                        AuctionHouse.stack == stack,
+                        AuctionHouse.sale != 0,
                     ).scalar()
-                    return N
+                    return n
+
 
 if __name__ == '__main__':
     pass

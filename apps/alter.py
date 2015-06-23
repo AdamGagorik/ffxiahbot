@@ -110,7 +110,7 @@ def main(args=None):
     # get options
     opts = Options()
     opts.parse_args(args)
-    pydarkstar.logutils.basicConfig(
+    pydarkstar.logutils.basic_config(
         verbose=opts.verbose, silent=opts.silent, fname='alter.log')
     logging.info('start')
 

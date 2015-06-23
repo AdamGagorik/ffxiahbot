@@ -2,25 +2,28 @@ from .darkobject import DarkObject
 import collections
 
 fmt = collections.OrderedDict()
-fmt['itemid' ] = '{:>8}'
-fmt['name'   ] = '{:>24}'
-fmt['sell01' ] = '{:>6}'
-fmt['buy01'  ] = '{:>6}'
+fmt['itemid'] = '{:>8}'
+fmt['name'] = '{:>24}'
+fmt['sell01'] = '{:>6}'
+fmt['buy01'] = '{:>6}'
 fmt['price01'] = '{:>16}'
 fmt['stock01'] = '{:>7}'
-fmt['sell12' ] = '{:>6}'
-fmt['buy12'  ] = '{:>6}'
+fmt['sell12'] = '{:>6}'
+fmt['buy12'] = '{:>6}'
 fmt['price12'] = '{:>16}'
 fmt['stock12'] = '{:>7}'
+
 
 def titles():
     return ', '.join([fmt[k].format(k) for k in fmt.keys()]) + '\n'
 
+
 def values(*objs):
     return ', '.join([fmt[fmt.keys()[i]].format(objs[i]) for i in range(len(objs))]) + '\n'
 
+
 _template = \
-"""
+    """
 [Item]
     addr        = {addr}
     itemid      = {self.itemid}
@@ -34,6 +37,7 @@ _template = \
     price12     = {self.price12}
     stock12     = {self.stock12}
 """[:-1]
+
 
 class Item(DarkObject):
     """
@@ -64,24 +68,24 @@ class Item(DarkObject):
                 self.sell12, self.buy12, self.price12, self.stock12]
 
     def __init__(self, itemid, name=None,
-            sell01=None, buy01=None, price01=None, stock01=None,
-            sell12=None, buy12=None, price12=None, stock12=None):
+                 sell01=None, buy01=None, price01=None, stock01=None,
+                 sell12=None, buy12=None, price12=None, stock12=None):
         super(Item, self).__init__()
 
-        self._itemid   = int(itemid)
-        self._name     = None
+        self._itemid = int(itemid)
+        self._name = None
 
-        self._sell01   = None
-        self._sell12   = None
+        self._sell01 = None
+        self._sell12 = None
 
-        self._buy01    = None
-        self._buy12    = None
+        self._buy01 = None
+        self._buy12 = None
 
-        self._price01  = None
-        self._price12  = None
+        self._price01 = None
+        self._price12 = None
 
-        self._stock01  = None
-        self._stock12  = None
+        self._stock01 = None
+        self._stock12 = None
 
         self.name = name
 
@@ -111,6 +115,7 @@ class Item(DarkObject):
     @property
     def name(self):
         return self._name
+
     @name.setter
     def name(self, value):
         if value is None:
@@ -120,6 +125,7 @@ class Item(DarkObject):
     @property
     def sell01(self):
         return self._sell01
+
     @sell01.setter
     def sell01(self, value):
         if value is None:
@@ -129,6 +135,7 @@ class Item(DarkObject):
     @property
     def buy01(self):
         return self._buy01
+
     @buy01.setter
     def buy01(self, value):
         if value is None:
@@ -138,6 +145,7 @@ class Item(DarkObject):
     @property
     def price01(self):
         return self._price01
+
     @price01.setter
     def price01(self, value):
         if value is None:
@@ -149,6 +157,7 @@ class Item(DarkObject):
     @property
     def stock01(self):
         return self._stock01
+
     @stock01.setter
     def stock01(self, value):
         if value is None:
@@ -160,6 +169,7 @@ class Item(DarkObject):
     @property
     def sell12(self):
         return self._sell12
+
     @sell12.setter
     def sell12(self, value):
         if value is None:
@@ -169,6 +179,7 @@ class Item(DarkObject):
     @property
     def buy12(self):
         return self._buy12
+
     @buy12.setter
     def buy12(self, value):
         if value is None:
@@ -178,6 +189,7 @@ class Item(DarkObject):
     @property
     def price12(self):
         return self._price12
+
     @price12.setter
     def price12(self, value):
         if value is None:
@@ -189,6 +201,7 @@ class Item(DarkObject):
     @property
     def stock12(self):
         return self._stock12
+
     @stock12.setter
     def stock12(self, value):
         if value is None:
@@ -196,6 +209,7 @@ class Item(DarkObject):
         self._stock12 = int(value)
         if self._stock12 < 0:
             raise ValueError('stock12 must be positive: %d' % self._stock12)
+
 
 if __name__ == '__main__':
     pass

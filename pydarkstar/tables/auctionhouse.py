@@ -3,7 +3,7 @@ from .base import Base
 from .. import timeutils
 
 _template = \
-"""
+    """
 [AuctionHouseRow]
     addr        = {addr}
     id          = {self.id}
@@ -18,19 +18,20 @@ _template = \
     sell_date   = {self.sell_datestr}
 """[:-1]
 
+
 class AuctionHouse(Base):
     __tablename__ = 'auction_house'
 
-    id          = Column(Integer, primary_key=True)
-    itemid      = Column(SmallInteger, nullable=False, index=True, server_default=text("'0'"))
-    stack       = Column(Integer, nullable=False, server_default=text("'0'"))
-    seller      = Column(Integer, nullable=False, server_default=text("'0'"))
+    id = Column(Integer, primary_key=True)
+    itemid = Column(SmallInteger, nullable=False, index=True, server_default=text("'0'"))
+    stack = Column(Integer, nullable=False, server_default=text("'0'"))
+    seller = Column(Integer, nullable=False, server_default=text("'0'"))
     seller_name = Column(String(15))
-    date        = Column(Integer, nullable=False, server_default=text("'0'"))
-    price       = Column(Integer, nullable=False, server_default=text("'0'"))
-    buyer_name  = Column(String(15))
-    sale        = Column(Integer, nullable=False, server_default=text("'0'"))
-    sell_date   = Column(Integer, nullable=False, server_default=text("'0'"))
+    date = Column(Integer, nullable=False, server_default=text("'0'"))
+    price = Column(Integer, nullable=False, server_default=text("'0'"))
+    buyer_name = Column(String(15))
+    sale = Column(Integer, nullable=False, server_default=text("'0'"))
+    sell_date = Column(Integer, nullable=False, server_default=text("'0'"))
 
     def __repr__(self):
         return '({addr}) AuctionHouseRow id={self.id}'.format(self=self, addr=hex(id(self)))
@@ -71,6 +72,7 @@ class AuctionHouse(Base):
         if self.sell_date is None:
             return str(None)
         return timeutils.datetime_to_str(timeutils.timestamp_to_datetime(self.sell_date))
+
 
 if __name__ == '__main__':
     pass

@@ -1,9 +1,11 @@
 import unittest
 import logging
+
 logging.getLogger().setLevel(logging.DEBUG)
 
 from .. import timeutils
 import datetime
+
 
 class BaseTest(unittest.TestCase):
     N = 10000
@@ -12,8 +14,8 @@ class BaseTest(unittest.TestCase):
         self.assertGreaterEqual(n, a)
         self.assertLessEqual(n, b)
 
-class TestRandomdt(BaseTest):
 
+class TestRandomdt(BaseTest):
     def test_construct(self):
         for i in range(self.N):
             timeutils.randomdt()
@@ -22,17 +24,17 @@ class TestRandomdt(BaseTest):
         r = (1, 2)
         for name in ('month', 'day', 'year', 'hour', 'minute', 'second', 'microsecond'):
             for i in range(10):
-                n = getattr(timeutils.randomdt(**{'{}_range'.format(name) : r}), name)
+                n = getattr(timeutils.randomdt(**{'{}_range'.format(name): r}), name)
                 self.assertInRange(n, *r)
 
     def test_explicit(self):
         v = 1
         for name in ('month', 'day', 'year', 'hour', 'minute', 'second', 'microsecond'):
-            n = getattr(timeutils.randomdt(**{'{}'.format(name) : v}), name)
+            n = getattr(timeutils.randomdt(**{'{}'.format(name): v}), name)
             self.assertEqual(n, v)
 
-class TestConvert_str(BaseTest):
 
+class TestConvertStr(BaseTest):
     def test_str_to_datetime(self):
         dobj = timeutils.str_to_datetime('1/2/1971 04:05:06')
         self.assertTrue(isinstance(dobj, datetime.datetime))
@@ -50,8 +52,8 @@ class TestConvert_str(BaseTest):
         self.assertTrue(isinstance(sobj, str))
         self.assertEqual(sobj, '01/02/1971 04:05:06')
 
-class TestConvert_timestamp(BaseTest):
 
+class TestConvertTimestamp(BaseTest):
     def test_datetime_timestamp_conversion(self):
         for i in range(self.N):
             dobj1 = timeutils.randomdt(year_range=(1971, 2015))
@@ -61,8 +63,8 @@ class TestConvert_timestamp(BaseTest):
             self.assertEqual(dobj1, dobj2)
             self.assertEqual(stmp1, stmp2)
 
-class TestFunc_datetime(BaseTest):
 
+class TestFuncDatetime(BaseTest):
     def test_str(self):
         dobj = timeutils.datetime('1/2/1903 04:05:06')
         self.assertTrue(isinstance(dobj, datetime.datetime))
@@ -104,8 +106,8 @@ class TestFunc_datetime(BaseTest):
         self.assertEqual(dobj.year, 1900)
         self.assertEqual(dobj.microsecond, 1)
 
-class TestFunc_timestamp(BaseTest):
 
+class TestFuncTimestamp(BaseTest):
     def test_str(self):
         stmp1 = timeutils.timestamp('1/2/1971 04:05:06')
         self.assertTrue(isinstance(stmp1, float))

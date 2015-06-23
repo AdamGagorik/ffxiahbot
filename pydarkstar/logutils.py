@@ -7,31 +7,38 @@ lfmt = '[%(asctime)s][%(process)5d][%(levelname)-5s]: %(message)s'
 dfmt = "%Y-%m-%d %H:%M:%S"
 logging.basicConfig(level=logging.ERROR, format=lfmt, datefmt=dfmt)
 logging.addLevelName(logging.CRITICAL, 'FATAL')
-logging.addLevelName(logging.WARNING , 'WARN' )
+logging.addLevelName(logging.WARNING, 'WARN')
 
-def setLevel(level):
+
+def set_level(level):
     logging.getLogger().setLevel(level)
 
-def setDebug():
-    setLevel(logging.DEBUG)
 
-def setError():
-    setLevel(logging.ERROR)
+def set_debug():
+    set_level(logging.DEBUG)
 
-def setInfo():
-    setLevel(logging.INFO)
 
+def set_error():
+    set_level(logging.ERROR)
+
+
+def set_info():
+    set_level(logging.INFO)
+
+
+# noinspection PyUnusedLocal
 def custom_warning_format(message, category, filename, lineno, *args, **kwargs):
     return '%s:%s\n%s: %s' % (filename, lineno, category.__name__, message)
+
 
 @contextlib.contextmanager
 def capture(capture_warnings=True, fail=False):
     """
     Log exceptions and warnings.
     """
+    default_warning_format = warnings.formatwarning
     try:
         if capture_warnings:
-            default_warning_format = warnings.formatwarning
             warnings.formatwarning = custom_warning_format
             logging.captureWarnings(True)
         try:
@@ -46,10 +53,12 @@ def capture(capture_warnings=True, fail=False):
             warnings.formatwarning = default_warning_format
             logging.captureWarnings(False)
 
+
 class LoggingObject(object):
     """
     Inherit from this to get a bunch of logging functions as class methods.
     """
+
     def __init__(self):
         self._init_notify()
 
@@ -86,8 +95,9 @@ class LoggingObject(object):
         finally:
             pass
 
-def addRotatingFileHandler(level=logging.DEBUG, fname='app.log',
-        logger=None, fmt=lfmt, **kwargs):
+
+def add_rotating_file_handler(level=logging.DEBUG, fname='app.log',
+                              logger=None, fmt=lfmt, **kwargs):
     """
     Create rotating file handler and add it to logging.
 
@@ -97,7 +107,7 @@ def addRotatingFileHandler(level=logging.DEBUG, fname='app.log',
     :param fmt: format
     """
 
-    _kwargs = dict(maxBytes=(1048576*5), backupCount=5)
+    _kwargs = dict(maxBytes=(1048576 * 5), backupCount=5)
     _kwargs.update(**kwargs)
 
     handler = logging.handlers.RotatingFileHandler(fname, **kwargs)
@@ -116,20 +126,22 @@ def addRotatingFileHandler(level=logging.DEBUG, fname='app.log',
 
     return logger
 
-def basicConfig(verbose=False, silent=False, fname=None):
+
+def basic_config(verbose=False, silent=False, fname=None):
     """
     Setup logging.
     """
-    setInfo()
+    set_info()
 
     if verbose:
-        setDebug()
+        set_debug()
 
     if silent:
-        setError()
+        set_error()
 
     if fname:
-        addRotatingFileHandler(fname=fname)
+        add_rotating_file_handler(fname=fname)
+
 
 if __name__ == '__main__':
     pass
