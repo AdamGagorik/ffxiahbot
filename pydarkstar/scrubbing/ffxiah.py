@@ -213,7 +213,7 @@ class FFXIAHScrubber(Scrubber):
                     self.debug('ignoring %s', href)
 
         # sort the urls
-        urls.sort(key=lambda x: map(float, re.findall('\d+', x)))
+        urls.sort(key=lambda x: list(map(float, re.findall('\d+', x))))
 
         return urls
 
@@ -395,7 +395,7 @@ class FFXIAHScrubber(Scrubber):
         """
         new_key = r'stack price'
 
-        for key in data.keys():
+        for key in list(data.keys()):
             if 'stack' in key.lower():
                 data[new_key] = data[key]
 
