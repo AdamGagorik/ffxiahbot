@@ -29,7 +29,6 @@ class Options(pydarkstar.options.Options):
 
         # input
         self.data = []  # list of itemdata
-        self.find = False  # search for item data
 
         # output
         self.save = False  # save config
@@ -63,8 +62,6 @@ class Options(pydarkstar.options.Options):
         # input
         self.add_argument(dest='data', nargs='*', type=str, default=self.data,
                           metavar='str', help='item data CSV file(s)')
-        self.add_argument('--find', action='store_true',
-                          help='search for item data files')
 
         # output
         self.add_argument('--save', action='store_true',
@@ -106,13 +103,6 @@ class Options(pydarkstar.options.Options):
     def parse_args(self, args=None):
         super(Options, self).parse_args(args)
         self.data = set(self.data)
-
-        # find data files
-        if self.find:
-            found = list(pydarkstar.common.find_files(
-                top=os.getcwd(), regex=r'.*\.csv', r=False, ignorecase=True))
-            self.data.update(found)
-
         self.data = list(self.data)
 
 
