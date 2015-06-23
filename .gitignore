@@ -56,5 +56,3 @@ target/
 # PyCharm
 .idea
 
-# scripts
-bin/*

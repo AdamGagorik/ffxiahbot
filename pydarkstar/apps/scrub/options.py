@@ -1,18 +1,11 @@
+# -*- coding: utf-8 -*-
 """
 Create item database.
 """
-import logging
-import os
-import re
-
-import pydarkstar.logutils
-import pydarkstar.scrubbing.ffxiah
-import pydarkstar.itemlist
-import pydarkstar.options
-import pydarkstar.common
+from ... import options
 
 
-class Options(pydarkstar.options.Options):
+class Options(options.Options):
     """
     Reads options from config file, then from command line.
     """
@@ -96,58 +89,5 @@ class Options(pydarkstar.options.Options):
             self.itemids = None
 
 
-def main():
-    """
-    Main function.
-    """
-    # get options
-    opts = Options()
-    opts.parse_args()
-    pydarkstar.logutils.basic_config(
-        verbose=opts.verbose, silent=opts.silent, fname='scrub.log')
-    logging.info('start')
-
-    # log options
-    opts.log_values(level=logging.INFO)
-
-    # save options
-    if opts.save:
-        opts.save = False
-        opts.dump()
-        return
-
-    # check output file name validity
-    oname = os.path.abspath('{}.csv'.format(re.sub(r'\.csv$', '', opts.stub)))
-    if not opts.overwrite and not opts.backup:
-        if os.path.exists(oname):
-            logging.error('output file already exists!\n\t%s', oname)
-            logging.error('please use --overwrite or --backup')
-            exit(-1)
-
-    # scub data
-    scrubber = pydarkstar.scrubbing.ffxiah.FFXIAHScrubber()
-    scrubber.save = opts.pkl
-    data = scrubber.scrub(force=opts.force, threads=opts.threads, urls=opts.urls, ids=opts.itemids)
-
-    # create item list from data
-    ilist = pydarkstar.itemlist.ItemList()
-    for itemid in data:
-        kwargs = pydarkstar.scrubbing.ffxiah.extract(data, itemid, stock01=opts.stock01, stock12=opts.stock12)
-        ilist.add(itemid, **kwargs)
-
-    # backup file
-    if opts.backup:
-        pydarkstar.common.backup(oname, copy=True)
-
-    # overwrites if exists, but we checked already
-    ilist.savecsv(oname)
-
-
-def cleanup():
-    logging.info('exit\n')
-
-
 if __name__ == '__main__':
-    with pydarkstar.logutils.capture():
-        main()
-    cleanup()
+    pass

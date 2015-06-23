@@ -1,21 +1,11 @@
+# -*- coding: utf-8 -*-
 """
 Buy and sell items on the auction house.
 """
-import datetime
-import logging
-import time
-import os
-
-import pydarkstar.logutils
-import pydarkstar.itemlist
-import pydarkstar.options
-import pydarkstar.common
-
-import pydarkstar.database
-import pydarkstar.auction.manager
+from ... import options
 
 
-class Options(pydarkstar.options.Options):
+class Options(options.Options):
     """
     Reads options from config file, then from command line.
     """
@@ -106,99 +96,5 @@ class Options(pydarkstar.options.Options):
         self.data = list(self.data)
 
 
-def main():
-    """
-    Main function.
-    """
-    # get options
-    opts = Options()
-    opts.parse_args()
-    pydarkstar.logutils.basic_config(
-        verbose=opts.verbose, silent=opts.silent, fname='broker.log')
-    logging.info('start')
-
-    # log options
-    opts.log_values(level=logging.INFO)
-
-    # save options
-    if opts.save:
-        opts.save = False
-        opts.dump()
-        return
-
-    # connect to database
-    db = pydarkstar.database.Database.pymysql(
-        hostname=opts.hostname,
-        database=opts.database,
-        username=opts.username,
-        password=opts.password,
-    )
-
-    # create auction house manager
-    manager = pydarkstar.auction.manager.Manager(db, fail=opts.fail)
-    manager.seller.seller_name = opts.name
-    manager.buyer.buyer_name = opts.name
-
-    if opts.clear:
-        # clear all items
-        if opts.all:
-            # really?
-            if not opts.force:
-                raise RuntimeError('clearing all items from auction house is dangerous. use --force')
-            else:
-                manager.cleaner.clear(seller=None)
-        # clear seller items
-        else:
-            manager.cleaner.clear(seller=manager.seller.seller)
-
-        # exit after clearing
-        logging.info('exit after clear')
-        return
-
-    # make sure there is data
-    if not opts.data:
-        raise RuntimeError('missing item data CSV!')
-
-    # load data
-    logging.info('loading item data...')
-    idata = pydarkstar.itemlist.ItemList()
-    for f in opts.data:
-        idata.loadcsv(f)
-
-    if opts.refill:
-        logging.info('restocking...')
-        manager.restock_items(itemdata=idata)
-        logging.info('exit after restock')
-        return
-
-    logging.info('starting main loop...')
-    start = datetime.datetime.now()
-    last = start
-    while True:
-        now = datetime.datetime.now()
-        delta = (now - last).total_seconds()
-        elapsed = (now - start).total_seconds()
-        logging.debug('time=%012.1f s last restock=%012.1f s next restock=%012.1f s',
-                      elapsed, delta, opts.restock - delta)
-
-        if delta >= opts.restock:
-            logging.debug('restocking...')
-            manager.restock_items(itemdata=idata)
-            last = datetime.datetime.now()
-
-        # buy items
-        manager.buy_items(itemdata=idata)
-
-        # sleep until next tick
-        logging.debug('wait=%012.1f s', opts.tick)
-        time.sleep(opts.tick)
-
-
-def cleanup():
-    logging.info('exit\n')
-
-
 if __name__ == '__main__':
-    with pydarkstar.logutils.capture():
-        main()
-    cleanup()
+    pass
