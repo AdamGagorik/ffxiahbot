@@ -365,6 +365,13 @@ class FFXIAHScrubber(Scrubber):
             except (AttributeError, ValueError):
                 pass
 
+        # extract rate
+        for tag in soup.find_all('span', 'sales-rate'):
+            try:
+                data['rate'] = float(tag.text)
+            except (AttributeError, ValueError):
+                pass
+
         # fix key
         data = self._fix_stack_price_key(data)
 
@@ -435,8 +442,8 @@ def extract(data, itemid, **kwargs):
         name = None
 
     result = dict(name=name,
-                  price01=price01, stock01=5, sell01=sell01, buy01=True,
-                  price12=price12, stock12=5, sell12=sell12, buy12=True)
+                  price01=price01, stock01=5, sell01=sell01, buy01=True, rate01=1.0,
+                  price12=price12, stock12=5, sell12=sell12, buy12=True, rate12=1.0)
     result.update(**kwargs)
 
     return result

@@ -2,10 +2,11 @@ import unittest
 
 import_error = False
 try:
-    from ...scrubbing.ffxiah import FFXIAHScrubber
+    from ...scrubbing.ffxiah import FFXIAHScrubber, extract
 except ImportError:
     import_error = True
     FFXIAHScrubber = None
+    extract = None
 
 
 class TestCase00(unittest.TestCase):
@@ -43,3 +44,6 @@ class TestCase01(unittest.TestCase):
 
     def test_scrub(self):
         self.scrubber.scrub(force=True, threads=4, ids={1, 2, 3, 4})
+
+    def test_extract(self):
+        extract(self.scrubber._get_item_data([4096]), 4096)
