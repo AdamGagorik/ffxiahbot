@@ -98,8 +98,8 @@ itemid, name # comment 0
      0,    A
      2,    B
      4,    C # comment 1
-itemid, name, price01
-     6,    D,      10
+itemid, name, price01, rate01
+     6,    D,      10,    1.0
 """[1:-1]
         self._get_ilist(text, self.ilist)
         self.assertEqual(self.ilist[0].name, 'A')

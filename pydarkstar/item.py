@@ -8,10 +8,12 @@ fmt['sell01'] = '{:>6}'
 fmt['buy01'] = '{:>6}'
 fmt['price01'] = '{:>16}'
 fmt['stock01'] = '{:>7}'
+fmt['rate01'] = '{:>7}'
 fmt['sell12'] = '{:>6}'
 fmt['buy12'] = '{:>6}'
 fmt['price12'] = '{:>16}'
 fmt['stock12'] = '{:>7}'
+fmt['rate12'] = '{:>7}'
 
 
 def title_str():
@@ -41,10 +43,12 @@ _template = \
     buy01       = {self.buy01}
     price01     = {self.price01}
     stock01     = {self.stock01}
+    rate01      = {self.rate01}
     sell12      = {self.sell12}
     buy12       = {self.buy12}
     price12     = {self.price12}
     stock12     = {self.stock12}
+    rate12      = {self.rate12}
 """[:-1]
 
 
@@ -67,18 +71,18 @@ class Item(DarkObject):
     """
 
     keys = ['itemid', 'name',
-            'sell01', 'buy01', 'price01', 'stock01',
-            'sell12', 'buy12', 'price12', 'stock12']
+            'sell01', 'buy01', 'price01', 'stock01', 'rate01',
+            'sell12', 'buy12', 'price12', 'stock12', 'rate12']
 
     @property
     def values(self):
         return [self.itemid, self.name,
-                self.sell01, self.buy01, self.price01, self.stock01,
-                self.sell12, self.buy12, self.price12, self.stock12]
+                self.sell01, self.buy01, self.price01, self.stock01, self.rate01,
+                self.sell12, self.buy12, self.price12, self.stock12, self.rate12]
 
     def __init__(self, itemid, name=None,
-                 sell01=None, buy01=None, price01=None, stock01=None,
-                 sell12=None, buy12=None, price12=None, stock12=None):
+                 sell01=None, buy01=None, price01=None, stock01=None, rate01=None,
+                 sell12=None, buy12=None, price12=None, stock12=None, rate12=None):
         super(Item, self).__init__()
 
         self._itemid = int(itemid)
@@ -96,17 +100,22 @@ class Item(DarkObject):
         self._stock01 = None
         self._stock12 = None
 
+        self._rate01 = None
+        self._rate12 = None
+
         self.name = name
 
         self.sell01 = sell01
         self.buy01 = buy01
         self.price01 = price01
         self.stock01 = stock01
+        self.rate01 = rate01
 
         self.sell12 = sell12
         self.buy12 = buy12
         self.price12 = price12
         self.stock12 = stock12
+        self.rate12 = rate12
 
         if not self._itemid >= 0:
             raise ValueError('itemid must be positive: %d' % self._itemid)
@@ -176,6 +185,18 @@ class Item(DarkObject):
             raise ValueError('stock01 must be positive: %d' % self._stock01)
 
     @property
+    def rate01(self):
+        return self._rate01
+
+    @rate01.setter
+    def rate01(self, value):
+        if value is None:
+            value = 1.0
+        self._rate01 = float(value)
+        if self._rate01 < 0.0 or self._rate01 > 1.0:
+            raise ValueError('rate01 must be between 0 and 1: %d' % self._rate01)
+
+    @property
     def sell12(self):
         return self._sell12
 
@@ -218,6 +239,18 @@ class Item(DarkObject):
         self._stock12 = int(value)
         if self._stock12 < 0:
             raise ValueError('stock12 must be positive: %d' % self._stock12)
+
+    @property
+    def rate12(self):
+        return self._rate12
+
+    @rate12.setter
+    def rate12(self, value):
+        if value is None:
+            value = 1.0
+        self._rate12 = float(value)
+        if self._rate12 < 0.0 or self._rate12 > 1.0:
+            raise ValueError('rate12 must be between 0 and 1: %d' % self._rate12)
 
 
 if __name__ == '__main__':
