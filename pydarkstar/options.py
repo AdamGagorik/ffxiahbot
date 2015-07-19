@@ -9,6 +9,8 @@ from .darkobject import DarkObject
 from .logutils import basic_config
 basic_config(verbose=True)
 
+from six import add_metaclass
+
 
 class MetaOptions(type):
     def __call__(cls, *args, **kwargs):
@@ -17,9 +19,9 @@ class MetaOptions(type):
         return obj
 
 
+@add_metaclass(MetaOptions)
 class BaseOptions(DarkObject):
     regex_tuple = re.compile('([^=]+)=([^=]+)')
-    __metaclass__ = MetaOptions
 
     def __init__(self, config='config.yaml', description=None):
         super(BaseOptions, self).__init__()
@@ -40,6 +42,7 @@ class BaseOptions(DarkObject):
                                   help='configuration file name')
 
     def __after__(self):
+        print("aksjdaksjdkasjdkasjdkjaskdjaskjdkasjdkasjdkjaskjdkasjd")
         results, remaining_args = self._parse_known_args()
         self._parse_config()
         self._parse_args(args=remaining_args)
