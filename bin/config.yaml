@@ -1,13 +1,9 @@
-# logging
+# ah
+name: Zissou
+
+# basic
 verbose: true
 silent: false
-
-# sql
-hostname: 127.0.0.1
-database: dspdb
-username: root
-password: ????
-fail: true
 
 # input
 data: ['items.csv']
@@ -17,11 +13,19 @@ stub: items
 overwrite: false
 backup: true
 
+# sql
+hostname: 127.0.0.1
+database: dspdb
+username: root
+password: ????
+fail: true
+
 # broker
-name: Zissou
 restock: 3600
 tick: 30
 
 # scrub
+itemids: []
 stock01: 5
 stock12: 5
+ursl: []
