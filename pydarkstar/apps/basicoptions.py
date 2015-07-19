@@ -3,6 +3,8 @@
 Basic options.
 """
 from ..options import BaseOptions
+from .. import logutils
+import logging
 
 
 class BasicOptions(BaseOptions):
@@ -14,6 +16,11 @@ class BasicOptions(BaseOptions):
 
         self.add_argument('--verbose', action='store_true', help='report debug, info, and error')
         self.add_argument('--silent', action='store_true', help='report error only')
+
+    def __after__(self):
+        super(BasicOptions, self).__after__()
+        logutils.basic_config(verbose=self.verbose, silent=self.silent, fname='pydarkstar.log')
+        self.log_values(level=logging.INFO)
 
 
 if __name__ == '__main__':

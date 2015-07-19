@@ -20,8 +20,6 @@ def main():
     """
     # get options
     opts = Options()
-    logutils.basic_config(verbose=opts.verbose, silent=opts.silent, fname='pydarkstar.log')
-    opts.log_values(level=logging.INFO)
 
     # check output file name validity
     oname = os.path.abspath('{}.csv'.format(re.sub(r'\.csv$', '', opts.stub)))

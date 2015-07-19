@@ -17,8 +17,6 @@ def main():
     """
     # get options
     opts = Options()
-    logutils.basic_config(verbose=opts.verbose, silent=opts.silent, fname='pydarkstar.log')
-    opts.log_values(level=logging.INFO)
 
     # create auction house manager
     manager = Manager.create_database_and_manager(
