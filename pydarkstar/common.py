@@ -5,7 +5,7 @@ import os
 import re
 
 
-def create_path(*args, absolute=True, dt=None, dt_fmt='%Y_%m_%d_%H_%M_%S', **kwargs):
+def create_path(*args, **kwargs):
     """
     Construct a path.  You can access dt or datetime as objects.
 
@@ -19,6 +19,10 @@ def create_path(*args, absolute=True, dt=None, dt_fmt='%Y_%m_%d_%H_%M_%S', **kwa
     :type dt: :py:class:`datetime.datetime`
     :type dt_fmt: str
     """
+    dt_fmt = kwargs.pop('dt_fmt', '%Y_%m_%d_%H_%M_%S')
+    absolute = kwargs.pop('absolute', True)
+    dt = kwargs.pop('dt', None)
+
     if not dt:
         dt = datetime.datetime.now()
 
