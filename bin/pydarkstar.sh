@@ -45,6 +45,7 @@ echo_append "PACKAGEPATH : ${PACKAGEDIR}"
 echo_append "PYTHON      : ${PYTHON}"
 echo_append "MODULE      : ${MODULE}"
 echo_append "APP         : ${APP}"
+echo_append "ARG         : $*"
 echo_append ""
 
 
