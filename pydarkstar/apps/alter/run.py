@@ -32,11 +32,7 @@ def main():
             exit(-1)
 
     # load data
-    logging.info('loading item data...')
-    ilist = ItemList()
-    for f in opts.data:
-        ilist.loadcsv(f)
-    ilist.info('loaded %d items', len(ilist))
+    idata = ItemList.from_csv(*opts.data)
 
     # collect itemids
     itemids = set()
@@ -44,19 +40,19 @@ def main():
     # from items
     if opts.all:
         logging.info('select: --all')
-        itemids.update(ilist.items.keys())
+        itemids.update(idata.items.keys())
 
     # filter itemids
     if opts.lambda_:
         logging.info('select: lambda x : %s', opts.lambda_)
         func = eval('lambda x : {}'.format(opts.lambda_))
-        itemids.update([i for i in ilist.items.keys() if func(i)])
+        itemids.update([i for i in idata.items.keys() if func(i)])
 
     # filter names
     if opts.match:
         logging.info('select: name %s', opts.match)
         regex = re.compile(opts.match, re.IGNORECASE)
-        itemids.update([i for i in ilist.items.keys() if regex.match(ilist[i].name)])
+        itemids.update([i for i in idata.items.keys() if regex.match(idata[i].name)])
 
     # passed
     if opts.itemids:
@@ -66,7 +62,7 @@ def main():
     logging.info('%d items selected', len(itemids))
 
     # validate
-    if not itemids.issubset(ilist.items.keys()):
+    if not itemids.issubset(idata.items.keys()):
         raise RuntimeError('invalid itemids')
 
     # exit if there are no itemids
@@ -81,7 +77,7 @@ def main():
     if opts.show:
         logging.info('%d itemids', len(itemids))
         for i in itemids:
-            logging.info(str(ilist[i]))
+            logging.info(str(idata[i]))
         exit(0)
 
     # rescrub data
@@ -91,15 +87,15 @@ def main():
         data = scrubber.scrub(force=True, threads=-1, urls=None, ids=itemids)
         for i in data:
             logging.debug('Item(%06d) updated', i)
-            ilist.set(i, **ffxiah.extract(data, i))
+            idata.set(i, **ffxiah.extract(data, i))
 
     # set values
     if opts.set:
         logging.info('--set %s=%s', *opts.set)
         for i in itemids:
-            if hasattr(ilist[i], opts.set[0]):
-                setattr(ilist[i], opts.set[0], opts.set[1])
-                logging.debug('Item(%06d) %s=%s', i, opts.set[0], getattr(ilist[i], opts.set[0]))
+            if hasattr(idata[i], opts.set[0]):
+                setattr(idata[i], opts.set[0], opts.set[1])
+                logging.debug('Item(%06d) %s=%s', i, opts.set[0], getattr(idata[i], opts.set[0]))
             else:
                 raise RuntimeError('Item does not have attribute %s', opts.set[0])
 
@@ -108,7 +104,7 @@ def main():
         common.backup(oname, copy=True)
 
     # overwrites if exists, but we checked already
-    ilist.savecsv(oname)
+    idata.savecsv(oname)
 
 
 def cleanup():

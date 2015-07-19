@@ -10,7 +10,6 @@ from .options import Options
 
 from ... import logutils
 from ...itemlist import ItemList
-from ...database import Database
 from ...auction.manager import Manager
 
 
@@ -33,15 +32,8 @@ def main():
         fail=opts.fail
     )
 
-    # make sure there is data
-    if not opts.data:
-        raise RuntimeError('missing item data CSV!')
-
     # load data
-    logging.info('loading item data...')
-    idata = ItemList()
-    for f in opts.data:
-        idata.loadcsv(f)
+    idata = ItemList.from_csv(*opts.data)
 
     # main loop
     logging.info('starting main loop...')

@@ -14,6 +14,23 @@ class ItemList(DarkObject):
         super(ItemList, self).__init__()
         self.items = collections.OrderedDict()
 
+    @classmethod
+    def from_csv(cls, *data):
+        """
+        Create ItemList from CSV file(s).
+        """
+        # make sure there is data
+        if not data:
+            raise RuntimeError('missing item data CSV!')
+
+        # load data
+        obj = ItemList()
+        obj.info('loading item data...')
+        for f in data:
+            obj.loadcsv(f)
+
+        return obj
+
     def add(self, itemid, *args, **kwargs):
         """
         Add Item to ItemList.  Item must not already exist.

@@ -7,7 +7,6 @@ import logging
 from .options import Options
 
 from ... import logutils
-from ...database import Database
 from ...auction.manager import Manager
 
 
