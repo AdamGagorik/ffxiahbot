@@ -1,4 +1,5 @@
 from ..tables.auctionhouse import AuctionHouse
+from ..database import Database
 from .worker import Worker
 from .browser import Browser
 from .cleaner import Cleaner
@@ -22,6 +23,28 @@ class Manager(Worker):
         self.cleaner = Cleaner(db, **kwargs)
         self.seller = Seller(db, **kwargs)
         self.buyer = Buyer(db, **kwargs)
+
+    @classmethod
+    def create_database_and_manager(cls, hostname, database, username, password, name=None, fail=True):
+        """
+        Create database and manager at the same time.
+        """
+        # connect to database
+        db = Database.pymysql(
+            hostname=hostname,
+            database=database,
+            username=username,
+            password=password,
+        )
+
+        # create auction house manager
+        obj = cls(db, fail=fail)
+
+        if name is not None:
+            obj.seller.seller_name = name
+            obj.buyer.buyer_name = name
+
+        return obj
 
     def add_to_blacklist(self, rowid):
         """

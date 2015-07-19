@@ -21,18 +21,15 @@ def main():
     logutils.basic_config(verbose=opts.verbose, silent=opts.silent, fname='pydarkstar.log')
     opts.log_values(level=logging.INFO)
 
-    # connect to database
-    db = Database.pymysql(
+    # create auction house manager
+    manager = Manager.create_database_and_manager(
         hostname=opts.hostname,
         database=opts.database,
         username=opts.username,
         password=opts.password,
+        name=opts.name,
+        fail=opts.fail
     )
-
-    # create auction house manager
-    manager = Manager(db, fail=opts.fail)
-    manager.seller.seller_name = opts.name
-    manager.buyer.buyer_name = opts.name
 
     # make sure there is data
     if not opts.data:
