@@ -2,3 +2,5 @@
 *.yaml
 *.csv
 *.pkl
+*.sh
+*.bat
