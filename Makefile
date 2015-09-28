@@ -12,6 +12,10 @@ test: tests
 tests:
 	${NOSE} -w ./pydarkstar/tests/
 
+.PHONY : bin
+bin:
+	python3 ./makebin.py
+
 .PHONY : clean
 clean:
 	-find ./pydarkstar -type d -name __pycache__ | xargs -I xxx rm -rf xxx
