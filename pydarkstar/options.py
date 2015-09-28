@@ -42,7 +42,6 @@ class BaseOptions(DarkObject):
                                   help='configuration file name')
 
     def __after__(self):
-        print("aksjdaksjdkasjdkasjdkjaskdjaskjdkasjdkasjdkjaskjdkasjd")
         results, remaining_args = self._parse_known_args()
         self._parse_config()
         self._parse_args(args=remaining_args)
@@ -149,7 +148,7 @@ class BaseOptions(DarkObject):
             v = kwargs[k]
 
             if not hasattr(self, k):
-                logging.error('ignoring key in update: {}'.format(k))
+                logging.info('ignoring key in update: {}'.format(k))
             else:
                 t = type(getattr(self, k))
 
