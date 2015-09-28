@@ -26,7 +26,7 @@ bash:~$ cd ./path/to/pydarkstar
 bash:~$ python3 ./makebin.py
 ```
 
-** Edit the config.yaml in "C:\path\to\pydarkstar\bin" with your settings (use a text editor).**
+**Edit the config.yaml in "C:\path\to\pydarkstar\bin" with your settings (use a text editor).**
 
 ```bash
 bash:~$ cd /path/to/pydarkstar
@@ -70,7 +70,7 @@ bash:~$ ./broker.sh
 
 4.  Clone pydarkstar repository
 
-** Edit the config.yaml in "C:\path\to\pydarkstar\bin" with you settings (use a text editor).**
+**Edit the config.yaml in "C:\path\to\pydarkstar\bin" with you settings (use a text editor).**
 
 5.  Run the makebin.py script
 
@@ -203,7 +203,7 @@ bash:~$ cd /path/to/pydarkstar
 
 #### Running Apps
 
-** Please note that pydarkstar takes advantage of python's -m flag to run library modules as scripts**.  Python modules are just python files beneath the pydarkstar top level directory.  There is no other way to run the apps.
+**Please note that pydarkstar takes advantage of python's -m flag to run library modules as scripts**.  Python modules are just python files beneath the pydarkstar top level directory.  There is no other way to run the apps.
 
 ###### THIS WILL WORK
 
