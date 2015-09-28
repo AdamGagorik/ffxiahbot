@@ -35,6 +35,8 @@ class Options:
         self.bin_path = os.path.join(self.project_path, 'bin')
         self.apps_list = {
             'broker': 'pydarkstar.apps.broker.run',
+            'seller': 'pydarkstar.apps.seller.run',
+            'buyer': 'pydarkstar.apps.buyer.run',
             'refill': 'pydarkstar.apps.refill.run',
             'clear': 'pydarkstar.apps.clear.run',
             'scrub': 'pydarkstar.apps.scrub.run',
@@ -152,7 +154,6 @@ def main():
         log_parameter(app, opts.apps_list[app])
 
         opath = os.path.join(opts.bin_path, ostub.format(app))
-        log_parameter('opath', opath)
 
         with open(opath, 'w') as handle:
             handle.write(template.format(python=opts.python, path=os.path.dirname(opts.package_path),
