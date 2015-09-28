@@ -2,7 +2,7 @@
 """
 Basic options.
 """
-from ..options import BaseOptions
+from .base import BaseOptions
 
 
 class AHOptions(BaseOptions):

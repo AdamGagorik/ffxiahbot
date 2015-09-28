@@ -2,7 +2,7 @@
 """
 Input options.
 """
-from ..options import BaseOptions
+from .base import BaseOptions
 
 
 class InputOptions(BaseOptions):

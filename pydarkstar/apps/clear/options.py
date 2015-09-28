@@ -2,9 +2,9 @@
 """
 Clear the auction house.
 """
-from ..basicoptions import BasicOptions
-from ..sqloptions import SQLOptions
-from ..ahoptions import AHOptions
+from ...options.basic import BasicOptions
+from ...options.sql import SQLOptions
+from ...options.ah import AHOptions
 
 
 class Options(AHOptions, SQLOptions, BasicOptions):

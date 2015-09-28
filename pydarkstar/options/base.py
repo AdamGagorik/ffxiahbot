@@ -5,8 +5,8 @@ import yaml
 import os
 import re
 
-from .darkobject import DarkObject
-from .logutils import basic_config
+from pydarkstar.darkobject import DarkObject
+from pydarkstar.logutils import basic_config
 basic_config(verbose=True)
 
 from six import add_metaclass

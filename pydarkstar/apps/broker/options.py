@@ -2,10 +2,10 @@
 """
 Buy and sell items on the auction house.
 """
-from ..basicoptions import BasicOptions
-from ..inputoptions import InputOptions
-from ..sqloptions import SQLOptions
-from ..ahoptions import AHOptions
+from ...options.basic import BasicOptions
+from ...options.input import InputOptions
+from ...options.sql import SQLOptions
+from ...options.ah import AHOptions
 
 
 class Options(AHOptions, InputOptions, SQLOptions, BasicOptions):

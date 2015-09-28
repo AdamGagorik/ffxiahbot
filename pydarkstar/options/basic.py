@@ -2,8 +2,8 @@
 """
 Basic options.
 """
-from ..options import BaseOptions
-from .. import logutils
+from .base import BaseOptions
+from pydarkstar import logutils
 import logging
 
 

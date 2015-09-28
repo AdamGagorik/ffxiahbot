@@ -2,9 +2,9 @@
 """
 Alter item database.
 """
-from ..basicoptions import BasicOptions
-from ..inputoptions import InputOptions
-from ..outoptions import OutputOptions
+from ...options.basic import BasicOptions
+from ...options.input import InputOptions
+from ...options.output import OutputOptions
 
 
 class Options(OutputOptions, InputOptions, BasicOptions):

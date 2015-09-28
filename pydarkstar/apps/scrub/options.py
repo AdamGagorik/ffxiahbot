@@ -2,8 +2,8 @@
 """
 Create item database.
 """
-from ..basicoptions import BasicOptions
-from ..outoptions import OutputOptions
+from ...options.basic import BasicOptions
+from ...options.output import OutputOptions
 
 
 class Options(OutputOptions, BasicOptions):

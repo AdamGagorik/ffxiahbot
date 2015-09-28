@@ -2,7 +2,7 @@
 """
 SQL options.
 """
-from ..options import BaseOptions
+from .base import BaseOptions
 
 
 class SQLOptions(BaseOptions):
