@@ -5,6 +5,8 @@ Basic options.
 from .base import BaseOptions
 from pydarkstar import logutils
 import logging
+import sys
+import os
 
 
 class BasicOptions(BaseOptions):
@@ -19,7 +21,8 @@ class BasicOptions(BaseOptions):
 
     def __after__(self):
         super(BasicOptions, self).__after__()
-        logutils.basic_config(verbose=self.verbose, silent=self.silent, fname='pydarkstar.log')
+        fname = os.path.basename(os.path.dirname(sys.argv[0]))
+        logutils.basic_config(verbose=self.verbose, silent=self.silent, fname='{}.log'.format(fname))
         self.log_values(level=logging.INFO)
 
 
