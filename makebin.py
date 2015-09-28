@@ -88,7 +88,7 @@ def find_apps(top, regex=r'(run|main)\.py'):
 LTEMPLATE = r"""
 #!/bin/bash
 export PYTHONPATH=$PYTHONPATH:{path}
-${{PYTHON}} -m {spec} $*
+{python} -m {spec} $*
 """[1:-1]
 
 
