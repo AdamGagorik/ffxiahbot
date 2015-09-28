@@ -128,6 +128,12 @@ git clone git@github.com:AdamGagorik/pydarkstar.git
 C:\path\to\pydarkstar\bin> .\broker.bat
 ```
 
+* Use the --help flag for a list of options.
+
+```bash
+C:\path\to\pydarkstar\bin> .\broker.bat --help
+```
+
 * There are many apps...
 
 | app    | description                                                         |
@@ -140,8 +146,9 @@ C:\path\to\pydarkstar\bin> .\broker.bat
 | refill | fill the AH with items for sale and exit                            |
 | alter  | alter the item database                                             |
 
-* **Configure the apps by passing command line arguments**
-* **Or, setting parameters in the config.yaml file**
+* **Configure the apps by passing command line arguments.**
+* **Parameters can also be set in the config.yaml file.**
+* The order of precedence is defaults < config file < command line
 * Please do not edit source code files to configure your apps.
 * You can change many properties be editing the item database (items.csv).
 
