@@ -1,12 +1,120 @@
-from sys import platform
+"""
+Create wrapper scripts for running apps.
+"""
+import argparse
 import logging
 import shutil
 import stat
 import os
+import re
 
-lfmt = '[%(asctime)s][%(process)5d][%(levelname)-5s]: %(message)s'
-dfmt = "%Y-%m-%d %H:%M:%S"
-logging.basicConfig(level=logging.INFO, format=lfmt, datefmt=dfmt)
+
+def setup_logging(**kwargs):
+    """
+    Setup python logging module.
+    """
+    lfmt = '%(levelname)-5s: %(message)s'
+    dfmt = "%Y-%m-%d %H:%M:%S"
+    _kwargs = dict(level=logging.DEBUG, format=lfmt, datefmt=dfmt)
+    _kwargs.update(**kwargs)
+    logging.basicConfig(**_kwargs)
+
+
+def log_parameter(k, v, fmt='%-14s: %s', level=logging.INFO):
+    logging.log(level, fmt, k, v)
+
+
+class Options:
+    def __init__(self):
+        self.work = os.getcwd()
+        self.python = shutil.which('python3')
+        self.project_path = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+        self.package_name = 'pydarkstar'
+        self.package_path = os.path.join(self.project_path, self.package_name)
+        self.apps_path = os.path.join(self.package_path, 'apps')
+        self.bin_path = os.path.join(self.project_path, 'bin')
+        self.apps_list = {
+            'broker': 'pydarkstar.apps.broker.run',
+            'refill': 'pydarkstar.apps.refill.run',
+            'clear': 'pydarkstar.apps.clear.run',
+            'scrub': 'pydarkstar.apps.scrub.run',
+            'alter': 'pydarkstar.apps.alter.run',
+        }
+
+        log_parameter('work', self.work)
+        log_parameter('project_path', self.project_path)
+        log_parameter('package_name', self.package_name)
+        log_parameter('package_path', self.package_path)
+        log_parameter('python', self.python)
+        log_parameter('bin_path', self.bin_path)
+
+        parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+        parser.parse_args()
+
+        try:
+            assert os.path.exists(self.work)
+            assert os.path.exists(self.project_path)
+            assert os.path.exists(self.package_path)
+            assert os.path.exists(self.apps_path)
+        except AssertionError:
+            logging.exception('invalid configuration')
+            exit(-1)
+
+
+def find_apps(top, regex=r'(run|main)\.py'):
+    """
+    Search for applications.
+    """
+    if isinstance(regex, str):
+        regex = re.compile(regex)
+
+    found = []
+    logging.info('looking for apps...')
+    for root, dirs, files in os.walk(top):
+        for f in files:
+            m = regex.match(f)
+            if m:
+                p = os.path.join(root, f)
+                found.append(p)
+
+    found.sort(key=lambda x: x.split(os.sep))
+
+    for f in found:
+        logging.info('found app! %s', f)
+
+    return found
+
+
+LTEMPLATE = r"""
+#!/bin/bash
+export PYTHONPATH=$PYTHONPATH:{path}
+${{PYTHON}} -m {spec} $*
+"""[1:-1]
+
+
+WTEMPLATE = r"""
+@ECHO OFF
+set PYTHONPATH="%PYTHONPATH%;{path}"
+{python} -m {spec} %*
+"""[1:-1]
+
+
+def choose_template():
+    """
+    Choose script template based on platform.
+    """
+    from sys import platform
+    log_parameter('platform', platform)
+
+    # select template based on platform
+    if platform in ['linux', 'linux2', 'darwin']:
+        return LTEMPLATE, '{}.sh'
+
+    elif platform in ['win32', 'win64']:
+        return WTEMPLATE, '{}.bat'
+
+    else:
+        raise RuntimeError('unknown platform: %s', platform)
 
 
 def chmod(path):
@@ -27,83 +135,36 @@ def chmod(path):
              stat.S_IXOTH  # execute
              )
 
-# set paths
-work = os.getcwd()
-pdir = os.path.join(work, 'pydarkstar')
-adir = os.path.join(work, 'apps')
-bdir = os.path.join(work, 'bin')
-ddir = os.path.join(work, 'data')
 
-# check paths
-assert os.path.exists(pdir)
-assert os.path.exists(adir)
-assert os.path.exists(ddir)
+def main():
+    setup_logging()
+    opts = Options()
 
-# find apps
-apps = []
-logging.info('looking for apps')
-for root, dirs, files in os.walk(adir):
-    for f in files:
-        stub, ext = os.path.splitext(f)
-        if ext.lower() == '.py':
-            apps.append(os.path.abspath(os.path.join(root, f)))
+    # choose script template and output file name
+    template, ostub = choose_template()
 
-# batch script templates
-LTEMPLATE = \
-    r"""
-    #!/bin/bash
-    export PYTHONPATH=$PYTHONPATH:{path}
-    {interp} {script} $*
-    """[1:-1]
+    # create bin directory
+    if not os.path.exists(opts.bin_path):
+        logging.info('mkdir -p %s', opts.bin_path)
+        os.makedirs(opts.bin_path)
 
-WTEMPLATE = \
-    r"""
-    @ECHO OFF
-    set PYTHONPATH=%PYTHONPATH%;{path}
-    {interp} {script} %*
-    """[1:-1]
+    for app in opts.apps_list:
+        log_parameter(app, opts.apps_list[app])
 
-# select template based on platform
-if platform in ['linux', 'linux2', 'darwin']:
-    logging.info('platform = LINUX')
-    template = LTEMPLATE
-    ostub = '{}.sh'
+        opath = os.path.join(opts.bin_path, ostub.format(app))
+        log_parameter('opath', opath)
 
-elif platform in ['win32', 'win64']:
-    logging.debug('platform = WINDOWS')
-    template = WTEMPLATE
-    ostub = '{}.bat'
+        with open(opath, 'w') as handle:
+            handle.write(template.format(python=opts.python, path=os.path.dirname(opts.package_path),
+                                         spec=opts.apps_list[app]))
 
-else:
-    raise RuntimeError('unknown platform: %s', platform)
+        chmod(opath)
 
-# create bin directory
-if not os.path.exists(bdir):
-    logging.info('mkdir %s', bdir)
-    os.mkdir(bdir)
 
-# create app scripts
-logging.info('creating batch scripts')
-for app in apps:
-    # create output name
-    base = os.path.basename(app)
-    stub, ext = os.path.splitext(base)
-    oname = os.path.join(bdir, ostub.format(stub))
-
-    # write script
-    logging.info(oname)
-    with open(oname, 'wb') as handle:
-        handle.write(template.format(path=work,
-                                     interp='python', script=app))
-
-    chmod(oname)
-
-# copy items from data folder
-# noinspection PyRedeclaration
-root, dirs, files = next(os.walk(ddir))
-for f in files:
-    opath = os.path.join(root, f)
-    npath = os.path.join(bdir, f)
-    if not os.path.exists(npath):
-        logging.info('cp %s %s', opath, npath)
-        shutil.copy(opath, npath)
+if __name__ == '__main__':
+    # noinspection PyBroadException
+    try:
+        main()
+    except Exception:
+        logging.exception('')
+        exit(-1)
