@@ -123,33 +123,33 @@ git clone git@github.com:AdamGagorik/pydarkstar.git
 * There are many apps...
 
 
-| app | description |
-|------|----------------|
+| app    | description                                                         |
+|--------|---------------------------------------------------------------------|
 | scrub  | download data from the web to create a database of items and prices |
-| broker | server that buys and sells items on the AH from players |
-| buyer  | server that buys items on the AH from players |
-| seller  | server that sells items on the AH to players |
-| clear   | clear the AH of all transactions |
-| refill    | fill the AH with items for sale and exit |
-| alter    | alter the item database |
+| broker | server that buys and sells items on the AH from players             |
+| buyer  | server that buys items on the AH from players                       |
+| seller | server that sells items on the AH to players                        |
+| clear  | clear the AH of all transactions                                    |
+| refill | fill the AH with items for sale and exit                            |
+| alter  | alter the item database                                             |
 
 * **Configure the apps by passing command line arguments**
 * **Or, setting parameters in the config.yaml file**
 * Please do not edit source code files to configure your apps.
 * You can change many properties be editing the item database (items.csv).
 
-column | description
-----------|----------------
-itemid | unique item id
-name | item name
-sell01 | sell single
-buy01 | buy single
-price01 | price for single
-stock01 | restock count for single
-sell12 | sell stack
-buy12 | buy stack
-price12 | price for stack
-stock12 | restock count for stack
+| column   | description             | value          |
+| ---------|-------------------------|----------------|
+| itemid   | unique item id          | integer        |
+| name     | item name               | string         |
+| sell01   | sell single?            | 0=false 1=true |
+| buy01    | buy single?             | 0=false 1=true |
+| price01  | price for single        | integer >=1    |
+| stock01  | restock count (single)  | integer >=0    |
+| sell12   | sell stack?             | 0=false 1=true |
+| buy12    | buy stack?              | 0=false 1=true |
+| price12  | price for stack         | integer >=1    |
+| stock12  | restock count (stack)   | integer >=0    |
 
 # Advanced
 
