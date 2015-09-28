@@ -29,7 +29,7 @@ bash:~$ python3 ./makebin.py
 **Edit the config.yaml in "C:\path\to\pydarkstar\bin" with your settings (use a text editor).**
 
 ```bash
-bash:~$ cd /path/to/pydarkstar
+bash:~$ cd /path/to/pydarkstar/bin
 
 # to download new data from ffxiah.com (takes forever)
 bash:~$ ./scrub.sh
@@ -45,15 +45,15 @@ bash:~$ ./broker.sh
 
 ---
 
-1.  Install Git
+* Install Git
 
 **You have it already, if you are running darkstar.**
 
-2.  Install Python Anaconda
+* Install Python Anaconda
 
 **Really, its the easiest way.**
 
-3.  Open the Anaconda command prompt from the start menu
+* Open the Anaconda command prompt from the start menu
 
 **Search for it using the start menu**
 
@@ -68,11 +68,8 @@ bash:~$ ./broker.sh
 > conda install pyyaml
 ```
 
-4.  Clone pydarkstar repository
-
-**Edit the config.yaml in "C:\path\to\pydarkstar\bin" with you settings (use a text editor).**
-
-5.  Run the makebin.py script
+* Clone pydarkstar repository
+* Run the makebin.py script
 
 **You need to open a command prompt at the root directory of pydarkstar.**
 **Search for it using the start menu.**
@@ -81,6 +78,12 @@ bash:~$ ./broker.sh
 # enter the correct path!
 C:\Users\Steve> cd "C:\path\to\pydarkstar"
 C:\path\to\pydarkstar> "C:\path\to\python3" .\makebin.py
+```
+
+**Edit the config.yaml in "C:\path\to\pydarkstar\bin" with your settings (use a text editor).**
+
+```bash
+C:\Users\Steve> cd "C:\path\to\pydarkstar\bin"
 
 # to download new data from ffxiah.com (takes forever)
 C:\path\to\pydarkstar> .\scrub.bat
@@ -120,8 +123,12 @@ git clone git@github.com:AdamGagorik/pydarkstar.git
 # Usage
 
 * Use pydarkstar from the command line.
-* There are many apps...
 
+```bash
+C:\path\to\pydarkstar\bin> .\broker.bat
+```
+
+* There are many apps...
 
 | app    | description                                                         |
 |--------|---------------------------------------------------------------------|
