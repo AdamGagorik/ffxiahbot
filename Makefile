@@ -21,3 +21,4 @@ clean:
 	-find ./pydarkstar -type d -name __pycache__ | xargs -I xxx rm -rf xxx
 	-find ./pydarkstar -type f -name \*.pyc | xargs -I xxx rm xxx
 	-find ./bin -type f -name \*.log | xargs -I xxx rm xxx
+	$(MAKE) --no-print-directory -C ./doc clean
