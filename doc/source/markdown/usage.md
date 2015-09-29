@@ -53,6 +53,43 @@ bash:~$ ./broker.sh --help
 
 * Parameters can also be set in the config.yaml file.
 * You should set your mysql parameters.
+
+```python
+# ah
+name: Zissou          # Name that appears on AH when buying and selling
+
+# basic
+verbose: true         # ERROR, INFO, DEBUG in log file
+silent: false         # ERROR
+
+# input
+data: ['items.csv']   # comma seperated list of CSV files
+
+# output
+stub: items           # output name when scrubbing
+overwrite: false      # overwrite existing output?
+backup: true          # backup existing output?
+
+# sql
+hostname: 127.0.0.1   # SQL parameter
+database: dspdb       # SQL parameter
+username: root        # SQL parameter
+password: ????        # SQL parameter
+fail: true            # fail on SQL database errors?
+
+# broker/seller
+restock: 3600         # seconds between selling
+
+# broker/buyer
+tick: 30              # seconds between buying
+
+# scrub
+itemids: []           # list of itemids to scrub
+stock01: 5            # default stock01 when scrubbing
+stock12: 5            # default stock12 when scrubbing
+urls: []              # list of category urls to scrub
+```
+
 * The order of precedence is *defaults < config file < command line*.
 * Please do not edit source code files to configure your apps.
 
@@ -65,16 +102,17 @@ bash:~$ ./broker.sh --help
 * You do not need to run the *scrub* app unless you want to recreate the database.
 * You can change many properties be editing the *items.csv.* manually.
 
-| column   | description             | value          |
-| ---------|-------------------------|----------------|
-| itemid   | unique item id          | integer >=0    |
-| name     | item name               | string         |
-| sell01   | sell single?            | 0=false 1=true |
-| buy01    | buy single?             | 0=false 1=true |
-| price01  | price for single        | integer >=1    |
-| stock01  | restock count (single)  | integer >=0    |
-| sell12   | sell stack?             | 0=false 1=true |
-| buy12    | buy stack?              | 0=false 1=true |
-| price12  | price for stack         | integer >=1    |
-| stock12  | restock count (stack)   | integer >=0    |
-
+| column   | description                     | value             |
+| ---------|---------------------------------|-------------------|
+| itemid   | unique item id                  | integer >=0       |
+| name     | item name                       | string            |
+| sell01   | sell single?                    | 0=false 1=true    |
+| buy01    | buy single?                     | 0=false 1=true    |
+| price01  | price for single                | integer >=1       |
+| stock01  | restock count (single)          | integer >=0       |
+| rate01   | sell rate (single) **not used** | float 0 <= x <= 1 |
+| sell12   | sell stack?                     | 0=false 1=true    |
+| buy12    | buy stack?                      | 0=false 1=true    |
+| price12  | price for stack                 | integer >=1       |
+| stock12  | restock count (stack)           | integer >=0       |
+| rate12   | sell rate (stack) **not used**  | float 0 <= x <= 1 |

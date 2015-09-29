@@ -6,7 +6,7 @@
 
 *This is just how python works, and is not here to make things complicated.*
 
-We accomplish this by writing shell scripts that set an environment variable called PYTHONPATH to the absolute path of the pydarkstar root directory.  Running the included makebin.py sets this up automatically for you.  Below are example scripts, should you want to perform this setup process manually.
+We accomplish this by writing shell scripts that set an environment variable called PYTHONPATH to the absolute path of the pydarkstar root directory.  **Running the included makebin.py sets this up automatically for you**.  Below are example scripts, should you want to perform this setup process manually.
 
 The process of setting the PYTHONPATH is not needed in the case that pydarkstar is in the current directory of an executing python interpreter.
 
