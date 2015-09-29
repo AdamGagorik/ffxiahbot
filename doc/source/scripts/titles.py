@@ -26,3 +26,13 @@ for root, f in found:
             #print('{:2d} {}'.format(i, line.rstrip()))
             handle.write(line)
         #print('')
+
+# fix main file
+with open('pydarkstar.rst', 'r') as handle:
+    lines = handle.readlines()
+
+with open('pydarkstar.rst', 'w') as handle:
+    for i, line in enumerate(lines):
+        if i == 0:
+            line = re.sub(r'\s+package$', '', line)
+        handle.write(line)
