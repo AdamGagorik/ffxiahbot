@@ -2,7 +2,7 @@
 
 This is a quick giude to getting pydarkstar running.  For more detail, as well as understanding how pydarkstar works, **please read the usage section**.
 
-#### LINUX
+#### Linux
 
 * Linux already comes with python.  **You should use python3**, which is not the default.
 
@@ -34,7 +34,7 @@ bash:~$ ./scrub.sh
 bash:~$ ./broker.sh
 ```
 
-#### WINDOWS
+#### Windows
 
 * Setting up Python on Windows can be painful.
 * It is easier to install a Python distribution such as Anaconda (http://continuum.io/downloads).
