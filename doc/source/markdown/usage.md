@@ -4,19 +4,23 @@
 
 * Use pydarkstar from the command line.
 
+###### Windows
+
 ```bash
-C:\path\to\pydarkstar\bin> .\broker.bat
+> cd "C:\path\to\pydarkstar\bin"
+> .\broker.bat
 ```
 
-* Use the --help flag for a list of options.
+###### Linux
 
 ```bash
-C:\path\to\pydarkstar\bin> .\broker.bat --help
+bash:~$ cd /path/to/pydarkstar/bin
+bash:~$ ./broker.sh
 ```
 
 #### Apps
 
-* There are many apps...
+* There are many apps.
 
 | app    | description                                                         |
 |--------|---------------------------------------------------------------------|
@@ -30,16 +34,36 @@ C:\path\to\pydarkstar\bin> .\broker.bat --help
 
 #### Parameters
 
-* **Configure the apps by passing command line arguments.**
-* **Parameters can also be set in the config.yaml file.**
+* Configure the apps by passing command line arguments.
+* Use the --help flag for a list of options.
+
+###### Windows
+
+```bash
+> cd "C:\path\to\pydarkstar\bin"
+> .\broker.bat --help
+```
+
+###### Linux
+
+```bash
+bash:~$ cd /path/to/pydarkstar/bin
+bash:~$ ./broker.sh --help
+```
+
+* Parameters can also be set in the config.yaml file.
+* You should set your mysql parameters.
 * The order of precedence is *defaults < config file < command line*.
 * Please do not edit source code files to configure your apps.
-* You should set your mysql parameters.
 
 #### Item Database
 
 * Item data is stored in *items.csv*.
-* You can change many properties be editing the item database: *items.csv.*
+* *items.csv* is just a simple text file that you can edit with excel.
+* The *items.csv* can be created with the scrub app.
+* There is an already generated *items.csv* in the bin folder for you.
+* You do not need to run the *scrub* app unless you want to recreate the database.
+* You can change many properties be editing the *items.csv.* manually.
 
 | column   | description             | value          |
 | ---------|-------------------------|----------------|
@@ -54,5 +78,3 @@ C:\path\to\pydarkstar\bin> .\broker.bat --help
 | price12  | price for stack         | integer >=1    |
 | stock12  | restock count (stack)   | integer >=0    |
 
-* There is an already generated *items.csv* in the bin folder for you.
-* You do not need to run the *scrub* app unless you want to recreate the database.

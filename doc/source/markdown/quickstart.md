@@ -63,18 +63,18 @@ bash:~$ ./broker.sh
 
 ```bash
 # enter the correct path!
-C:\Users\Steve> cd "C:\path\to\pydarkstar"
-C:\path\to\pydarkstar> "C:\path\to\python3" .\makebin.py
+> cd "C:\path\to\pydarkstar"
+> "C:\path\to\python3" .\makebin.py
 ```
 
 **Edit the config.yaml in "C:\path\to\pydarkstar\bin" with your settings (use a text editor).**
 
 ```bash
-C:\Users\Steve> cd "C:\path\to\pydarkstar\bin"
+> cd "C:\path\to\pydarkstar\bin"
 
 # to download new data from ffxiah.com (takes forever)
-C:\path\to\pydarkstar> .\scrub.bat
+> .\scrub.bat
 
 # to start the broker
-C:\path\to\pydarkstar> .\broker.bat
+> .\broker.bat
 ```
