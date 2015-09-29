@@ -4,7 +4,7 @@ A python module and set of command line tools for interacting with a darkstar se
 
 * Visit the [website](http://adamgagorik.github.io/pydarkstar) to get started.
 
-## Features
+## [Features](http://adamgagorik.github.io/pydarkstar)
 
 * Create Auction House item database with prices.
 * Detailed control over the buying and selling of items.
