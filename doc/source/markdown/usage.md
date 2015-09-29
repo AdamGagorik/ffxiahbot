@@ -1,5 +1,7 @@
 # Usage
 
+#### Basic
+
 * Use pydarkstar from the command line.
 
 ```bash
@@ -11,6 +13,8 @@ C:\path\to\pydarkstar\bin> .\broker.bat
 ```bash
 C:\path\to\pydarkstar\bin> .\broker.bat --help
 ```
+
+#### Apps
 
 * There are many apps...
 
@@ -24,11 +28,15 @@ C:\path\to\pydarkstar\bin> .\broker.bat --help
 | refill | fill the AH with items for sale and exit                            |
 | alter  | alter the item database                                             |
 
+#### Parameters
+
 * **Configure the apps by passing command line arguments.**
 * **Parameters can also be set in the config.yaml file.**
 * The order of precedence is *defaults < config file < command line*.
 * Please do not edit source code files to configure your apps.
 * You should set your mysql parameters.
+
+#### Item Database
 
 * Item data is stored in *items.csv*.
 * You can change many properties be editing the item database: *items.csv.*
