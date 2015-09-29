@@ -1,6 +1,8 @@
-# pydarkstar
+# [pydarkstar](http://adamgagorik.github.io/)
 
 A python module and set of command line tools for interacting with a darkstar server.
+
+* Visit the [website](http://adamgagorik.github.io/) to get started.
 
 ## Features
 
