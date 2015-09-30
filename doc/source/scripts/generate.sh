@@ -31,4 +31,5 @@ done
 
 cd ./generated
 python ../scripts/titles.py
+python ../scripts/apps.py
 cd ..

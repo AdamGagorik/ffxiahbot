@@ -102,7 +102,7 @@ exclude_patterns = []
 #show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'tango'
 
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
@@ -183,8 +183,8 @@ html_theme_options = {
     # Options are nothing (default) or the name of a valid theme
     # such as "amelia" or "cosmo".
     #'bootswatch_theme': "united",
-    #'bootswatch_theme': "cyborg",
-    'bootswatch_theme': "cerulean",
+    'bootswatch_theme': "cyborg",
+    #'bootswatch_theme': "cerulean",
 
     # Choose Bootstrap version.
     # Values: "3" (default) or "2" (in quotes)

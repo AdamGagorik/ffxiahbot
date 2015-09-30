@@ -10,6 +10,7 @@
 
     generated/setup
     generated/usage
+    generated/apps
     generated/requirements
     generated/advanced
     Code <generated/pydarkstar>
