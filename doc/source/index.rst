@@ -6,7 +6,7 @@
 .. include:: ./generated/README.rst
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     generated/setup
     generated/usage
