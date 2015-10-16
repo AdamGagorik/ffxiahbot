@@ -33,6 +33,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
@@ -182,9 +183,7 @@ html_theme_options = {
     #
     # Options are nothing (default) or the name of a valid theme
     # such as "amelia" or "cosmo".
-    #'bootswatch_theme': "united",
-    'bootswatch_theme': "cyborg",
-    #'bootswatch_theme': "cerulean",
+    'bootswatch_theme': "cosmo",
 
     # Choose Bootstrap version.
     # Values: "3" (default) or "2" (in quotes)
@@ -363,3 +362,16 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/': None}
+
+# Autodoc options
+autodoc_member_order = 'bysource'
+
+autodoc_default_flags = [
+    'members',
+    'undoc-members',
+    'private-members',
+#   'special-members',
+#   'inherited-members',
+    'show-inheritence'
+]
+
