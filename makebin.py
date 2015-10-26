@@ -43,6 +43,9 @@ class Options:
             'alter': 'pydarkstar.apps.alter.run',
         }
 
+        if self.python is None:
+            self.python = 'python'
+
         log_parameter('work', self.work)
         log_parameter('project_path', self.project_path)
         log_parameter('package_name', self.package_name)
