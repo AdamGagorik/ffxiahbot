@@ -16,11 +16,6 @@ bash:~$ sudo pip install beautifulsoup4
 bash:~$ sudo pip install pyyaml
 
 bash:~$ git clone git@github.com:AdamGagorik/pydarkstar.git
-
-# enter the correct path!
-
-bash:~$ cd ./path/to/pydarkstar
-bash:~$ python3 ./makebin.py
 ```
 
 * Edit the config.yaml in "/path/to/pydarkstar/bin" with your settings (use a text editor).
@@ -29,10 +24,10 @@ bash:~$ python3 ./makebin.py
 bash:~$ cd /path/to/pydarkstar/bin
 
 # to download new data from ffxiah.com (takes forever)
-bash:~$ ./scrub.sh
+bash:~$ ./scrub.py
 
 # to start the broker
-bash:~$ ./broker.sh
+bash:~$ ./broker.py
 ```
 
 #### Windows
@@ -55,25 +50,16 @@ bash:~$ ./broker.sh
 ```
 
 * Clone pydarkstar repository.
-* Run the *makebin.py* script.
-
-**You need to open a command prompt at the root directory of pydarkstar.**
-
-```bash
-# enter the correct path!
-
-> cd "C:\path\to\pydarkstar"
-> "C:\path\to\python3" .\makebin.py
-```
-
 * Edit the config.yaml in "C:\path\to\pydarkstar\bin" with your settings (use a text editor).
+
+**You need to open a command prompt at the root directory of pydarkstar. This is not the same as the Anaconda command prompt**
 
 ```bash
 > cd "C:\path\to\pydarkstar\bin"
 
 # to download new data from ffxiah.com (takes forever)
-> .\scrub.bat
+> "C:\path\to\python3" .\scrub.py
 
 # to start the broker
-> .\broker.bat
+> "C:\path\to\python3" .\broker.py
 ```

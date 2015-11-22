@@ -1,6 +1,6 @@
 # Advanced
 
-#### PYTHONPATH
+#### Shell Scripts : PYTHONPATH
 
 **The pydarkstar package will not work unless you tell python where pydarkstar is located**.
 
@@ -43,7 +43,7 @@ set PYTHONPATH="%PYTHONPATH%;C:\Path\To\pydarkstar"
 python3 -m pydarkstar.apps.scrub.run %*
 ```
 
-#### Apps
+#### Shell Scripts : Running Apps
 
 **Please note that pydarkstar takes advantage of python's -m flag to run library modules as scripts**.  Python modules are just python files beneath the pydarkstar top level directory.  There is no other way to run the apps.
 

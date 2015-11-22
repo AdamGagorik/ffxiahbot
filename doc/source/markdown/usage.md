@@ -3,20 +3,21 @@
 #### Basic
 
 * Use pydarkstar from the command line.
-* See the setup guide to create the shell scripts.
+* Just run the scripts in the bin directory.
+* See the advanced section if you want to create shell scripts.
 
 ###### Windows
 
 ```bash
 > cd "C:\path\to\pydarkstar\bin"
-> .\broker.bat
+> "C:\path\to\python3" .\broker.py
 ```
 
 ###### Linux
 
 ```bash
 bash:~$ cd /path/to/pydarkstar/bin
-bash:~$ ./broker.sh
+bash:~$ ./broker.py
 ```
 
 #### Apps
@@ -42,14 +43,14 @@ bash:~$ ./broker.sh
 
 ```bash
 > cd "C:\path\to\pydarkstar\bin"
-> .\broker.bat --help
+> "C:\path\to\python3" .\broker.py --help
 ```
 
 ###### Linux
 
 ```bash
 bash:~$ cd /path/to/pydarkstar/bin
-bash:~$ ./broker.sh --help
+bash:~$ ./broker.py --help
 ```
 
 * Parameters can also be set in the config.yaml file.
