@@ -2,6 +2,13 @@
 
 This is a quick giude to getting pydarkstar running.  For more detail, as well as understanding how pydarkstar works, **please read the usage section**.
 
+* **Read and follow the directions**.
+
+#### Notes
+
+* Computers do not magically know where to find files; you need to tell them.
+* Unless you know what you are doing, do not use pydarkstar in ways that I have not outlined.
+
 #### Linux
 
 * Linux already comes with python.  You should use **python3**, which is not the default.
@@ -52,7 +59,7 @@ bash:~$ ./broker.py
 * Clone pydarkstar repository.
 * Edit the config.yaml in "C:\path\to\pydarkstar\bin" with your settings (use a text editor).
 
-**You need to open a command prompt at the root directory of pydarkstar. This is not the same as the Anaconda command prompt**
+**You need to open a command prompt at the root directory of pydarkstar. This is not the same as the Anaconda command prompt.**
 
 ```bash
 > cd "C:\path\to\pydarkstar\bin"
