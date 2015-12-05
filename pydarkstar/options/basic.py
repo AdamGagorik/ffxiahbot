@@ -19,7 +19,7 @@ class BasicOptions(BaseOptions):
 
     def __after__(self):
         super(BasicOptions, self).__after__()
-        logutils.basic_config(verbose=self.verbose, silent=self.silent, fname='pydarkstar.log'.format(fname))
+        logutils.basic_config(verbose=self.verbose, silent=self.silent, fname='pydarkstar.log')
         self.log_values(level=logging.INFO)
 
 
