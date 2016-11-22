@@ -84,9 +84,11 @@ class ItemList(DarkObject):
         regex_f = re.compile(regex_f, re.IGNORECASE)
 
         self.info('load %s', fname)
+        line_number = 0
         with open(fname, 'rU') as handle:
             # first line is item titles
             line = handle.readline()
+            line_number += 1
 
             # ignore comments
             line = regex_c.sub('', line).strip()
@@ -106,6 +108,8 @@ class ItemList(DarkObject):
 
             # other lines are items
             line = handle.readline()
+            line_number += 1
+
             while line:
                 # remove comments
                 line = regex_c.sub('', line).strip()
@@ -129,7 +133,7 @@ class ItemList(DarkObject):
 
                     # validate line
                     elif set(tokens).intersection(item.Item.keys):
-                        raise RuntimeError('something wrong with line')
+                        raise RuntimeError('something wrong with line %d' % line_number)
 
                     # process normal line
                     else:
@@ -158,6 +162,7 @@ class ItemList(DarkObject):
 
                 # read next line
                 line = handle.readline()
+                line_number += 1
 
     def savecsv(self, fname, itertitle=100):
         """
