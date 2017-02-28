@@ -1,72 +1,82 @@
 # Setup
 
-This is a quick giude to getting pydarkstar running.  For more detail, as well as understanding how pydarkstar works, **please read the usage section**.
+This is a giude to getting pydarkstar running.
 
-* **Read and follow the directions**.
+# Step 0: Install Git and Clone pydarkstar
 
-#### Notes
+* You installed **git** already when you setup [darkstar][DARKS]
+* Clone the pydarkstar repository from [here][GITPG]
 
-* Computers do not magically know where to find files; you need to tell them.
-* Unless you know what you are doing, do not use pydarkstar in ways that I have not outlined.
+# Step 1: Install Python
 
-#### Linux
+**GOTCHA**:  Make sure you use **Python version 3**!
 
-* Linux already comes with python.  You should use **python3**, which is not the default.
+### Choice 1: Anaconda (Recommended)
 
-```bash
-bash:~$ sudo apt-get install git
-bash:~$ sudo apt-get install pip
+* Install [Python Anaconda][CONDA]
+* You need **Python3.4** or greater.
 
-bash:~$ sudo pip install sqlalchemy
-bash:~$ sudo pip install pymysql
-bash:~$ sudo pip install beautifulsoup4
-bash:~$ sudo pip install pyyaml
+### Choice 2: Use Your OS's Python (Linux ONLY)
 
-bash:~$ git clone git@github.com:AdamGagorik/pydarkstar.git
-```
+* Linux already comes with python installed
+* You need **Python3.4** or greater (may not be the default)
 
-* Edit the config.yaml in "/path/to/pydarkstar/bin" with your settings (use a text editor).
+### Choice 3: Install Python from Somewhere Else
 
-```bash
-bash:~$ cd /path/to/pydarkstar/bin
+* You can use the official Python from [here][PYOFF].
+* You need **Python3.4** or greater.
 
-# to download new data from ffxiah.com (takes forever)
-bash:~$ ./scrub.py
+# Step 2: Install 3rd-party Python Modules
 
-# to start the broker
-bash:~$ ./broker.py
-```
+### Choice 1:  Use Anaconda's Conda Command (Recommended)
 
-#### Windows
+* **GOTCHA** You must have installed Anaconda above!
+* **GOTCHA** Use the Anaconda Command Prompt on **WINDOWS** (search for it in the start menu)
 
-* Setting up Python on Windows can be painful.
-* It is easier to install a Python distribution such as Anaconda (http://continuum.io/downloads).
-* Install Git.
-* Install Python Anaconda.
-* Open the Anaconda command prompt from the start menu (search for it using the start menu).
+Open a command prompt and run the following commands:
 
 ```bash
-> conda update conda
+conda update conda
 
 # when prompted, enter 'y' for yes
 
-> conda install sqlalchemy
-> conda install pymysql
-> conda install beautiful-soup
-> conda install pyyaml
+conda install sqlalchemy
+conda install pymysql
+conda install beautiful-soup
+conda install pyyaml
 ```
 
-* Clone pydarkstar repository.
-* Edit the config.yaml in "C:\path\to\pydarkstar\bin" with your settings (use a text editor).
+### Choice 2:  Use Pip
 
-**You need to open a command prompt at the root directory of pydarkstar. This is not the same as the Anaconda command prompt.**
+* **GOTCHA**:  Make sure you have the **pip** command!
+
+Open a command prompt and run the following commands:
+
+###### Windows
 
 ```bash
-> cd "C:\path\to\pydarkstar\bin"
-
-# to download new data from ffxiah.com (takes forever)
-> "C:\path\to\python3" .\scrub.py
-
-# to start the broker
-> "C:\path\to\python3" .\broker.py
+"C:\path\to\pip" install sqlalchemy
+"C:\path\to\pip" install pymysql
+"C:\path\to\pip" install beautifulsoup4
+"C:\path\to\pip" install pyyaml
 ```
+
+###### Linux
+
+```bash
+sudo pip install sqlalchemy
+sudo pip install pymysql
+sudo pip install beautifulsoup4
+sudo pip install pyyaml
+```
+
+# Step 4: Configure pydarkstar
+
+Follow the instructions on the [usage][USAGE] page.
+
+[CONDA]: http://continuum.io/downloads
+[PYPIP]: https://pip.pypa.io/en/stable/
+[PYOFF]: https://www.python.org/downloads
+[USAGE]: http://adamgagorik.github.io/pydarkstar/generated/usage.html
+[GITPG]: https://github.com/AdamGagorik/pydarkstar
+[DARKS]: https://github.com/DarkstarProject/darkstar

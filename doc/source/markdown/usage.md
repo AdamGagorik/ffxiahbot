@@ -1,10 +1,14 @@
 # Usage
 
-#### Basic
+#### Notes
 
-* Use pydarkstar from the command line.
-* Just run the scripts in the bin directory.
-* See the advanced section if you want to create shell scripts.
+* Use pydarkstar from the command line
+* Just run the scripts in the bin directory
+* See the advanced section if you want to create shell scripts
+* Set the options in the config.yaml file (see below)
+* Set your item prices in the items.csv file (see below)
+
+#### Example
 
 ###### Windows
 
@@ -20,41 +24,13 @@ bash:~$ cd /path/to/pydarkstar/bin
 bash:~$ ./broker.py
 ```
 
-#### Apps
-
-* There are many apps.
-
-| app    | description                                                         |
-|--------|---------------------------------------------------------------------|
-| scrub  | download data from the web to create a database of items and prices |
-| broker | server that buys and sells items on the AH from players             |
-| buyer  | server that buys items on the AH from players                       |
-| seller | server that sells items on the AH to players                        |
-| clear  | clear the AH of all transactions                                    |
-| refill | fill the AH with items for sale and exit                            |
-| alter  | alter the item database                                             |
-
 #### Parameters
 
-* Configure the apps by passing command line arguments.
-* Use the --help flag for a list of options.
+* Parameters can be set in the config.yaml file
+* You should set your mysql parameters
+* Please do not edit source code files to configure your apps
 
-###### Windows
-
-```bash
-> cd "C:\path\to\pydarkstar\bin"
-> "C:\path\to\python3" .\broker.py --help
-```
-
-###### Linux
-
-```bash
-bash:~$ cd /path/to/pydarkstar/bin
-bash:~$ ./broker.py --help
-```
-
-* Parameters can also be set in the config.yaml file.
-* You should set your mysql parameters.
+###### Example
 
 ```python
 # ah
@@ -92,17 +68,14 @@ stock12: 5            # default stock12 when scrubbing
 urls: []              # list of category urls to scrub
 ```
 
-* The order of precedence is *defaults < config file < command line*.
-* Please do not edit source code files to configure your apps.
-
 #### Item Database
 
-* Item data is stored in *items.csv*.
-* *items.csv* is just a simple text file that you can edit with excel.
-* The *items.csv* can be created with the scrub app.
-* There is an already generated *items.csv* in the bin folder for you.
-* You do not need to run the *scrub* app unless you want to recreate the database.
-* You can change many properties be editing the *items.csv.* manually.
+* Item data is stored in *items.csv*
+* *items.csv* is just a simple text file that you can edit with excel
+* The *items.csv* can be created with the scrub app
+* There is an already generated *items.csv* in the bin folder for you
+* You do not need to run the *scrub* app unless you want to recreate the database
+* You can change many properties be editing the *items.csv.* manually
 
 | column   | description                     | value             |
 | ---------|---------------------------------|-------------------|
@@ -118,3 +91,18 @@ urls: []              # list of category urls to scrub
 | price12  | price for stack                 | integer >=1       |
 | stock12  | restock count (stack)           | integer >=0       |
 | rate12   | buy rate (stack) **not used**   | float 0 <= x <= 1 |
+
+#### Apps
+
+* There are many apps
+* You will probably only use the broker app
+
+| app    | description                                                         |
+|--------|---------------------------------------------------------------------|
+| scrub  | download data from the web to create a database of items and prices |
+| broker | server that buys and sells items on the AH from players             |
+| buyer  | server that buys items on the AH from players                       |
+| seller | server that sells items on the AH to players                        |
+| clear  | clear the AH of all transactions                                    |
+| refill | fill the AH with items for sale and exit                            |
+| alter  | alter the item database                                             |
