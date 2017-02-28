@@ -30,8 +30,8 @@ This is a giude to getting pydarkstar running.
 
 ### Choice 1:  Use Anaconda's Conda Command (Recommended)
 
-* **GOTCHA** You must have installed Anaconda above!
-* **GOTCHA** Use the Anaconda Command Prompt on **WINDOWS** (search for it in the start menu)
+* **GOTCHA**: You must have installed Anaconda above!
+* **GOTCHA**: Use the Anaconda Command Prompt on **WINDOWS** (search for it in the start menu)
 
 Open a command prompt and run the following commands:
 
@@ -44,11 +44,13 @@ conda install sqlalchemy
 conda install pymysql
 conda install beautiful-soup
 conda install pyyaml
+conda install six
 ```
 
 ### Choice 2:  Use Pip
 
-* **GOTCHA**:  Make sure you have the **pip** command!
+* **GOTCHA**: Make sure you have the **pip** command!
+* **GOTCHA**: Notice that its beautifulsoup4 instead of beautiful-soup
 
 Open a command prompt and run the following commands:
 
@@ -59,6 +61,7 @@ Open a command prompt and run the following commands:
 "C:\path\to\pip" install pymysql
 "C:\path\to\pip" install beautifulsoup4
 "C:\path\to\pip" install pyyaml
+"C:\path\to\pip" install six
 ```
 
 ###### Linux
@@ -68,6 +71,7 @@ sudo pip install sqlalchemy
 sudo pip install pymysql
 sudo pip install beautifulsoup4
 sudo pip install pyyaml
+sudo pip install six
 ```
 
 # Step 4: Configure pydarkstar

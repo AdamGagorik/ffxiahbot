@@ -2,11 +2,11 @@
 
 You must use **python 3.4** or greater!  The following python modules must also be installed.
 
-* python 3.4.3
-* sqlalchemy 1.0.8
-* pymysql 0.6.6
+* python 3.4.5
+* sqlalchemy 1.1.5
+* pymysql 0.7.9
 * bs4 4.3.2
-* pyyaml 3.11
+* pyyaml 3.12
 
 You can easily install python modules using pip or Anaconda (http://continuum.io/downloads).
 
