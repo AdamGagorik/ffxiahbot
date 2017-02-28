@@ -169,6 +169,7 @@ class ItemList(DarkObject):
         Save Item data to CSV file.
 
         :param fname: name of file
+        :param itertitle: how often to write title line
         """
         if os.path.exists(fname):
             self.info('overwriting file...')

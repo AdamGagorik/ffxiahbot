@@ -80,7 +80,8 @@ class TestCase01(unittest.TestCase):
             attr2 = getattr(ilist2.get(0), k)
             self.assertEqual(attr1, attr2)
 
-    def _get_ilist(self, text, ilist):
+    @staticmethod
+    def _get_ilist(text, ilist):
         i, fname = tempfile.mkstemp()
         with open(fname, 'w') as handle:
             handle.write(text)

@@ -6,10 +6,6 @@ import os
 import re
 
 from pydarkstar.darkobject import DarkObject
-from pydarkstar.logutils import basic_config
-basic_config(verbose=True)
-
-from six import add_metaclass
 
 
 class MetaOptions(type):
@@ -19,8 +15,7 @@ class MetaOptions(type):
         return obj
 
 
-@add_metaclass(MetaOptions)
-class BaseOptions(DarkObject):
+class BaseOptions(DarkObject, metaclass=MetaOptions):
     regex_tuple = re.compile('([^=]+)=([^=]+)')
 
     def __init__(self, config='config.yaml', description=None):

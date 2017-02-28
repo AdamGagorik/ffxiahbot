@@ -317,13 +317,13 @@ class FFXIAHScrubber(Scrubber):
 
         # get data from itemids
         if threads > 1:
-            from multiprocessing.dummy import Pool as ThreadPool
-            import itertools
-
-            params = zip(itemids, range(len(itemids)), itertools.repeat(len(itemids)))
-            pool = ThreadPool(threads)
-            data = pool.map(self._get_item_data_for_itemid_map, params)
-            data = {d['itemid']: d for d in data}
+            raise ValueError('Invalid number of threads: %d', threads)
+            # from multiprocessing.dummy import Pool as ThreadPool
+            # import itertools
+            # params = zip(itemids, range(len(itemids)), itertools.repeat(len(itemids)))
+            # pool = ThreadPool(threads)
+            # data = pool.map(self._get_item_data_for_itemid_map, params)
+            # data = {d['itemid']: d for d in data}
         else:
             data = {}
             for i, itemid in enumerate(itemids):

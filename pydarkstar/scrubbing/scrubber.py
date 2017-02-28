@@ -3,10 +3,8 @@ from bs4 import BeautifulSoup
 import logging
 import time
 
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib import urlopen
+
+from urllib.request import urlopen
 
 
 class Scrubber(DarkObject):

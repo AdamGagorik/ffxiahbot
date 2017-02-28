@@ -103,7 +103,7 @@ def add_rotating_file_handler(level=logging.DEBUG, fname='app.log',
 
     :param level: logging level
     :param fname: name of file
-    :param name: logger instance
+    :param logger: logger instance
     :param fmt: format
     """
 

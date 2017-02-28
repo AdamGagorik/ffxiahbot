@@ -5,7 +5,8 @@ import os
 import re
 
 
-def create_path(*args, **kwargs):
+def create_path(*args, absolute=True, dt_fmt='%Y_%m_%d_%H_%M_%S', dt=None,
+                **kwargs):
     """
     Construct a path.  You can access dt or datetime as objects.
 
@@ -19,10 +20,6 @@ def create_path(*args, **kwargs):
     :type dt: :py:class:`datetime.datetime`
     :type dt_fmt: str
     """
-    dt_fmt = kwargs.pop('dt_fmt', '%Y_%m_%d_%H_%M_%S')
-    absolute = kwargs.pop('absolute', True)
-    dt = kwargs.pop('dt', None)
-
     if not dt:
         dt = datetime.datetime.now()
 
@@ -93,6 +90,7 @@ def find_files(top, regex=r'.*', r=False, ignorecase=True, **kwargs):
     """
     Search for files that match pattern.
 
+    :param ignorecase: ignore case in regular expression
     :param top: top level directory
     :param regex: pattern to match
     :param r: recursive search

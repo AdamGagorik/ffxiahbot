@@ -67,6 +67,7 @@ class Browser(Worker):
         :param itemid: item number
         :param stack: consider stacks
         :param seller: consider seller
+        :param func: sqlalchemy function
 
         :type itemid: int
         :type stack: int
