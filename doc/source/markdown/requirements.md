@@ -17,6 +17,7 @@ pip install sqlalchemy
 pip install pymysql
 pip install beautifulsoup4
 pip install pyyaml
+pip install six
 ```
 
 ##### Anaconda
@@ -27,4 +28,5 @@ pip install pyyaml
 > conda install pymysql
 > conda install beautiful-soup
 > conda install pyyaml
+> conda install six
 ```

@@ -10,16 +10,14 @@
 
 #### Example
 
-###### Windows
-
 ```bash
+# Windows
+
 > cd "C:\path\to\pydarkstar\bin"
 > "C:\path\to\python3" .\broker.py
-```
 
-###### Linux
+# Linux
 
-```bash
 bash:~$ cd /path/to/pydarkstar/bin
 bash:~$ ./broker.py
 ```
