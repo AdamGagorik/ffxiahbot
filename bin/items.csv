@@ -19,7 +19,6 @@ itemid,name,sell01,buy01,price01,stock01,sell12,buy12,price12,stock12
 622,dried-marjoram,1,0,1000,10,1,0,12000,10
 630,ogre-pumpkin,1,0,450,10,1,0,5400,10
 1840,semolina,1,0,2500,10,1,0,30000,10
-4359,dhalmel-meat,1,0,1000,10,1,0,12000,10
 4445,yagudo-cherry,1,0,2000,10,1,0,24000,10
 4450,coral-fungus,1,0,3500,30,1,0,42000,30
 5152,buffalo-meat,1,0,5000,30,1,0,60000,30
@@ -473,6 +472,7 @@ itemid,name,sell01,buy01,price01,stock01,sell12,buy12,price12,stock12
 18091,mighty-lance,1,0,200000,30,0,0,1,0
 18213,mighty-axe,1,0,200000,30,0,0,1,0
 18374,mighty-sword,1,0,200000,30,0,0,1,0
+17697,mighty-talwar,1,0,200000,30,0,0,1,0
 itemid,name,sell01,buy01,price01,stock01,sell12,buy12,price12,stock12
 16565,spatha,1,0,4000,30,0,0,1,0
 17095,ash-pole,1,0,4000,30,0,0,1,0
