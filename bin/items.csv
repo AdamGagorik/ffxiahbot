@@ -20,7 +20,7 @@ itemid,name,sell01,buy01,price01,stock01,sell12,buy12,price12,stock12
 630,ogre-pumpkin,1,0,450,10,1,0,5400,10
 1840,semolina,1,0,2500,10,1,0,30000,10
 4445,yagudo-cherry,1,0,2000,10,1,0,24000,10
-4450,coral-fungus,1,0,3500,30,1,0,42000,30
+4450,coral-fungus,1,0,2000,30,1,0,24000,30
 5152,buffalo-meat,1,0,5000,30,1,0,60000,30
 5194,pomodoro-sauce,1,0,2000,10,1,0,24000,10
 5703,uleguerand-milk,1,0,5000,30,1,0,60000,30
