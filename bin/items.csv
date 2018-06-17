@@ -432,10 +432,10 @@ itemid,name,sell01,buy01,price01,stock01,sell12,buy12,price12,stock12
 17978,windurstian-kukri,1,0,60000,30,0,0,1,0
 18036,win-scythe,1,0,25000,30,0,0,1,0
 itemid,name,sell01,buy01,price01,stock01,sell12,buy12,price12,stock12
-14177,field-boots,1,0,200000,30,0,0,1,0
-14298,field-hose,1,0,200000,30,0,0,1,0
-14375,field-tunica,1,0,200000,30,0,0,1,0
-14818,field-gloves,1,0,200000,30,0,0,1,0
+14176,field-boots,1,0,200000,30,0,0,1,0
+14297,field-hose,1,0,200000,30,0,0,1,0
+14374,field-tunica,1,0,200000,30,0,0,1,0
+14817,field-gloves,1,0,200000,30,0,0,1,0
 16687,platoon-axe,1,0,30000,30,0,0,1,0
 16959,platoon-sword,1,0,30000,30,0,0,1,0
 17202,platoon-bow,1,0,30000,30,0,0,1,0
@@ -653,4 +653,8 @@ itemid,name,sell01,buy01,price01,stock01,sell12,buy12,price12,stock12
 12681,silver-mittens,1,0,50000,30,0,0,1,0
 12809,silver-hose,1,0,50000,30,0,0,1,0
 12937,silver-greaves,1,0,50000,30,0,0,1,0
+itemid,name,sell01,buy01,price01,stock01,sell12,buy12,1,stock12
+1210,damp-scroll,1,0,25000,30,0,0,1,0
+14117,rusty-leggings,1,0,2500,30,0,0,1,0
+14242,rusty-subligar,1,0,2500,30,0,0,1,0
 itemid,name,sell01,buy01,price01,stock01,sell12,buy12,price12,stock12
