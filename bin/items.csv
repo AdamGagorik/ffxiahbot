@@ -653,7 +653,7 @@ itemid,name,sell01,buy01,price01,stock01,sell12,buy12,price12,stock12
 12681,silver-mittens,1,0,50000,30,0,0,1,0
 12809,silver-hose,1,0,50000,30,0,0,1,0
 12937,silver-greaves,1,0,50000,30,0,0,1,0
-itemid,name,sell01,buy01,price01,stock01,sell12,buy12,1,stock12
+itemid,name,sell01,buy01,price01,stock01,sell12,buy12,price12,stock12
 1210,damp-scroll,1,0,25000,30,0,0,1,0
 14117,rusty-leggings,1,0,2500,30,0,0,1,0
 14242,rusty-subligar,1,0,2500,30,0,0,1,0
