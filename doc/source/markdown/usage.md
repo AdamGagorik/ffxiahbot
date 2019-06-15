@@ -24,7 +24,7 @@ bash:~$ ./broker.py
 
 ###### Example
 
-```python
+```yaml
 # ah
 name: Zissou          # Name that appears on AH when buying and selling
 
