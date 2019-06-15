@@ -7,7 +7,7 @@
 
 > cd /D "C:\path\to\pydarkstar\bin"
 > conda activate pydarkstar
-> "C:\path\to\python3" .\broker.py
+> .\broker.py
 
 # Linux
 
@@ -15,6 +15,8 @@ bash:~$ cd /path/to/pydarkstar/bin
 bash:~$ conda activate pydarkstar
 bash:~$ ./broker.py
 ```
+
+![usage](./usage.png "usage")
 
 #### Parameters
 
