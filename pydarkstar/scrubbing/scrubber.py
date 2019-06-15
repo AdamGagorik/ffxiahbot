@@ -29,6 +29,7 @@ class Scrubber(DarkObject):
         handle = ''
         max_tries = 10
         for i in range(max_tries):
+            # noinspection PyPep8
             try:
                 handle = urlopen(url)
                 handle = handle.read()
