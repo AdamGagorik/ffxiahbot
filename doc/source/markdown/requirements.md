@@ -1,32 +1,25 @@
 # Requirements
 
-You must use **python 3.4** or greater!  The following python modules must also be installed.
+You must use **python 3.7** or greater!
 
-* python 3.4.5
-* sqlalchemy 1.1.5
-* pymysql 0.7.9
-* bs4 4.3.2
-* pyyaml 3.12
+The following python modules must also be installed.
 
-You can easily install python modules using pip or Anaconda (http://continuum.io/downloads).
+* python 3.7.3
+* sqlalchemy 1.3.4
+* pymysql 0.9.3
+* bs4 4.7.1
+* pyyaml 5.1
 
-##### pip
+The easiest way to setup the Python is to create a [conda][conda environment].
+Do this by using the conda command on the environment.yml file in the bin directory.
+After the environment is created you must activate it before calling any of the scripts.
 
-```bash
-pip install sqlalchemy
-pip install pymysql
-pip install beautifulsoup4
-pip install pyyaml
-pip install six
-```
-
-##### Anaconda
+##### Anaconda Environment
 
 ```bash
-> conda update conda
-> conda install sqlalchemy
-> conda install pymysql
-> conda install beautiful-soup
-> conda install pyyaml
-> conda install six
+> cd /D "C:\path\to\pydarkstar\bin"
+> conda env remove --name pydarkstar
+> conda env create -f environment.yml
 ```
+
+[conda]: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
