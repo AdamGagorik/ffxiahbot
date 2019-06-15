@@ -213,7 +213,7 @@ class FFXIAHScrubber(Scrubber):
                     self.debug('ignoring %s', href)
 
         # sort the urls
-        urls.sort(key=lambda x: list(map(float, re.findall('\d+', x))))
+        urls.sort(key=lambda x: list(map(float, re.findall(r'\d+', x))))
 
         return urls
 
