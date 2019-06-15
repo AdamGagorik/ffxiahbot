@@ -8,6 +8,12 @@ We accomplish this by writing shell scripts that set an environment variable cal
 
 The process of setting the PYTHONPATH is not needed in the case that pydarkstar is in the current directory of an executing python interpreter.
 
+#### Shell Scripts : Anaconda Environment
+
+It is very important that the correct Python interpreter is used.  If you use Anaconda, you must activate the environment you want to use.  This can be done with the `conda activate command`.
+
+To check what Python interpreter is being used, you can run `python --version`.
+
 ##### Linux
 
 * Create the following text file.
