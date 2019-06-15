@@ -40,9 +40,9 @@ conda update conda
 
 # when prompted, enter 'y' for yes
 
+conda install -c anaconda beautifulsoup4
 conda install sqlalchemy
 conda install pymysql
-conda install beautiful-soup
 conda install pyyaml
 conda install six
 ```
