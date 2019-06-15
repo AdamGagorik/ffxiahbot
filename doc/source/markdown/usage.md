@@ -16,8 +16,6 @@ bash:~$ conda activate pydarkstar
 bash:~$ ./broker.py
 ```
 
-![usage](./usage.png "usage")
-
 #### Parameters
 
 * Parameters can be set in the config.yaml file
