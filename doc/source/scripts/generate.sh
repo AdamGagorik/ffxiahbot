@@ -22,10 +22,10 @@ declare -a stubs=(
 
 echo ":orphan:" > ./generated/README.rst
 echo "" >> ./generated/README.rst
-pandoc --from=markdown_github --to=rst ../../README.md >> ./generated/README.rst
+pandoc --from=gfm --to=rst ../../README.md >> ./generated/README.rst
 
 for stub in "${stubs[@]}"; do
-    pandoc --from=markdown_github --to=rst ./markdown/${stub}.md > ./generated/${stub}.rst
+    pandoc --from=gfm --to=rst ./markdown/${stub}.md > ./generated/${stub}.rst
     echo ${stub}
 done
 
