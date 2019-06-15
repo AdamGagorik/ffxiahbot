@@ -56,7 +56,7 @@ def backup(path, copy=False):
     root, dirs, files = next(os.walk(dname))
 
     # look for existing backups
-    regex = re.compile('^{}(\.(\d+))?$'.format(bname))
+    regex = re.compile(r'^{}(\.(\d+))?$'.format(bname))
     found = []
     for f in files:
         match = regex.match(f)
