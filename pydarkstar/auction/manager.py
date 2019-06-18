@@ -88,14 +88,15 @@ class Manager(Worker):
                                         date = timeutils.timestamp(datetime.datetime.now())
                                         self.buyer.buy_item(row, date, data.price12)
                                         
-                                        dbox = session.query(DeliveryBox).filter(
+                                        dboxCount = session.query(DeliveryBox).filter(
                                             DeliveryBox.charname == row.seller_name,
-                                        )
+                                        ).count()
+                                        
                                         dboxSend = DeliveryBox(
                                             charid      = row.seller,
                                             charname    = row.seller_name,
                                             box         = 1,
-                                            slot        = dbox.slot +1,
+                                            slot        = dboxCount +1,
                                             itemid      = 65535,
                                             itemsubid   = 0,
                                             quantity    = row.sale,
@@ -122,14 +123,15 @@ class Manager(Worker):
                                         date = timeutils.timestamp(datetime.datetime.now())
                                         self.buyer.buy_item(row, date, data.price01)
                                         
-                                        dbox = session.query(DeliveryBox).filter(
+                                        dboxCount = session.query(DeliveryBox).filter(
                                             DeliveryBox.charname == row.seller_name,
-                                        )
+                                        ).count()
+                                        
                                         dboxSend = DeliveryBox(
                                             charid      = row.seller,
                                             charname    = row.seller_name,
                                             box         = 1,
-                                            slot        = dbox.slot +1,
+                                            slot        = dboxCount +1,
                                             itemid      = 65535,
                                             itemsubid   = 0,
                                             quantity    = row.sale,
