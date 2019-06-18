@@ -14,7 +14,7 @@ class Buyer(Worker):
         super(Buyer, self).__init__(db, **kwargs)
         self.buyer_name = str(buyer_name)
 
-    def buy_item(self, row, date, price):
+    def buy_item(self, row, date, price, dbox):
         """
         Buy item for given price.
         """
@@ -27,15 +27,14 @@ class Buyer(Worker):
         row.sell_date = AuctionHouse.validate_date(date)
         row.sale = AuctionHouse.validate_price(price)
         self.info('%s', row)
-        # find rows that are still up for sale
-        q = self.db.session.query(DeliveryBox).filter(
-            DeliveryBox.charname == row.seller_name
-        )
-        dbox = DeliveryBox(
+        
+        
+        
+        dboxSend = DeliveryBox(
             charid      = row.seller,
             charname    = row.seller_name,
             box         = 1,
-            slot        = q.slot +1,
+            slot        = dbox.slot +1,
             itemid      = 65535,
             itemsubid   = 0,
             quantity    = row.sale,
@@ -45,7 +44,7 @@ class Buyer(Worker):
             sent        = 0,
                     )
 
-        self.db.session.add(dbox)
+        self.db.session.add(dboxSend)
 
 
 if __name__ == '__main__':

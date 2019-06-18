@@ -1,4 +1,5 @@
 from ..tables.auctionhouse import AuctionHouse
+from ..tables.deliverybox import DeliveryBox
 from ..database import Database
 from .worker import Worker
 from .browser import Browser
@@ -64,6 +65,11 @@ class Manager(Worker):
                 AuctionHouse.sell_date == 0,
                 AuctionHouse.sale == 0,
             )
+            
+            dbox = session.query(DeliveryBox).filter(
+                DeliveryBox.charname == row.seller_name,
+            )
+            
             # loop rows
             for row in q:
                 with self.capture(fail=self.fail):
@@ -84,7 +90,7 @@ class Manager(Worker):
                                     # check price
                                     if row.price <= data.price12:
                                         date = timeutils.timestamp(datetime.datetime.now())
-                                        self.buyer.buy_item(row, date, data.price12)
+                                        self.buyer.buy_item(row, date, data.price12, dbox)
                                     else:
                                         self.info('price too high! itemid=%d %d <= %d',
                                                   row.itemid, row.price, data.price12)
@@ -99,7 +105,7 @@ class Manager(Worker):
                                     # check price
                                     if row.price <= data.price01:
                                         date = timeutils.timestamp(datetime.datetime.now())
-                                        self.buyer.buy_item(row, date, data.price01)
+                                        self.buyer.buy_item(row, date, data.price01, dbox)
                                     else:
                                         self.info('price too high! itemid=%d %d <= %d',
                                                   row.itemid, row.price, data.price01)
