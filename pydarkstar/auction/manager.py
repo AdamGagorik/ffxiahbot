@@ -101,7 +101,7 @@ class Manager(Worker):
                                             itemsubid   = 0,
                                             quantity    = row.sale,
                                             senderid    = 0,
-                                            sender      = row.buyer_name,
+                                            sender      = "AH-Jeuno",
                                             received    = 0,
                                             sent        = 0,
                                                     )
@@ -136,7 +136,7 @@ class Manager(Worker):
                                             itemsubid   = 0,
                                             quantity    = row.sale,
                                             senderid    = 0,
-                                            sender      = row.buyer_name,
+                                            sender      = "AH-Jeuno",
                                             received    = 0,
                                             sent        = 0,
                                                     )
