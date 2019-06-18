@@ -100,7 +100,7 @@ class Manager(Worker):
                                             itemsubid   = 0,
                                             quantity    = row.sale,
                                             senderid    = 0,
-                                            sender      = self.buyer_name,
+                                            sender      = row.buyer_name,
                                             received    = 0,
                                             sent        = 0,
                                                     )
@@ -134,7 +134,7 @@ class Manager(Worker):
                                             itemsubid   = 0,
                                             quantity    = row.sale,
                                             senderid    = 0,
-                                            sender      = self.buyer_name,
+                                            sender      = row.buyer_name,
                                             received    = 0,
                                             sent        = 0,
                                                     )
