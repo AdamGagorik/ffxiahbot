@@ -1,5 +1,4 @@
 from ..tables.auctionhouse import AuctionHouse
-from ..tables.deliverybox import DeliveryBox
 from .worker import Worker
 
 
@@ -14,7 +13,7 @@ class Buyer(Worker):
         super(Buyer, self).__init__(db, **kwargs)
         self.buyer_name = str(buyer_name)
 
-    def buy_item(self, row, date, price, dbox):
+    def buy_item(self, row, date, price):
         """
         Buy item for given price.
         """
@@ -27,24 +26,6 @@ class Buyer(Worker):
         row.sell_date = AuctionHouse.validate_date(date)
         row.sale = AuctionHouse.validate_price(price)
         self.info('%s', row)
-        
-        
-        
-        dboxSend = DeliveryBox(
-            charid      = row.seller,
-            charname    = row.seller_name,
-            box         = 1,
-            slot        = dbox.slot +1,
-            itemid      = 65535,
-            itemsubid   = 0,
-            quantity    = row.sale,
-            senderid    = 0,
-            sender      = self.buyer_name,
-            received    = 0,
-            sent        = 0,
-                    )
-
-        self.db.session.add(dboxSend)
 
 
 if __name__ == '__main__':

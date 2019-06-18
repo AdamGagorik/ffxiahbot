@@ -66,10 +66,6 @@ class Manager(Worker):
                 AuctionHouse.sale == 0,
             )
             
-            dbox = session.query(DeliveryBox).filter(
-                DeliveryBox.charname == row.seller_name,
-            )
-            
             # loop rows
             for row in q:
                 with self.capture(fail=self.fail):
@@ -90,7 +86,26 @@ class Manager(Worker):
                                     # check price
                                     if row.price <= data.price12:
                                         date = timeutils.timestamp(datetime.datetime.now())
-                                        self.buyer.buy_item(row, date, data.price12, dbox)
+                                        self.buyer.buy_item(row, date, data.price12)
+                                        
+                                        dbox = session.query(DeliveryBox).filter(
+                                            DeliveryBox.charname == row.seller_name,
+                                        )
+                                        dboxSend = DeliveryBox(
+                                            charid      = row.seller,
+                                            charname    = row.seller_name,
+                                            box         = 1,
+                                            slot        = dbox.slot +1,
+                                            itemid      = 65535,
+                                            itemsubid   = 0,
+                                            quantity    = row.sale,
+                                            senderid    = 0,
+                                            sender      = self.buyer_name,
+                                            received    = 0,
+                                            sent        = 0,
+                                                    )
+                                        session.add(dboxSend)
+                                                    
                                     else:
                                         self.info('price too high! itemid=%d %d <= %d',
                                                   row.itemid, row.price, data.price12)
@@ -105,7 +120,25 @@ class Manager(Worker):
                                     # check price
                                     if row.price <= data.price01:
                                         date = timeutils.timestamp(datetime.datetime.now())
-                                        self.buyer.buy_item(row, date, data.price01, dbox)
+                                        self.buyer.buy_item(row, date, data.price01)
+                                        
+                                        dbox = session.query(DeliveryBox).filter(
+                                            DeliveryBox.charname == row.seller_name,
+                                        )
+                                        dboxSend = DeliveryBox(
+                                            charid      = row.seller,
+                                            charname    = row.seller_name,
+                                            box         = 1,
+                                            slot        = dbox.slot +1,
+                                            itemid      = 65535,
+                                            itemsubid   = 0,
+                                            quantity    = row.sale,
+                                            senderid    = 0,
+                                            sender      = self.buyer_name,
+                                            received    = 0,
+                                            sent        = 0,
+                                                    )
+                                        session.add(dboxSend)
                                     else:
                                         self.info('price too high! itemid=%d %d <= %d',
                                                   row.itemid, row.price, data.price01)
