@@ -17,11 +17,11 @@ class Worker(DarkObject):
         self._fail = bool(fail)
         self._db = db
 
-    def session(self, *args, **kwargs):
+    def session(self, **kwargs):
         """
         Create database session.
         """
-        return self._db.session(*args, **kwargs)
+        return self._db.session(**kwargs)
 
     @contextlib.contextmanager
     def scopped_session(self, **kwargs):

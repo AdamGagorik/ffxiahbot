@@ -42,12 +42,14 @@ class BaseOptions(DarkObject, metaclass=MetaOptions):
         self._parse_args(args=remaining_args)
 
     def _parse_known_args(self, args=None):
+        # noinspection PyTypeChecker
         return self._parent.parse_known_args(args, namespace=self)
 
     def _parse_config(self):
         self.load()
         self._parser.set_defaults(**self.dict())
 
+    # noinspection PyTypeChecker
     def _parse_args(self, args=None):
         self._parser.parse_args(args, namespace=self)
 

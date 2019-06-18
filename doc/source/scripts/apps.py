@@ -56,7 +56,6 @@ with open('apps.rst', 'w') as handle:
                 app.format(**kwargs('clear')),
                 app.format(**kwargs('refill')),
                 app.format(**kwargs('scrub')),
-                app.format(**kwargs('alter')),
             ]
         )
     ))

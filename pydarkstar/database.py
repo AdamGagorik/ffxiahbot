@@ -23,11 +23,11 @@ class Database(DarkObject):
         # create Session object
         self._Session = sqlalchemy.orm.sessionmaker(bind=self.engine)
 
-    def session(self, *args, **kwargs):
+    def session(self, **kwargs):
         """
         Create session.
         """
-        return self._Session(*args, **kwargs)
+        return self._Session(**kwargs)
 
     @contextlib.contextmanager
     def scoped_session(self, rollback=True, fail=False):

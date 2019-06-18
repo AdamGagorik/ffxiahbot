@@ -39,10 +39,17 @@ except ImportError as e:
     yaml = None
     exit(-1)
 
+# noinspection PyPep8
 from . import common
+# noinspection PyPep8
 from . import darkobject
+# noinspection PyPep8
 from . import database
+# noinspection PyPep8
 from . import item
+# noinspection PyPep8
 from . import itemlist
+# noinspection PyPep8
 from . import options
+# noinspection PyPep8
 from . import timeutils

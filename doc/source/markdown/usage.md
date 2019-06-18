@@ -1,24 +1,18 @@
 # Usage
 
-#### Notes
-
-* Use pydarkstar from the command line
-* Just run the scripts in the bin directory
-* See the advanced section if you want to create shell scripts
-* Set the options in the config.yaml file (see below)
-* Set your item prices in the items.csv file (see below)
-
 #### Example
 
 ```bash
 # Windows
 
-> cd "C:\path\to\pydarkstar\bin"
-> "C:\path\to\python3" .\broker.py
+> cd /D "C:\path\to\pydarkstar\bin"
+> conda activate pydarkstar
+> .\broker.py
 
 # Linux
 
 bash:~$ cd /path/to/pydarkstar/bin
+bash:~$ conda activate pydarkstar
 bash:~$ ./broker.py
 ```
 
@@ -30,7 +24,7 @@ bash:~$ ./broker.py
 
 ###### Example
 
-```python
+```yaml
 # ah
 name: Zissou          # Name that appears on AH when buying and selling
 
@@ -103,4 +97,3 @@ urls: []              # list of category urls to scrub
 | seller | server that sells items on the AH to players                        |
 | clear  | clear the AH of all transactions                                    |
 | refill | fill the AH with items for sale and exit                            |
-| alter  | alter the item database                                             |
