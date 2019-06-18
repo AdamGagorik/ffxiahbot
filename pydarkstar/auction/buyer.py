@@ -27,26 +27,25 @@ class Buyer(Worker):
         row.sell_date = AuctionHouse.validate_date(date)
         row.sale = AuctionHouse.validate_price(price)
         self.info('%s', row)
-        self.scopped_session(fail=self.fail) as session:
-            # find rows that are still up for sale
-            q = session.query(DeliveryBox).filter(
-                DeliveryBox.charname == row.seller_name
-            )
+        # find rows that are still up for sale
+        q = self.db.session.query(DeliveryBox).filter(
+            DeliveryBox.charname == row.seller_name
+        )
         dbox = DeliveryBox(
-            charid      = row.seller
-            charname    = row.seller_name
-            box         = 1
-            slot        = q.slot +1
-            itemid      = 65535
-            itemsubid   = 0
-            quantity    = row.sale
-            senderid    = 0
-            sender      = self.buyer_name
-            received    = 0
-            sent        = 0
+            charid      = row.seller,
+            charname    = row.seller_name,
+            box         = 1,
+            slot        = q.slot +1,
+            itemid      = 65535,
+            itemsubid   = 0,
+            quantity    = row.sale,
+            senderid    = 0,
+            sender      = self.buyer_name,
+            received    = 0,
+            sent        = 0,
                     )
 
-        session.add(dbox)
+        self.db.session.add(dbox)
 
 
 if __name__ == '__main__':
