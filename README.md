@@ -27,3 +27,7 @@ Here are some links to help you learn how to use a command line.
 [ghWeb]: http://adamgagorik.github.io/pydarkstar
 [ghSet]: http://adamgagorik.github.io/pydarkstar/generated/setup.html
 [ghUse]: http://adamgagorik.github.io/pydarkstar/generated/usage.html
+
+
+#### Updates
+* Buyer now delivers purchase amount to DBox.
