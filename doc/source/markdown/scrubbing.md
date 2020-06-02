@@ -22,20 +22,20 @@ This may result in exploits on your server if you are not careful.
 * You can change many properties be editing the *items.csv.* manually
 * You can change the FFXI `--server` that is used to download info from
 
-| column   | description                     | value             |
-| ---------|---------------------------------|-------------------|
-| itemid   | unique item id                  | integer >=0       |
-| name     | item name                       | string            |
-| sell01   | sell single?                    | 0=false 1=true    |
-| buy01    | buy single?                     | 0=false 1=true    |
-| price01  | price for single                | integer >=1       |
-| stock01  | restock count (single)          | integer >=0       |
-| rate01   | buy rate (single) **not used**  | float 0 <= x <= 1  |
-| sell12   | sell stack?                     | 0=false 1=true    |
-| buy12    | buy stack?                      | 0=false 1=true    |
-| price12  | price for stack                 | integer >=1       |
-| stock12  | restock count (stack)           | integer >=0       |
-| rate12   | buy rate (stack) **not used**   | float 0 <= x <= 1  |
+| column       | description                     | value             |
+| -------------|---------------------------------|-------------------|
+| itemid       | unique item id                  | integer >=0       |
+| name         | item name                       | string            |
+| sell_single  | sell single?                    | 0=false 1=true    |
+| buy_single   | buy single?                     | 0=false 1=true    |
+| price_single | price for single                | integer >=1       |
+| stock_single | restock count (single)          | integer >=0       |
+| rate_single  | buy rate (single) **not used**  | float 0 <= x <= 1 |
+| sell_stacks  | sell stack?                     | 0=false 1=true    |
+| buy_stacks   | buy stack?                      | 0=false 1=true    |
+| price_stacks | price for stack                 | integer >=1       |
+| stock_stacks | restock count (stack)           | integer >=0       |
+| rate_stacks  | buy rate (stack) **not used**   | float 0 <= x <= 1 |
 
 ##### Example
 

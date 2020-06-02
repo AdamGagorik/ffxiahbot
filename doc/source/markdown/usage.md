@@ -68,15 +68,31 @@ tick: 30              # seconds between buying
 server: bahamut       # FFXI server to query
 threads: -1           # number of CPU threads
 itemids: []           # list of itemids to scrub
-stock01: 5            # default stock01 when scrubbing
-stock12: 5            # default stock12 when scrubbing
+stock_single: 10      # default stock_single when scrubbing
+stock_stacks: 10      # default stock_stacks when scrubbing
 urls: []              # list of category urls to scrub
 ```
 
 #### Item Database
 
-Item data is stored in a **CSV** file called *items.csv*.
-Please see the [scrubbing](./scrubbing.md) guide info on generating this **CSV**.
+Item data is stored in a **CSV** file called *items.csv*. This is just a simple text file that you can edit with excel.
+Please see the [scrubbing](./scrubbing.md) guide info on how this is generated. 
+**You do not need to regenerate it even if you think it is old! You can cause yourself pricing issues, you have been warned!**
+
+| column       | description                     | value             |
+| -------------|---------------------------------|-------------------|
+| itemid       | unique item id                  | integer >=0       |
+| name         | item name                       | string            |
+| sell_single  | sell single?                    | 0=false 1=true    |
+| buy_single   | buy single?                     | 0=false 1=true    |
+| price_single | price for single                | integer >=1       |
+| stock_single | restock count (single)          | integer >=0       |
+| rate_single  | buy rate (single) **not used**  | float 0 <= x <= 1 |
+| sell_stacks  | sell stack?                     | 0=false 1=true    |
+| buy_stacks   | buy stack?                      | 0=false 1=true    |
+| price_stacks | price for stack                 | integer >=1       |
+| stock_stacks | restock count (stack)           | integer >=0       |
+| rate_stacks  | buy rate (stack) **not used**   | float 0 <= x <= 1 |
 
 #### Apps
 
@@ -85,7 +101,6 @@ There is no need to run the scrub app as an `items.csv` is included already!
 ```
 
 * There are many apps
-* You may use the scrub app
 * You will probably only use the broker app
 
 | app    | description                                                         |

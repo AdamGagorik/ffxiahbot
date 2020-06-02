@@ -80,14 +80,14 @@ class Manager(Worker):
                             # buy stacks
                             if row.stack:
                                 # check permissions
-                                if data.buy12:
+                                if data.buy_stacks:
                                     # check price
-                                    if row.price <= data.price12:
+                                    if row.price <= data.price_stacks:
                                         date = timeutils.timestamp(datetime.datetime.now())
-                                        self.buyer.buy_item(row, date, data.price12)
+                                        self.buyer.buy_item(row, date, data.price_stacks)
                                     else:
                                         self.info('price too high! itemid=%d %d <= %d',
-                                                  row.itemid, row.price, data.price12)
+                                                  row.itemid, row.price, data.price_stacks)
                                         self.add_to_blacklist(row.id)
                                 else:
                                     self.debug('not allowed to buy item! itemid=%d', row.itemid)
@@ -95,14 +95,14 @@ class Manager(Worker):
                             # buy singles
                             else:
                                 # check permissions
-                                if data.buy01:
+                                if data.buy_single:
                                     # check price
-                                    if row.price <= data.price01:
+                                    if row.price <= data.price_single:
                                         date = timeutils.timestamp(datetime.datetime.now())
-                                        self.buyer.buy_item(row, date, data.price01)
+                                        self.buyer.buy_item(row, date, data.price_single)
                                     else:
                                         self.info('price too high! itemid=%d %d <= %d',
-                                                  row.itemid, row.price, data.price01)
+                                                  row.itemid, row.price, data.price_single)
                                         self.add_to_blacklist(row.id)
                                 else:
                                     self.debug('not allowed to buy item! itemid=%d', row.itemid)
@@ -122,41 +122,41 @@ class Manager(Worker):
         for data in itemdata.items.values():
 
             # singles
-            if data.sell01:
+            if data.sell_single:
                 # check history
                 history_price = self.browser.get_price(itemid=data.itemid, stack=False, seller=self.seller.seller)
 
                 # set history
                 if history_price is None or history_price <= 0:
                     now = timeutils.timestamp(datetime.datetime(2099, 1, 1))
-                    self.seller.set_history(itemid=data.itemid, stack=False, price=data.price01, date=now, count=1)
+                    self.seller.set_history(itemid=data.itemid, stack=False, price=data.price_single, date=now, count=1)
 
                 # get stock
                 stock = self.browser.get_stock(itemid=data.itemid, stack=False, seller=self.seller.seller)
 
                 # restock
-                while stock < data.stock01:
+                while stock < data.stock_single:
                     now = timeutils.timestamp(datetime.datetime(2099, 1, 1))
-                    self.seller.sell_item(itemid=data.itemid, stack=False, date=now, price=data.price01, count=1)
+                    self.seller.sell_item(itemid=data.itemid, stack=False, date=now, price=data.price_single, count=1)
                     stock += 1
 
             # stacks
-            if data.sell12:
+            if data.sell_stacks:
                 # check history
                 history_price = self.browser.get_price(itemid=data.itemid, stack=True, seller=self.seller.seller)
 
                 # set history
                 if history_price is None or history_price <= 0:
                     now = timeutils.timestamp(datetime.datetime(2099, 1, 1))
-                    self.seller.set_history(itemid=data.itemid, stack=True, price=data.price12, date=now, count=1)
+                    self.seller.set_history(itemid=data.itemid, stack=True, price=data.price_stacks, date=now, count=1)
 
                 # get stock
                 stock = self.browser.get_stock(itemid=data.itemid, stack=True, seller=self.seller.seller)
 
                 # restock
-                while stock < data.stock12:
+                while stock < data.stock_stacks:
                     now = timeutils.timestamp(datetime.datetime(2099, 1, 1))
-                    self.seller.sell_item(itemid=data.itemid, stack=True, date=now, price=data.price12, count=1)
+                    self.seller.sell_item(itemid=data.itemid, stack=True, date=now, price=data.price_stacks, count=1)
                     stock += 1
 
 
