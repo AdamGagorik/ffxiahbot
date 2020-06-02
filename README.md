@@ -1,6 +1,6 @@
 # [pydarkstar][ghWeb]
 
-A set of command-line tools for interacting with a Darkstar server.
+A set of command-line tools for interacting with a Topaz server.
 
 * The pydarkstar website can be found [here][ghWeb].
 * The **Setup** instructions can be found [here][ghSet] (start here!)
