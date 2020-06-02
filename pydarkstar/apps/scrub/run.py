@@ -37,7 +37,7 @@ def main():
     # create item list from data
     ilist = ItemList()
     for itemid in data:
-        kwargs = ffxiah.extract(data, itemid, stock01=opts.stock01, stock12=opts.stock12)
+        kwargs = ffxiah.extract(data, itemid, stock_single=opts.stock_single, stock_stacks=opts.stock_stacks)
         ilist.add(itemid, **kwargs)
 
     # backup file

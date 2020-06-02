@@ -4,16 +4,16 @@ import collections
 fmt = collections.OrderedDict()
 fmt['itemid'] = '{:>8}'
 fmt['name'] = '{:>24}'
-fmt['sell01'] = '{:>6}'
-fmt['buy01'] = '{:>6}'
-fmt['price01'] = '{:>16}'
-fmt['stock01'] = '{:>7}'
-fmt['rate01'] = '{:>7}'
-fmt['sell12'] = '{:>6}'
-fmt['buy12'] = '{:>6}'
-fmt['price12'] = '{:>16}'
-fmt['stock12'] = '{:>7}'
-fmt['rate12'] = '{:>7}'
+fmt['sell_single'] = '{:>6}'
+fmt['buy_single'] = '{:>6}'
+fmt['price_single'] = '{:>16}'
+fmt['stock_single'] = '{:>7}'
+fmt['rate_single'] = '{:>7}'
+fmt['sell_stacks'] = '{:>6}'
+fmt['buy_stacks'] = '{:>6}'
+fmt['price_stacks'] = '{:>16}'
+fmt['stock_stacks'] = '{:>7}'
+fmt['rate_stacks'] = '{:>7}'
 
 
 def title_str():
@@ -39,16 +39,16 @@ _template = \
     addr        = {addr}
     itemid      = {self.itemid}
     name        = {self.name}
-    sell01      = {self.sell01}
-    buy01       = {self.buy01}
-    price01     = {self.price01}
-    stock01     = {self.stock01}
-    rate01      = {self.rate01}
-    sell12      = {self.sell12}
-    buy12       = {self.buy12}
-    price12     = {self.price12}
-    stock12     = {self.stock12}
-    rate12      = {self.rate12}
+    sell_single      = {self.sell_single}
+    buy_single       = {self.buy_single}
+    price_single     = {self.price_single}
+    stock_single     = {self.stock_single}
+    rate_single      = {self.rate_single}
+    sell_stacks      = {self.sell_stacks}
+    buy_stacks       = {self.buy_stacks}
+    price_stacks     = {self.price_stacks}
+    stock_stacks     = {self.stock_stacks}
+    rate_stacks      = {self.rate_stacks}
 """[:-1]
 
 
@@ -59,63 +59,63 @@ class Item(DarkObject):
     :param itemid: unique item id
     :param name: item name
 
-    :param sell01: sell single
-    :param buy01: buy single
-    :param price01: price (>= 1) for single
-    :param stock01: restock count (>= 0) for single
+    :param sell_single: sell single
+    :param buy_single: buy single
+    :param price_single: price (>= 1) for single
+    :param stock_single: restock count (>= 0) for single
 
-    :param sell12: sell stack
-    :param buy12: buy stack
-    :param price12: price (>= 1) for stack
-    :param stock12: restock count (>= 0) for stack
+    :param sell_stacks: sell stack
+    :param buy_stacks: buy stack
+    :param price_stacks: price (>= 1) for stack
+    :param stock_stacks: restock count (>= 0) for stack
     """
 
     keys = ['itemid', 'name',
-            'sell01', 'buy01', 'price01', 'stock01', 'rate01',
-            'sell12', 'buy12', 'price12', 'stock12', 'rate12']
+            'sell_single', 'buy_single', 'price_single', 'stock_single', 'rate_single',
+            'sell_stacks', 'buy_stacks', 'price_stacks', 'stock_stacks', 'rate_stacks']
 
     @property
     def values(self):
         return [self.itemid, self.name,
-                self.sell01, self.buy01, self.price01, self.stock01, self.rate01,
-                self.sell12, self.buy12, self.price12, self.stock12, self.rate12]
+                self.sell_single, self.buy_single, self.price_single, self.stock_single, self.rate_single,
+                self.sell_stacks, self.buy_stacks, self.price_stacks, self.stock_stacks, self.rate_stacks]
 
     def __init__(self, itemid, name=None,
-                 sell01=None, buy01=None, price01=None, stock01=None, rate01=None,
-                 sell12=None, buy12=None, price12=None, stock12=None, rate12=None):
+                 sell_single=None, buy_single=None, price_single=None, stock_single=None, rate_single=None,
+                 sell_stacks=None, buy_stacks=None, price_stacks=None, stock_stacks=None, rate_stacks=None):
         super(Item, self).__init__()
 
         self._itemid = int(itemid)
         self._name = None
 
-        self._sell01 = None
-        self._sell12 = None
+        self._sell_single = None
+        self._sell_stacks = None
 
-        self._buy01 = None
-        self._buy12 = None
+        self._buy_single = None
+        self._buy_stacks = None
 
-        self._price01 = None
-        self._price12 = None
+        self._price_single = None
+        self._price_stacks = None
 
-        self._stock01 = None
-        self._stock12 = None
+        self._stock_single = None
+        self._stock_stacks = None
 
-        self._rate01 = None
-        self._rate12 = None
+        self._rate_single = None
+        self._rate_stacks = None
 
         self.name = name
 
-        self.sell01 = sell01
-        self.buy01 = buy01
-        self.price01 = price01
-        self.stock01 = stock01
-        self.rate01 = rate01
+        self.sell_single = sell_single
+        self.buy_single = buy_single
+        self.price_single = price_single
+        self.stock_single = stock_single
+        self.rate_single = rate_single
 
-        self.sell12 = sell12
-        self.buy12 = buy12
-        self.price12 = price12
-        self.stock12 = stock12
-        self.rate12 = rate12
+        self.sell_stacks = sell_stacks
+        self.buy_stacks = buy_stacks
+        self.price_stacks = price_stacks
+        self.stock_stacks = stock_stacks
+        self.rate_stacks = rate_stacks
 
         if not self._itemid >= 0:
             raise ValueError('itemid must be positive: %d' % self._itemid)
@@ -141,116 +141,116 @@ class Item(DarkObject):
         self._name = str(value)
 
     @property
-    def sell01(self):
-        return self._sell01
+    def sell_single(self):
+        return self._sell_single
 
-    @sell01.setter
-    def sell01(self, value):
+    @sell_single.setter
+    def sell_single(self, value):
         if value is None:
             value = True
-        self._sell01 = bool(value)
+        self._sell_single = bool(value)
 
     @property
-    def buy01(self):
-        return self._buy01
+    def buy_single(self):
+        return self._buy_single
 
-    @buy01.setter
-    def buy01(self, value):
+    @buy_single.setter
+    def buy_single(self, value):
         if value is None:
             value = True
-        self._buy01 = bool(value)
+        self._buy_single = bool(value)
 
     @property
-    def price01(self):
-        return self._price01
+    def price_single(self):
+        return self._price_single
 
-    @price01.setter
-    def price01(self, value):
+    @price_single.setter
+    def price_single(self, value):
         if value is None:
             value = 1
-        self._price01 = int(value)
-        if self._price01 < 1:
-            raise ValueError('price01 must be positive definite: %d' % self._price01)
+        self._price_single = int(value)
+        if self._price_single < 1:
+            raise ValueError('price_single must be positive definite: %d' % self._price_single)
 
     @property
-    def stock01(self):
-        return self._stock01
+    def stock_single(self):
+        return self._stock_single
 
-    @stock01.setter
-    def stock01(self, value):
+    @stock_single.setter
+    def stock_single(self, value):
         if value is None:
             value = 0
-        self._stock01 = int(value)
-        if self._stock01 < 0:
-            raise ValueError('stock01 must be positive: %d' % self._stock01)
+        self._stock_single = int(value)
+        if self._stock_single < 0:
+            raise ValueError('stock_single must be positive: %d' % self._stock_single)
 
     @property
-    def rate01(self):
-        return self._rate01
+    def rate_single(self):
+        return self._rate_single
 
-    @rate01.setter
-    def rate01(self, value):
+    @rate_single.setter
+    def rate_single(self, value):
         if value is None:
             value = 1.0
-        self._rate01 = float(value)
-        if self._rate01 < 0.0 or self._rate01 > 1.0:
-            raise ValueError('rate01 must be between 0 and 1: %d' % self._rate01)
+        self._rate_single = float(value)
+        if self._rate_single < 0.0 or self._rate_single > 1.0:
+            raise ValueError('rate_single must be between 0 and 1: %d' % self._rate_single)
 
     @property
-    def sell12(self):
-        return self._sell12
+    def sell_stacks(self):
+        return self._sell_stacks
 
-    @sell12.setter
-    def sell12(self, value):
+    @sell_stacks.setter
+    def sell_stacks(self, value):
         if value is None:
             value = True
-        self._sell12 = bool(value)
+        self._sell_stacks = bool(value)
 
     @property
-    def buy12(self):
-        return self._buy12
+    def buy_stacks(self):
+        return self._buy_stacks
 
-    @buy12.setter
-    def buy12(self, value):
+    @buy_stacks.setter
+    def buy_stacks(self, value):
         if value is None:
             value = True
-        self._buy12 = bool(value)
+        self._buy_stacks = bool(value)
 
     @property
-    def price12(self):
-        return self._price12
+    def price_stacks(self):
+        return self._price_stacks
 
-    @price12.setter
-    def price12(self, value):
+    @price_stacks.setter
+    def price_stacks(self, value):
         if value is None:
             value = 1
-        self._price12 = int(value)
-        if self._price12 < 1:
-            raise ValueError('price12 must be positive definite: %d' % self._price12)
+        self._price_stacks = int(value)
+        if self._price_stacks < 1:
+            raise ValueError('price_stacks must be positive definite: %d' % self._price_stacks)
 
     @property
-    def stock12(self):
-        return self._stock12
+    def stock_stacks(self):
+        return self._stock_stacks
 
-    @stock12.setter
-    def stock12(self, value):
+    @stock_stacks.setter
+    def stock_stacks(self, value):
         if value is None:
             value = 0
-        self._stock12 = int(value)
-        if self._stock12 < 0:
-            raise ValueError('stock12 must be positive: %d' % self._stock12)
+        self._stock_stacks = int(value)
+        if self._stock_stacks < 0:
+            raise ValueError('stock_stacks must be positive: %d' % self._stock_stacks)
 
     @property
-    def rate12(self):
-        return self._rate12
+    def rate_stacks(self):
+        return self._rate_stacks
 
-    @rate12.setter
-    def rate12(self, value):
+    @rate_stacks.setter
+    def rate_stacks(self, value):
         if value is None:
             value = 1.0
-        self._rate12 = float(value)
-        if self._rate12 < 0.0 or self._rate12 > 1.0:
-            raise ValueError('rate12 must be between 0 and 1: %d' % self._rate12)
+        self._rate_stacks = float(value)
+        if self._rate_stacks < 0.0 or self._rate_stacks > 1.0:
+            raise ValueError('rate_stacks must be between 0 and 1: %d' % self._rate_stacks)
 
 
 if __name__ == '__main__':

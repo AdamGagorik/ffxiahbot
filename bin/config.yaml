@@ -1,5 +1,5 @@
 # ah
-name: Zissou
+name: M.M.H.U.
 
 # basic
 verbose: true
@@ -15,7 +15,7 @@ backup: true
 
 # sql
 hostname: 127.0.0.1
-database: dspdb
+database: topazdb
 username: root
 password: ????
 fail: true
@@ -26,6 +26,6 @@ tick: 30
 
 # scrub
 itemids: []
-stock01: 5
-stock12: 5
+stock_single: 10
+stock_stacks: 10
 urls: []

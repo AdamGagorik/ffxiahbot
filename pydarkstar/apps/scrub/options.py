@@ -13,8 +13,8 @@ class Options(OutputOptions, BasicOptions):
 
     def __init__(self):
         super(Options, self).__init__(description=__doc__)
-        self.stock01 = 5  # default stock for singles
-        self.stock12 = 5  # default stock for stacks
+        self.stock_single = 10 # default stock for singles
+        self.stock_stacks = 10 # default stock for stacks
         self.itemids = []  # a list of item ids
         self.urls = []  # a list of category urls
 
@@ -22,9 +22,9 @@ class Options(OutputOptions, BasicOptions):
                           help='a list of category urls')
         self.add_argument('--itemids', type=int, nargs='*', action='append', default=self.itemids, metavar='itemids',
                           help='a list of item ids')
-        self.add_argument('--stock01', type=int, default=self.stock01, metavar=self.stock01,
+        self.add_argument('--stock_single', type=int, default=self.stock_single, metavar=self.stock_single,
                           help='default stock for singles')
-        self.add_argument('--stock12', type=int, default=self.stock12, metavar=self.stock12,
+        self.add_argument('--stock_stacks', type=int, default=self.stock_stacks, metavar=self.stock_stacks,
                           help='default stock for stacks')
 
         self.exclude('itemids')

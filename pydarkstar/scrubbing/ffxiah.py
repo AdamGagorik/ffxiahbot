@@ -415,25 +415,25 @@ def extract(data, itemid, **kwargs):
     """
     # singles
     try:
-        price01, sell01 = data[itemid]['median'], True
+        price_single, sell_single = data[itemid]['median'], True
 
         # do not sell items without a price
-        if price01 <= 0:
-            price01, sell01 = None, False
+        if price_single <= 0:
+            price_single, sell_single = None, False
 
     except KeyError:
-        price01, sell01 = None, False
+        price_single, sell_single = None, False
 
     # stacks
     try:
-        price12, sell12 = data[itemid]['stack price'], True
+        price_stacks, sell_stacks = data[itemid]['stack price'], True
 
         # do not sell items without a price
-        if price12 <= 0:
-            price12, sell12 = None, False
+        if price_stacks <= 0:
+            price_stacks, sell_stacks = None, False
 
     except KeyError:
-        price12, sell12 = None, False
+        price_stacks, sell_stacks = None, False
 
     # the name doesn't really matter
     try:
@@ -442,8 +442,8 @@ def extract(data, itemid, **kwargs):
         name = None
 
     result = dict(name=name,
-                  price01=price01, stock01=5, sell01=sell01, buy01=True, rate01=1.0,
-                  price12=price12, stock12=5, sell12=sell12, buy12=True, rate12=1.0)
+                  price_single=price_single, stock_single=5, sell_single=sell_single, buy_single=True, rate_single=1.0,
+                  price_stacks=price_stacks, stock_stacks=5, sell_stacks=sell_stacks, buy_stacks=True, rate_stacks=1.0)
     result.update(**kwargs)
 
     return result

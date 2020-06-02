@@ -39,9 +39,9 @@ class TestCase01(unittest.TestCase):
     def test_set(self):
         self.ilist.add(0)
         self.ilist.add(1)
-        self.ilist.set(0, 1, price01=5)
-        self.assertEqual(self.ilist[0].price01, 5)
-        self.assertEqual(self.ilist[1].price01, 5)
+        self.ilist.set(0, 1, price_single=5)
+        self.assertEqual(self.ilist[0].price_single, 5)
+        self.assertEqual(self.ilist[1].price_single, 5)
 
     def test_getitem(self):
         i0 = self.ilist.add(0)
@@ -99,7 +99,7 @@ itemid, name # comment 0
      0,    A
      2,    B
      4,    C # comment 1
-itemid, name, price01, rate01
+itemid, name, price_single, rate_single
      6,    D,      10,    1.0
 """[1:-1]
         self._get_ilist(text, self.ilist)
@@ -107,15 +107,15 @@ itemid, name, price01, rate01
         self.assertEqual(self.ilist[2].name, 'B')
         self.assertEqual(self.ilist[4].name, 'C')
         self.assertEqual(self.ilist[6].name, 'D')
-        self.assertEqual(self.ilist[0].price01, 1)
-        self.assertEqual(self.ilist[2].price01, 1)
-        self.assertEqual(self.ilist[4].price01, 1)
-        self.assertEqual(self.ilist[6].price01, 10)
+        self.assertEqual(self.ilist[0].price_single, 1)
+        self.assertEqual(self.ilist[2].price_single, 1)
+        self.assertEqual(self.ilist[4].price_single, 1)
+        self.assertEqual(self.ilist[6].price_single, 10)
 
     def test_loadcsv3(self):
         text = \
             """
-itemid, price01
+itemid, price_single
      0,    -1.0
 """[1:-1]
         with self.assertRaises(ValueError):
