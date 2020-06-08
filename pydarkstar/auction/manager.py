@@ -128,7 +128,7 @@ class Manager(Worker):
 
                 # set history
                 if history_price is None or history_price <= 0:
-                    now = timeutils.timestamp(datetime.datetime(2020, 1, 1))
+                    now = timeutils.timestamp(datetime.datetime(2099, 1, 1))
                     self.seller.set_history(itemid=data.itemid, stack=False, price=data.price01, date=now, count=1)
 
                 # get stock
@@ -136,7 +136,7 @@ class Manager(Worker):
 
                 # restock
                 while stock < data.stock01:
-                    now = timeutils.timestamp(datetime.datetime(2020, 1, 1))
+                    now = timeutils.timestamp(datetime.datetime(2099, 1, 1))
                     self.seller.sell_item(itemid=data.itemid, stack=False, date=now, price=data.price01, count=1)
                     stock += 1
 
@@ -147,7 +147,7 @@ class Manager(Worker):
 
                 # set history
                 if history_price is None or history_price <= 0:
-                    now = timeutils.timestamp(datetime.datetime(2020, 1, 1))
+                    now = timeutils.timestamp(datetime.datetime(2099, 1, 1))
                     self.seller.set_history(itemid=data.itemid, stack=True, price=data.price12, date=now, count=1)
 
                 # get stock
@@ -155,7 +155,7 @@ class Manager(Worker):
 
                 # restock
                 while stock < data.stock12:
-                    now = timeutils.timestamp(datetime.datetime(2020, 1, 1))
+                    now = timeutils.timestamp(datetime.datetime(2099, 1, 1))
                     self.seller.sell_item(itemid=data.itemid, stack=True, date=now, price=data.price12, count=1)
                     stock += 1
 
