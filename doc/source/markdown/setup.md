@@ -42,3 +42,5 @@ Follow the instructions on the [usage][USAGE] page.
 [USAGE]: http://adamgagorik.github.io/pydarkstar/generated/usage.html
 [GITPG]: https://github.com/AdamGagorik/pydarkstar
 [DARKS]: https://github.com/DarkstarProject/darkstar
+[TOPAZ]: https://github.com/project-topaz/topaz
+[TNEXT]: https://github.com/topaz-next/topaz
