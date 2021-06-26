@@ -10,7 +10,7 @@ A set of command-line tools for interacting with a Darkstar server.
 ---
 
 Please note that this project was developed for the original [darkstar][DARKS] server.
-That project was archived and forked a few time.
+That project was archived and forked a few times.
 This project may work with the forks if the AH implementation remains unchanged.
 
 | Project             |
