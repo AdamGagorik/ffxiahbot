@@ -16,6 +16,7 @@ class Options(OutputOptions, BasicOptions):
         self.stock01 = 5  # default stock for singles
         self.stock12 = 5  # default stock for stacks
         self.itemids = []  # a list of item ids
+        self.threads = None
         self.urls = []  # a list of category urls
 
         self.add_argument('--urls', type=str, nargs='*', action='append', default=self.urls, metavar='url',
@@ -27,7 +28,7 @@ class Options(OutputOptions, BasicOptions):
         self.add_argument('--stock12', type=int, default=self.stock12, metavar=self.stock12,
                           help='default stock for stacks')
         self.add_argument('--threads', type=int, default=-1, metavar='int',
-                          help='the number of threads to use (default 1)')
+                          help='the number of threads to use (default is CPU dependent)')
 
         self.exclude('itemids')
         self.exclude('urls')

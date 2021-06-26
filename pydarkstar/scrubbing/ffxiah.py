@@ -32,7 +32,7 @@ class FFXIAHScrubber(Scrubber):
     def save(self, value):
         self._save = bool(value)
 
-    def scrub(self, force=False, threads=-1, urls=None, ids=None):
+    def scrub(self, force=False, threads=None, urls=None, ids=None):
         """
         Get item metadata main function.
 
@@ -228,7 +228,7 @@ class FFXIAHScrubber(Scrubber):
         self.info('getting itemids')
 
         items = set()
-        if threads > 1:
+        if threads is None or threads > 1:
             with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
                 futures = {}
                 for i, url in enumerate(urls):
@@ -309,7 +309,7 @@ class FFXIAHScrubber(Scrubber):
         return items
 
     # step 3
-    def _get_item_data(self, itemids, threads=-1):
+    def _get_item_data(self, itemids, threads=None):
         """
         Get metadata for many items.
 
@@ -325,7 +325,7 @@ class FFXIAHScrubber(Scrubber):
         data = {}
         failed = {}
         # get data from itemids
-        if threads > 1:
+        if threads is None or threads > 1:
             with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
                 futures = {
                     executor.submit(self._get_item_data_for_itemid, itemid,
