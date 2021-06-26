@@ -1,4 +1,5 @@
 from .scrubber import Scrubber
+import concurrent.futures
 import warnings
 import pickle
 import re
@@ -76,14 +77,14 @@ class FFXIAHScrubber(Scrubber):
                     warnings.warn('passed urls ignored')
 
             # from internet
-            data = self._get_item_data(ids, threads=threads)
+            failed, data = self._get_item_data(ids, threads=threads)
 
             # save to file
             self._save_item_dat(data)
 
             self.debug('item count = %d', len(ids))
             self.debug('data count = %d', len(data))
-            return data
+            return failed, data
 
         else:
             # data exists already
@@ -129,14 +130,14 @@ class FFXIAHScrubber(Scrubber):
                 raise RuntimeError('%s exists' % self._pkl_item_dat)
 
             # from internet
-            data = self._get_item_data(ids, threads=threads)
+            failed, data = self._get_item_data(ids, threads=threads)
 
             # save to file
             self._save_item_dat(data)
 
             self.debug('item count = %d', len(ids))
             self.debug('data count = %d', len(data))
-            return data
+            return failed, data
 
     def _load_item_ids(self):
         """
@@ -309,27 +310,38 @@ class FFXIAHScrubber(Scrubber):
         self.info('getting data')
         self.info('threads = %d', threads)
 
-        # threads make it faster but I've seen it freeze so disabling this for now
-        if threads > 1:
-            threads = 0
-            self.error('multiprocessing seems fishy')
-            self.error('setting threads=1')
-
+        data = {}
+        failed = {}
         # get data from itemids
         if threads > 1:
-            raise ValueError('Invalid number of threads: %d', threads)
-            # from multiprocessing.dummy import Pool as ThreadPool
-            # import itertools
-            # params = zip(itemids, range(len(itemids)), itertools.repeat(len(itemids)))
-            # pool = ThreadPool(threads)
-            # data = pool.map(self._get_item_data_for_itemid_map, params)
-            # data = {d['itemid']: d for d in data}
+            with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+                futures = {
+                    executor.submit(self._get_item_data_for_itemid, itemid,
+                                    index=i, total=len(itemids)): itemid
+                    for i, itemid in enumerate(itemids)
+                }
+                for future in concurrent.futures.as_completed(futures):
+                    itemid = futures[future]
+                    try:
+                        result = future.result()
+                        data[itemid] = result
+                    except Exception as e:
+                        self.exception('failed to scrub %d!', itemid)
+                        failed[itemid] = e
         else:
-            data = {}
             for i, itemid in enumerate(itemids):
-                data[itemid] = self._get_item_data_for_itemid(itemid, index=i, total=len(itemids))
+                try:
+                    result = self._get_item_data_for_itemid(itemid, index=i, total=len(itemids))
+                    data[itemid] = result
+                except Exception as e:
+                    self.exception('failed to scrub %d!', itemid)
+                    failed[itemid] = e
 
-        return data
+        if failed:
+            for itemid in failed:
+                self.error('failed to scrub %d!', itemid)
+
+        return failed, data
 
     # step 3.1
     def _get_item_data_for_itemid(self, itemid, index=0, total=0):

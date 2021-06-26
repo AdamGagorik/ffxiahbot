@@ -26,6 +26,8 @@ class Options(OutputOptions, BasicOptions):
                           help='default stock for singles')
         self.add_argument('--stock12', type=int, default=self.stock12, metavar=self.stock12,
                           help='default stock for stacks')
+        self.add_argument('--threads', type=int, default=-1, metavar='int',
+                          help='the number of threads to use (default 1)')
 
         self.exclude('itemids')
         self.exclude('urls')
