@@ -6,11 +6,48 @@ import re
 import os
 
 
+SERVER_ID = {
+    'Bahamut': 1,
+    'Shiva': 2,
+    'Titan': 3,
+    'Ramuh': 4,
+    'Phoenix': 5,
+    'Carbuncle': 6,
+    'Fenrir': 7,
+    'Sylph': 8,
+    'Valefor': 9,
+    'Alexander': 10,
+    'Leviathan': 11,
+    'Odin': 12,
+    'Ifrit': 13,
+    'Diabolos': 14,
+    'Caitsith': 15,
+    'Quetzalcoatl': 16,
+    'Siren': 17,
+    'Unicorn': 18,
+    'Gilgamesh': 19,
+    'Ragnarok': 20,
+    'Pandemonium': 21,
+    'Garuda': 22,
+    'Cerberus': 23,
+    'Kujata': 24,
+    'Bismarck': 25,
+    'Seraph': 26,
+    'Lakshmi': 27,
+    'Asura': 28,
+    'Midgardsormr': 29,
+    'Fairy': 30,
+    'Remora': 31,
+    'Hades': 32
+}
+
+ID_SERVER = {v: k for k, v in SERVER_ID.items()}
+
+
 class FFXIAHScrubber(Scrubber):
     """
     Get item data from ffxiah.com
     """
-
     def __init__(self):
         super(FFXIAHScrubber, self).__init__()
 
@@ -22,6 +59,7 @@ class FFXIAHScrubber(Scrubber):
         # pickled file names
         self._pkl_item_ids = 'scrub_item_list.pkl'
         self._pkl_item_dat = 'scrub_item_info.pkl'
+        self._server_id = 1
         self._save = True
 
     @property
@@ -31,6 +69,22 @@ class FFXIAHScrubber(Scrubber):
     @save.setter
     def save(self, value):
         self._save = bool(value)
+
+    @property
+    def server(self):
+        return ID_SERVER[self.server_id]
+
+    @property
+    def server_id(self):
+        return self._server_id
+
+    @server_id.setter
+    def server_id(self, value):
+        if isinstance(value, int):
+            assert value in SERVER_ID.values()
+        else:
+            value = SERVER_ID[value]
+        self._server_id = value
 
     def scrub(self, force=False, threads=None, urls=None, ids=None):
         """
@@ -372,8 +426,8 @@ class FFXIAHScrubber(Scrubber):
         url = self._create_item_url(itemid)
 
         # create tag soup
-        self.debug('open (%06d/%06d,%6.2f) %s', index, total, percent, url)
-        soup = self.soup(url)
+        self.debug('open server=%s (%06d/%06d,%6.2f) %s', self.server, index, total, percent, url)
+        soup = self.soup(url, absolute=True, sid=self.server_id)
 
         # extract name
         try:
