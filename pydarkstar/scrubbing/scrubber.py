@@ -41,7 +41,7 @@ class Scrubber(DarkObject):
                     raise
                 time.sleep(1)
 
-        s = BeautifulSoup(handle)
+        s = BeautifulSoup(handle, features='html5lib')
         return s
 
 
