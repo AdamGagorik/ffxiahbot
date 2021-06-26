@@ -283,7 +283,7 @@ class FFXIAHScrubber(Scrubber):
 
         items = set()
         if threads is None or threads > 1:
-            with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=threads, thread_name_prefix='ExThread') as executor:
                 futures = {}
                 for i, url in enumerate(urls):
                     self.info('submit category %02d/%02d : %s', i + 1, len(urls), url)
@@ -380,7 +380,7 @@ class FFXIAHScrubber(Scrubber):
         failed = {}
         # get data from itemids
         if threads is None or threads > 1:
-            with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=threads, thread_name_prefix='ExThread') as executor:
                 futures = {
                     executor.submit(self._get_item_data_for_itemid, itemid,
                                     index=i, total=len(itemids)): itemid
