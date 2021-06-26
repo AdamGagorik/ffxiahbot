@@ -64,7 +64,7 @@ class FFXIAHScrubber(Scrubber):
                     urls = self._get_category_urls()
                 self.debug('# urls = %d', len(urls))
 
-                ids = self._get_itemids(urls)
+                ids = self._get_itemids(urls, threads)
 
                 # save to file
                 self._save_item_ids(ids)
@@ -114,7 +114,7 @@ class FFXIAHScrubber(Scrubber):
                         urls = self._get_category_urls()
                     self.debug('# urls = %d', len(urls))
 
-                    ids = self._get_itemids(urls)
+                    ids = self._get_itemids(urls, threads)
 
                     # save to file
                     self._save_item_ids(ids)
@@ -219,7 +219,7 @@ class FFXIAHScrubber(Scrubber):
         return urls
 
     # step 2
-    def _get_itemids(self, urls):
+    def _get_itemids(self, urls, threads):
         """
         Scrub urls of the form http://www.ffxiah.com/{CategoryNumber} for itemids.
 
@@ -228,9 +228,21 @@ class FFXIAHScrubber(Scrubber):
         self.info('getting itemids')
 
         items = set()
-        for i, url in enumerate(urls):
-            self.info('category %02d/%02d : %s', i + 1, len(urls), url)
-            items.update(self._get_itemids_for_category_url(url))
+        if threads > 1:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+                futures = {}
+                for i, url in enumerate(urls):
+                    self.info('submit category %02d/%02d : %s', i + 1, len(urls), url)
+                    futures[executor.submit(self._get_itemids_for_category_url, url)] = url
+
+                for future in concurrent.futures.as_completed(futures):
+                    self.info('return category %02d/%02d : %s', i + 1, len(urls), url)
+                    url = futures[future]
+                    items.update(future.result())
+        else:
+            for i, url in enumerate(urls):
+                self.info('category %02d/%02d : %s', i + 1, len(urls), url)
+                items.update(self._get_itemids_for_category_url(url))
 
         return items
 
