@@ -37,7 +37,7 @@ def main():
     if data:
         # create item list from data
         ilist = ItemList()
-        for itemid in data:
+        for itemid in sorted(data.keys()):
             kwargs = ffxiah.extract(data, itemid, stock01=opts.stock01, stock12=opts.stock12)
             ilist.add(itemid, **kwargs)
 
