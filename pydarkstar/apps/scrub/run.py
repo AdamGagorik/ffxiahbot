@@ -31,6 +31,7 @@ def main():
 
     # scub data
     scrubber = ffxiah.FFXIAHScrubber()
+    scrubber.server_id = opts.server
     scrubber.save = False
     failed, data = scrubber.scrub(force=True, threads=opts.threads, urls=opts.urls, ids=opts.itemids)
 
