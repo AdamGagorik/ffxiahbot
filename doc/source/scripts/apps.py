@@ -10,8 +10,8 @@ sys.path.insert(0, PYTHONPATH)
 python3 = shutil.which('python3')
 
 master = r"""
-Apps
-====
+Applications
+============
 
 {apps}
 """[1:-1]
