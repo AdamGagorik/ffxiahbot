@@ -65,28 +65,8 @@ urls: []              # list of category urls to scrub
 
 #### Item Database
 
-* Item data is stored in *items.csv*
-* *items.csv* is just a simple text file that you can edit with excel
-* The *items.csv* can be created with the scrub app
-* There is an already generated *items.csv* in the bin folder for you
-* You do not need to run the *scrub* app unless you want to recreate the database
-* You can change many properties be editing the *items.csv.* manually
-* You can change the FFXI `--server` that is used to download info from
-
-| column   | description                     | value             |
-| ---------|---------------------------------|-------------------|
-| itemid   | unique item id                  | integer >=0       |
-| name     | item name                       | string            |
-| sell01   | sell single?                    | 0=false 1=true    |
-| buy01    | buy single?                     | 0=false 1=true    |
-| price01  | price for single                | integer >=1       |
-| stock01  | restock count (single)          | integer >=0       |
-| rate01   | buy rate (single) **not used**  | float 0 <= x <= 1  |
-| sell12   | sell stack?                     | 0=false 1=true    |
-| buy12    | buy stack?                      | 0=false 1=true    |
-| price12  | price for stack                 | integer >=1       |
-| stock12  | restock count (stack)           | integer >=0       |
-| rate12   | buy rate (stack) **not used**   | float 0 <= x <= 1  |
+Item data is stored in a **CSV** file called *items.csv*.
+Please see the [scrubbing](./scrubbing.md) guide info on generating this **CSV**.
 
 #### Apps
 
