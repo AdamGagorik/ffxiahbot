@@ -17,6 +17,7 @@ declare -a stubs=(
     "requirements"
     "setup"
     "usage"
+    "scrubbing"
     "advanced"
 )
 

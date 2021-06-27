@@ -10,6 +10,7 @@
 
     generated/setup
     generated/usage
+    generated/scrubbing
     generated/apps
     generated/requirements
     generated/advanced
