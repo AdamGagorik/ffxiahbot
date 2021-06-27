@@ -282,7 +282,9 @@ class FFXIAHScrubber(Scrubber):
         self.info('getting itemids')
 
         items = set()
-        if threads is None or threads > 1:
+        if threads is None or threads != 1:
+            threads = threads if threads > 1 else None
+            self.info('executing in parallel with threads=%s', 'ALL' if threads is None else threads)
             with concurrent.futures.ThreadPoolExecutor(max_workers=threads, thread_name_prefix='ExThread') as executor:
                 futures = {}
                 for i, url in enumerate(urls):
@@ -374,12 +376,13 @@ class FFXIAHScrubber(Scrubber):
         :type threads: int
         """
         self.info('getting data')
-        self.info('threads = %d', threads)
 
         data = {}
         failed = {}
         # get data from itemids
-        if threads is None or threads > 1:
+        if threads is None or threads != 1:
+            threads = threads if threads > 1 else None
+            self.info('executing in parallel with threads=%s', 'ALL' if threads is None else threads)
             with concurrent.futures.ThreadPoolExecutor(max_workers=threads, thread_name_prefix='ExThread') as executor:
                 futures = {
                     executor.submit(self._get_item_data_for_itemid, itemid,
