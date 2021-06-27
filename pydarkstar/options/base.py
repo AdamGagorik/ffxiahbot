@@ -153,7 +153,10 @@ class BaseOptions(DarkObject, metaclass=MetaOptions):
                     warnings.warn('key={} is {}, expecting {}'.format(
                         k, type(v).__name__, t.__name__))
 
-                self[k] = t(v)
+                if k in {'server'}:
+                    self[k] = v
+                else:
+                    self[k] = t(v)
 
     def dict(self):
         """
