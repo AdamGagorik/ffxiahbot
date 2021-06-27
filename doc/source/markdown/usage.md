@@ -54,6 +54,8 @@ restock: 3600         # seconds between selling
 tick: 30              # seconds between buying
 
 # scrub
+server: bahamut       # FFXI server to query
+threads: -1           # number of CPU threads
 itemids: []           # list of itemids to scrub
 stock01: 5            # default stock01 when scrubbing
 stock12: 5            # default stock12 when scrubbing
@@ -68,6 +70,7 @@ urls: []              # list of category urls to scrub
 * There is an already generated *items.csv* in the bin folder for you
 * You do not need to run the *scrub* app unless you want to recreate the database
 * You can change many properties be editing the *items.csv.* manually
+* You can change the FFXI `--server` that is used to download info from
 
 | column   | description                     | value             |
 | ---------|---------------------------------|-------------------|
@@ -77,16 +80,17 @@ urls: []              # list of category urls to scrub
 | buy01    | buy single?                     | 0=false 1=true    |
 | price01  | price for single                | integer >=1       |
 | stock01  | restock count (single)          | integer >=0       |
-| rate01   | buy rate (single) **not used**  | float 0 <= x <= 1 |
+| rate01   | buy rate (single) **not used**  | float 0 <= x <= 1  |
 | sell12   | sell stack?                     | 0=false 1=true    |
 | buy12    | buy stack?                      | 0=false 1=true    |
 | price12  | price for stack                 | integer >=1       |
 | stock12  | restock count (stack)           | integer >=0       |
-| rate12   | buy rate (stack) **not used**   | float 0 <= x <= 1 |
+| rate12   | buy rate (stack) **not used**   | float 0 <= x <= 1  |
 
 #### Apps
 
 * There are many apps
+* You may use the scrub app
 * You will probably only use the broker app
 
 | app    | description                                                         |
@@ -96,4 +100,4 @@ urls: []              # list of category urls to scrub
 | buyer  | server that buys items on the AH from players                       |
 | seller | server that sells items on the AH to players                        |
 | clear  | clear the AH of all transactions                                    |
-| refill | fill the AH with items for sale and exit                            |
+| refill  | fill the AH with items for sale and exit                             |

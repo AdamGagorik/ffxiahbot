@@ -38,13 +38,6 @@ with open('pydarkstar.rst', 'w') as handle:
             line = re.sub(r'\s+package$', '', line)
 
         if re.match(r'^\s\s\spydarkstar.*$', line):
-            handle.write('    {}'.format(line.lstrip()))
+            handle.write('   {}'.format(line.lstrip()))
         else:
             handle.write(line)
-
-        if '.. toctree::' in line:
-            if z:
-                handle.write('    :maxdepth: {}\n'.format(z))
-            else:
-                z += 1
-

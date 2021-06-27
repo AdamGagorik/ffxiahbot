@@ -3,11 +3,13 @@ import warnings
 import logging
 import logging.handlers
 
-lfmt = '[%(asctime)s][%(process)5d][%(levelname)-5s]: %(message)s'
+lfmt = '[%(asctime)s][%(processName)s][%(threadName)s][%(levelname)-5s]: %(message)s'
 dfmt = "%Y-%m-%d %H:%M:%S"
 logging.basicConfig(level=logging.ERROR, format=lfmt, datefmt=dfmt)
 logging.addLevelName(logging.CRITICAL, 'FATAL')
 logging.addLevelName(logging.WARNING, 'WARN')
+logging.getLogger('requests').setLevel(logging.ERROR)
+logging.getLogger('urllib3').setLevel(logging.ERROR)
 
 
 def set_level(level):

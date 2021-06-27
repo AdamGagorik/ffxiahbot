@@ -31,21 +31,29 @@ def main():
 
     # scub data
     scrubber = ffxiah.FFXIAHScrubber()
+    scrubber.server_id = opts.server
     scrubber.save = False
-    data = scrubber.scrub(force=True, threads=-1, urls=opts.urls, ids=opts.itemids)
+    failed, data = scrubber.scrub(force=True, threads=opts.threads, urls=opts.urls, ids=opts.itemids)
 
-    # create item list from data
-    ilist = ItemList()
-    for itemid in data:
-        kwargs = ffxiah.extract(data, itemid, stock01=opts.stock01, stock12=opts.stock12)
-        ilist.add(itemid, **kwargs)
+    if data:
+        # create item list from data
+        ilist = ItemList()
+        for itemid in sorted(data.keys()):
+            kwargs = ffxiah.extract(data, itemid, stock01=opts.stock01, stock12=opts.stock12)
+            ilist.add(itemid, **kwargs)
 
-    # backup file
-    if opts.backup:
-        common.backup(oname, copy=True)
+        # backup file
+        if opts.backup:
+            common.backup(oname, copy=True)
 
-    # overwrites if exists, but we checked already
-    ilist.savecsv(oname)
+        # overwrites if exists, but we checked already
+        ilist.savecsv(oname)
+
+    if not data:
+        raise RuntimeError('no items were scrubbed!')
+
+    if failed:
+        raise RuntimeError('not all item ids were scrubbed, but a CSV was still saved!')
 
 
 def cleanup():

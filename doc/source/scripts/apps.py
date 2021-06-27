@@ -46,6 +46,7 @@ def kwargs(name):
         help=indent(o)
     )
 
+
 with open('apps.rst', 'w') as handle:
     handle.write(master.format(
         apps='\n\n'.join(
