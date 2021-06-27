@@ -18,8 +18,9 @@ bash:~$ ./broker.py
 
 #### Parameters
 
+* You should set your mysql parameters!
 * Parameters can be set in the config.yaml file
-* You should set your mysql parameters
+* You can also override parameters on the command line
 * Please do not edit source code files to configure your apps
 
 ###### Example
