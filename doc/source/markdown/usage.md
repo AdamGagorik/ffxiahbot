@@ -90,6 +90,7 @@ urls: []              # list of category urls to scrub
 #### Apps
 
 * There are many apps
+* You may use the scrub app
 * You will probably only use the broker app
 
 | app    | description                                                         |
@@ -99,4 +100,4 @@ urls: []              # list of category urls to scrub
 | buyer  | server that buys items on the AH from players                       |
 | seller | server that sells items on the AH to players                        |
 | clear  | clear the AH of all transactions                                    |
-| refill | fill the AH with items for sale and exit                            |
+| refill  | fill the AH with items for sale and exit                             |
