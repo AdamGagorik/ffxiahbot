@@ -25,6 +25,8 @@ restock: 3600
 tick: 30
 
 # scrub
+server: bahamut
+threads: -1
 itemids: []
 stock01: 5
 stock12: 5
