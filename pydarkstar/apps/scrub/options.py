@@ -2,8 +2,6 @@
 """
 Create item database.
 """
-import logging
-
 from ...options.basic import BasicOptions
 from ...options.output import OutputOptions
 from ...scrubbing.ffxiah import SERVER_ID
@@ -19,7 +17,7 @@ class Options(OutputOptions, BasicOptions):
         self.stock01 = 5  # default stock for singles
         self.stock12 = 5  # default stock for stacks
         self.itemids = []  # a list of item ids
-        self.threads = None
+        self.threads = -1
         self.server = 1
         self.urls = []  # a list of category urls
 
