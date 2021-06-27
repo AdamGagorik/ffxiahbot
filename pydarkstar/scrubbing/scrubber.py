@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 import logging
 import time
+import bs4
 
 
 class Scrubber(DarkObject):
@@ -43,7 +44,11 @@ class Scrubber(DarkObject):
                     raise
                 time.sleep(1)
 
-        s = BeautifulSoup(handle, features='html5lib')
+        try:
+            s = BeautifulSoup(handle, features='html5lib')
+        except bs4.FeatureNotFound:
+            s = BeautifulSoup(handle, features='html.parser')
+
         return s
 
 
