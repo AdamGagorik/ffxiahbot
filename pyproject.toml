@@ -1,9 +1,12 @@
 [tool.poetry]
 name = "pydarkstar"
-version = "4.0.0"
+version = "0.0.0"
 description = "A set of command-line tools for interacting with a Darkstar server."
 authors = ["Adam Gagorik <adam.gagorik@gmail.com>"]
 license = "MIT"
+
+[tool.poetry-dynamic-versioning]
+enable = true
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -19,5 +22,5 @@ myst-parser = "^0.17.2"
 ipython = "^8.2.0"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
 build-backend = "poetry.core.masonry.api"
