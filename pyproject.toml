@@ -20,6 +20,7 @@ Sphinx = "^4.5.0"
 furo = "^2022.4.7"
 myst-parser = "^0.17.2"
 ipython = "^8.2.0"
+poetry-dynamic-versioning = "^0.14.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
