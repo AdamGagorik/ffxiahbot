@@ -28,7 +28,7 @@ jobs:
         ./doc/build.sh
     - name: Deploy Documentation
       uses: peaceiris/actions-gh-pages@v3
-      if: ${{ github.ref == 'refs/heads/master' }}
+      if: ${{ github.ref == 'refs/heads/master' }} || startsWith(github.ref, 'refs/tags/v')
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./doc/build/html
