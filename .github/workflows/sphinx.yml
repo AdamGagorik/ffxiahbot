@@ -2,6 +2,8 @@ name: Sphinx
 
 on:
   push:
+    tags:
+      - "**"
     branches: [ master ]
   pull_request:
 
@@ -19,6 +21,7 @@ jobs:
     - name: Setup Environment
       run: |
         curl -sSL https://install.python-poetry.org | python3 -
+        ${XDG_DATA_HOME:-~/.local/share}/pypoetry/venv/bin/pip install poetry-dynamic-versioning
         poetry install
     - name: Build Documentation
       run: |
