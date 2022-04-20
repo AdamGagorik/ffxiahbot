@@ -8,6 +8,10 @@ license = "MIT"
 [tool.poetry-dynamic-versioning]
 enable = true
 
+[tool.poetry-dynamic-versioning.substitution]
+files = ["*.py", "*/__init__.py", "*/__version__.py", "*/_version.py", "doc/source/conf.py"]
+patterns = ["(^__version__\\s*(?::.*?)?=\\s*['\"])[^'\"]*(['\"])", "(^version\\s*(?::.*?)?=\\s*['\"])[^'\"]*(['\"])", "(^release\\s*(?::.*?)?=\\s*['\"])[^'\"]*(['\"])"]
+
 [tool.poetry.dependencies]
 python = "^3.9"
 SQLAlchemy = "^1.4.35"
