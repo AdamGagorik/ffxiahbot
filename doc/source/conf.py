@@ -57,7 +57,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'pydarkstar'
-copyright = '2019, Adam Gagorik'
+copyright = '2022, Adam Gagorik'
 author = 'Adam Gagorik'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -302,4 +302,3 @@ autodoc_default_flags = [
     'private-members',
     'show-inheritence'
 ]
-
