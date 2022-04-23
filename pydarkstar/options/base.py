@@ -106,11 +106,11 @@ class BaseOptions(DarkObject, metaclass=MetaOptions):
 
             self.debug('load %s', self.config)
             with open(self.config, 'rb') as handle:
-                data = yaml.load(handle)
+                data = yaml.safe_load(handle)
 
         else:
             self.debug('load %s', stream)
-            data = yaml.load(stream, **kwargs)
+            data = yaml.safe_load(stream, **kwargs)
 
         if data is None:
             return
