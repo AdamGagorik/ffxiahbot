@@ -13,11 +13,12 @@ Please note that this project was developed for the original [darkstar][DARKS] s
 That project was archived and forked a few times.
 This project may work with the forks if the AH implementation remains unchanged.
 
-| Project             |
-|---------------------|
-| [darkstar][DARKS]   |
-| [topaz][TOPAZ]      |
-| [topaz-next][TNEXT] |
+| Project             | Status  |
+|---------------------|---------|
+| [darkstar][DARKS]   | defunct |
+| [topaz][TOPAZ]      | defunct |
+| [topaz-next][TNEXT] | defunct |
+| [LandSandBoat][LSB] | current |
 
 ---
 
@@ -41,8 +42,9 @@ Here are some links to help you learn how to use a command line.
 [clLin]: https://en.wikibooks.org/wiki/Linux_For_Newbies/Command_Line
 [ghRep]: https://github.com/AdamGagorik/pydarkstar
 [ghWeb]: http://adamgagorik.github.io/pydarkstar
-[ghSet]: http://adamgagorik.github.io/pydarkstar/generated/setup.html
-[ghUse]: http://adamgagorik.github.io/pydarkstar/generated/usage.html
+[ghSet]: http://adamgagorik.github.io/pydarkstar/markdown/setup.html
+[ghUse]: http://adamgagorik.github.io/pydarkstar/markdown/usage.html
 [DARKS]: https://github.com/DarkstarProject/darkstar
 [TOPAZ]: https://github.com/project-topaz/topaz
 [TNEXT]: https://github.com/topaz-next/topaz
+[LSB]: https://github.com/LandSandBoat/server
