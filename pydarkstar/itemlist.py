@@ -85,7 +85,7 @@ class ItemList(DarkObject):
 
         self.info('load %s', fname)
         line_number = 0
-        with open(fname, 'rU') as handle:
+        with open(fname, 'r') as handle:
             # first line is item titles
             line = handle.readline()
             line_number += 1
