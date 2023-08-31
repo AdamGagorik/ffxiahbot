@@ -1,4 +1,4 @@
-# [pydarkstar][ghWeb]
+# AUTO-AH, a fork of [pydarkstar][ghWeb]
 
 A set of command-line tools for interacting with the auction house of an FFXI private server.
 
