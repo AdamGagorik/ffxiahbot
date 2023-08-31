@@ -1,6 +1,6 @@
 # [pydarkstar][ghWeb]
 
-A set of command-line tools for interacting with a Darkstar server.
+A set of command-line tools for interacting with the auction house of an FFXI private server.
 
 * The pydarkstar code can be found [here][ghRep].
 * The pydarkstar website can be found [here][ghWeb].
@@ -9,16 +9,15 @@ A set of command-line tools for interacting with a Darkstar server.
 
 ---
 
-Please note that this project was developed for the original [darkstar][DARKS] server.
-That project was archived and forked a few times.
-This project may work with the forks if the AH implementation remains unchanged.
+Please note that this project is itself a fork of pydarkstar, which was developed for the original Darkstar private server emulator.
+This project is aimed instead at used with LandSandBoat and over time may have different features/usage.
 
-| Project             | Status  |
-|---------------------|---------|
-| [darkstar][DARKS]   | defunct |
-| [topaz][TOPAZ]      | defunct |
-| [topaz-next][TNEXT] | defunct |
-| [LandSandBoat][LSB] | current |
+| Project            | Status  |
+|--------------------|---------|
+| Darkstar (DSP)     | defunct |
+| Topaz  (TPZ)       | defunct |
+| Topaz-next (TPZN)  | defunct |
+| LandSandBoat (LSB) | current |
 
 ---
 
@@ -44,7 +43,7 @@ Here are some links to help you learn how to use a command line.
 [ghWeb]: http://adamgagorik.github.io/pydarkstar
 [ghSet]: http://adamgagorik.github.io/pydarkstar/markdown/setup.html
 [ghUse]: http://adamgagorik.github.io/pydarkstar/markdown/usage.html
-[DARKS]: https://github.com/DarkstarProject/darkstar
-[TOPAZ]: https://github.com/project-topaz/topaz
-[TNEXT]: https://github.com/topaz-next/topaz
+[DSP]: https://github.com/DarkstarProject/darkstar
+[TPZ]: https://github.com/project-topaz/topaz
+[TPZN]: https://github.com/topaz-next/topaz
 [LSB]: https://github.com/LandSandBoat/server
