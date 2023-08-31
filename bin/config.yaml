@@ -15,7 +15,7 @@ backup: true
 
 # sql
 hostname: 127.0.0.1
-database: topazdb
+database: xidb
 username: root
 password: ????
 fail: true
@@ -25,6 +25,8 @@ restock: 3600
 tick: 30
 
 # scrub
+server: bahamut
+threads: -1
 itemids: []
 stock_single: 10
 stock_stacks: 10

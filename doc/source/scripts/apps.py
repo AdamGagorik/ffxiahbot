@@ -10,8 +10,8 @@ sys.path.insert(0, PYTHONPATH)
 python3 = shutil.which('python3')
 
 master = r"""
-Apps
-====
+Applications
+============
 
 {apps}
 """[1:-1]
@@ -45,6 +45,7 @@ def kwargs(name):
         name=format_name(name, '^'), language='python',
         help=indent(o)
     )
+
 
 with open('apps.rst', 'w') as handle:
     handle.write(master.format(

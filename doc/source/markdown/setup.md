@@ -14,9 +14,11 @@ This is a giude to getting pydarkstar running.
 
 ### Step 2: Create Python Environment
 
-* **GOTCHA**: Use the Anaconda Command Prompt on **WINDOWS** (search for it in the start menu)
+```{warning}
+Use the Anaconda Command Prompt on Windows (search for it in the start menu)
+```
 
-* Open an command prompt in the bin folder.
+* Open a command prompt in the bin folder.
 
 ```bash
 # Windows
@@ -36,9 +38,11 @@ bash:~$ conda env create -f environment.yml
 
 Follow the instructions on the [usage][USAGE] page.
 
-[CONDA]: http://continuum.io/downloads
+[CONDA]: https://www.anaconda.com
 [PYPIP]: https://pip.pypa.io/en/stable/
 [PYOFF]: https://www.python.org/downloads
 [USAGE]: http://adamgagorik.github.io/pydarkstar/generated/usage.html
 [GITPG]: https://github.com/AdamGagorik/pydarkstar
 [DARKS]: https://github.com/DarkstarProject/darkstar
+[TOPAZ]: https://github.com/project-topaz/topaz
+[TNEXT]: https://github.com/topaz-next/topaz

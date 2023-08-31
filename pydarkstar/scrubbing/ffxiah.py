@@ -1,15 +1,53 @@
 from .scrubber import Scrubber
+import concurrent.futures
 import warnings
 import pickle
 import re
 import os
 
 
+SERVER_ID = {
+    'bahamut': 1,
+    'shiva': 2,
+    'titan': 3,
+    'ramuh': 4,
+    'phoenix': 5,
+    'carbuncle': 6,
+    'fenrir': 7,
+    'sylph': 8,
+    'valefor': 9,
+    'alexander': 10,
+    'leviathan': 11,
+    'odin': 12,
+    'ifrit': 13,
+    'diabolos': 14,
+    'caitsith': 15,
+    'quetzalcoatl': 16,
+    'siren': 17,
+    'unicorn': 18,
+    'gilgamesh': 19,
+    'ragnarok': 20,
+    'pandemonium': 21,
+    'garuda': 22,
+    'cerberus': 23,
+    'kujata': 24,
+    'bismarck': 25,
+    'seraph': 26,
+    'lakshmi': 27,
+    'asura': 28,
+    'midgardsormr': 29,
+    'fairy': 30,
+    'remora': 31,
+    'hades': 32
+}
+
+ID_SERVER = {v: k for k, v in SERVER_ID.items()}
+
+
 class FFXIAHScrubber(Scrubber):
     """
     Get item data from ffxiah.com
     """
-
     def __init__(self):
         super(FFXIAHScrubber, self).__init__()
 
@@ -21,6 +59,7 @@ class FFXIAHScrubber(Scrubber):
         # pickled file names
         self._pkl_item_ids = 'scrub_item_list.pkl'
         self._pkl_item_dat = 'scrub_item_info.pkl'
+        self._server_id = 1
         self._save = True
 
     @property
@@ -31,7 +70,23 @@ class FFXIAHScrubber(Scrubber):
     def save(self, value):
         self._save = bool(value)
 
-    def scrub(self, force=False, threads=-1, urls=None, ids=None):
+    @property
+    def server(self):
+        return ID_SERVER[self.server_id]
+
+    @property
+    def server_id(self):
+        return self._server_id
+
+    @server_id.setter
+    def server_id(self, value):
+        if isinstance(value, int):
+            assert value in SERVER_ID.values()
+        else:
+            value = SERVER_ID[value]
+        self._server_id = value
+
+    def scrub(self, force=False, threads=None, urls=None, ids=None):
         """
         Get item metadata main function.
 
@@ -63,7 +118,7 @@ class FFXIAHScrubber(Scrubber):
                     urls = self._get_category_urls()
                 self.debug('# urls = %d', len(urls))
 
-                ids = self._get_itemids(urls)
+                ids = self._get_itemids(urls, threads)
 
                 # save to file
                 self._save_item_ids(ids)
@@ -76,14 +131,14 @@ class FFXIAHScrubber(Scrubber):
                     warnings.warn('passed urls ignored')
 
             # from internet
-            data = self._get_item_data(ids, threads=threads)
+            failed, data = self._get_item_data(ids, threads=threads)
 
             # save to file
             self._save_item_dat(data)
 
             self.debug('item count = %d', len(ids))
             self.debug('data count = %d', len(data))
-            return data
+            return failed, data
 
         else:
             # data exists already
@@ -113,7 +168,7 @@ class FFXIAHScrubber(Scrubber):
                         urls = self._get_category_urls()
                     self.debug('# urls = %d', len(urls))
 
-                    ids = self._get_itemids(urls)
+                    ids = self._get_itemids(urls, threads)
 
                     # save to file
                     self._save_item_ids(ids)
@@ -129,14 +184,14 @@ class FFXIAHScrubber(Scrubber):
                 raise RuntimeError('%s exists' % self._pkl_item_dat)
 
             # from internet
-            data = self._get_item_data(ids, threads=threads)
+            failed, data = self._get_item_data(ids, threads=threads)
 
             # save to file
             self._save_item_dat(data)
 
             self.debug('item count = %d', len(ids))
             self.debug('data count = %d', len(data))
-            return data
+            return failed, data
 
     def _load_item_ids(self):
         """
@@ -218,7 +273,7 @@ class FFXIAHScrubber(Scrubber):
         return urls
 
     # step 2
-    def _get_itemids(self, urls):
+    def _get_itemids(self, urls, threads):
         """
         Scrub urls of the form http://www.ffxiah.com/{CategoryNumber} for itemids.
 
@@ -227,9 +282,23 @@ class FFXIAHScrubber(Scrubber):
         self.info('getting itemids')
 
         items = set()
-        for i, url in enumerate(urls):
-            self.info('category %02d/%02d : %s', i + 1, len(urls), url)
-            items.update(self._get_itemids_for_category_url(url))
+        if threads is None or threads != 1:
+            threads = threads if threads > 1 else None
+            self.info('executing in parallel with threads=%s', 'ALL' if threads is None else threads)
+            with concurrent.futures.ThreadPoolExecutor(max_workers=threads, thread_name_prefix='ExThread') as executor:
+                futures = {}
+                for i, url in enumerate(urls):
+                    self.info('submit category %02d/%02d : %s', i + 1, len(urls), url)
+                    futures[executor.submit(self._get_itemids_for_category_url, url)] = url
+
+                for future in concurrent.futures.as_completed(futures):
+                    self.info('return category %02d/%02d : %s', i + 1, len(urls), url)
+                    url = futures[future]
+                    items.update(future.result())
+        else:
+            for i, url in enumerate(urls):
+                self.info('category %02d/%02d : %s', i + 1, len(urls), url)
+                items.update(self._get_itemids_for_category_url(url))
 
         return items
 
@@ -296,7 +365,7 @@ class FFXIAHScrubber(Scrubber):
         return items
 
     # step 3
-    def _get_item_data(self, itemids, threads=-1):
+    def _get_item_data(self, itemids, threads=None):
         """
         Get metadata for many items.
 
@@ -307,29 +376,41 @@ class FFXIAHScrubber(Scrubber):
         :type threads: int
         """
         self.info('getting data')
-        self.info('threads = %d', threads)
 
-        # threads make it faster but I've seen it freeze so disabling this for now
-        if threads > 1:
-            threads = 0
-            self.error('multiprocessing seems fishy')
-            self.error('setting threads=1')
-
+        data = {}
+        failed = {}
         # get data from itemids
-        if threads > 1:
-            raise ValueError('Invalid number of threads: %d', threads)
-            # from multiprocessing.dummy import Pool as ThreadPool
-            # import itertools
-            # params = zip(itemids, range(len(itemids)), itertools.repeat(len(itemids)))
-            # pool = ThreadPool(threads)
-            # data = pool.map(self._get_item_data_for_itemid_map, params)
-            # data = {d['itemid']: d for d in data}
+        if threads is None or threads != 1:
+            threads = threads if threads > 1 else None
+            self.info('executing in parallel with threads=%s', 'ALL' if threads is None else threads)
+            with concurrent.futures.ThreadPoolExecutor(max_workers=threads, thread_name_prefix='ExThread') as executor:
+                futures = {
+                    executor.submit(self._get_item_data_for_itemid, itemid,
+                                    index=i, total=len(itemids)): itemid
+                    for i, itemid in enumerate(itemids)
+                }
+                for future in concurrent.futures.as_completed(futures):
+                    itemid = futures[future]
+                    try:
+                        result = future.result()
+                        data[itemid] = result
+                    except Exception as e:
+                        self.exception('failed to scrub %d!', itemid)
+                        failed[itemid] = e
         else:
-            data = {}
             for i, itemid in enumerate(itemids):
-                data[itemid] = self._get_item_data_for_itemid(itemid, index=i, total=len(itemids))
+                try:
+                    result = self._get_item_data_for_itemid(itemid, index=i, total=len(itemids))
+                    data[itemid] = result
+                except Exception as e:
+                    self.exception('failed to scrub %d!', itemid)
+                    failed[itemid] = e
 
-        return data
+        if failed:
+            for itemid in failed:
+                self.error('failed to scrub %d!', itemid)
+
+        return failed, data
 
     # step 3.1
     def _get_item_data_for_itemid(self, itemid, index=0, total=0):
@@ -348,8 +429,8 @@ class FFXIAHScrubber(Scrubber):
         url = self._create_item_url(itemid)
 
         # create tag soup
-        self.debug('open (%06d/%06d,%6.2f) %s', index, total, percent, url)
-        soup = self.soup(url)
+        self.debug('open server=%s (%06d/%06d,%6.2f) %s', self.server, index, total, percent, url)
+        soup = self.soup(url, absolute=True, sid=self.server_id)
 
         # extract name
         try:

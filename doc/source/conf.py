@@ -30,6 +30,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "myst_parser",
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
@@ -56,7 +57,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'pydarkstar'
-copyright = '2019, Adam Gagorik'
+copyright = '2022, Adam Gagorik'
 author = 'Adam Gagorik'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -116,7 +117,7 @@ todo_include_todos = True
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'furo'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -128,7 +129,7 @@ html_theme = 'sphinx_rtd_theme'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-#html_title = None
+html_title = 'pydarkstar'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -301,4 +302,3 @@ autodoc_default_flags = [
     'private-members',
     'show-inheritence'
 ]
-

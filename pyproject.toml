@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "pydarkstar"
+version = "0.0.0"
+description = "A set of command-line tools for interacting with a Darkstar server."
+authors = ["Adam Gagorik <adam.gagorik@gmail.com>"]
+license = "MIT"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+
+[tool.poetry-dynamic-versioning.substitution]
+files = ["*.py", "*/__init__.py", "*/__version__.py", "*/_version.py", "doc/source/conf.py"]
+patterns = ["(^__version__\\s*(?::.*?)?=\\s*['\"])[^'\"]*(['\"])", "(^version\\s*(?::.*?)?=\\s*['\"])[^'\"]*(['\"])", "(^release\\s*(?::.*?)?=\\s*['\"])[^'\"]*(['\"])"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+SQLAlchemy = "^1.4.35"
+PyMySQL = "^1.0.2"
+beautifulsoup4 = "^4.11.1"
+requests = "^2.27.1"
+
+[tool.poetry.dev-dependencies]
+Sphinx = "^4.5.0"
+furo = "^2022.4.7"
+myst-parser = "^0.17.2"
+ipython = "^8.2.0"
+poetry-dynamic-versioning = "^0.14.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry.core.masonry.api"

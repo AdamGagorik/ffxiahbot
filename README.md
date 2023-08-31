@@ -1,10 +1,25 @@
 # [pydarkstar][ghWeb]
 
-A set of command-line tools for interacting with a Topaz server.
+A set of command-line tools for interacting with the auction house of an FFXI private server.
 
+* The pydarkstar code can be found [here][ghRep].
 * The pydarkstar website can be found [here][ghWeb].
 * The **Setup** instructions can be found [here][ghSet] (start here!)
 * The **Usage** instructions can be found [here][ghUse].
+
+---
+
+Please note that this project is itself a fork of pydarkstar, which was developed for the original Darkstar private server emulator.
+This project is aimed instead at used with LandSandBoat and over time may have different features/usage.
+
+| Project            | Status  |
+|--------------------|---------|
+| Darkstar (DSP)     | defunct |
+| Topaz  (TPZ)       | defunct |
+| Topaz-next (TPZN)  | defunct |
+| LandSandBoat (LSB) | current |
+
+---
 
 ## [Features][ghWeb]
 
@@ -13,7 +28,7 @@ A set of command-line tools for interacting with a Topaz server.
 * Buy items put up for sale by players.
 * Stock the Auction House with items for players to buy.
 
-#### Command Line
+---
 
 Here are some links to help you learn how to use a command line.
 
@@ -24,6 +39,11 @@ Here are some links to help you learn how to use a command line.
 [clAll]: https://en.wikipedia.org/wiki/Command-line_interface
 [clWin]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
 [clLin]: https://en.wikibooks.org/wiki/Linux_For_Newbies/Command_Line
+[ghRep]: https://github.com/AdamGagorik/pydarkstar
 [ghWeb]: http://adamgagorik.github.io/pydarkstar
-[ghSet]: http://adamgagorik.github.io/pydarkstar/generated/setup.html
-[ghUse]: http://adamgagorik.github.io/pydarkstar/generated/usage.html
+[ghSet]: http://adamgagorik.github.io/pydarkstar/markdown/setup.html
+[ghUse]: http://adamgagorik.github.io/pydarkstar/markdown/usage.html
+[DSP]: https://github.com/DarkstarProject/darkstar
+[TPZ]: https://github.com/project-topaz/topaz
+[TPZN]: https://github.com/topaz-next/topaz
+[LSB]: https://github.com/LandSandBoat/server
