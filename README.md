@@ -10,7 +10,7 @@ A set of command-line tools for interacting with the auction house of an FFXI pr
 ---
 
 Please note that this project is itself a fork of pydarkstar, which was developed for the original Darkstar private server emulator.
-This project is aimed instead at used with LandSandBoat and over time may have different features/usage.
+This project is aimed instead at being used with LandSandBoat and over time may have different features/usage.
 
 | Project            | Status  |
 |--------------------|---------|
