@@ -17,7 +17,7 @@ python = "^3.9"
 SQLAlchemy = "^1.4.35"
 PyMySQL = "^1.0.2"
 beautifulsoup4 = "^4.11.1"
-requests = "^2.27.1"
+requests = "^2.31.0"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^4.5.0"
