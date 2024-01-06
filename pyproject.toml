@@ -21,7 +21,7 @@ requests = "^2.31.0"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^4.5.0"
-furo = "^2022.4.7"
+furo = "^2022.9.29"
 myst-parser = "^0.17.2"
 ipython = "^8.18.1"
 poetry-dynamic-versioning = "^1.2.0"
