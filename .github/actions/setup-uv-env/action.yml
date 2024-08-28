@@ -33,6 +33,10 @@ runs:
       run: irm https://astral.sh/uv/${{ inputs.uv-version }}/install.ps1 | iex
       shell: powershell
 
+    - name: Create venv
+      run: uv venv
+      shell: bash
+
     - name: Install dependencies
       run: uv pip install .
       shell: bash
