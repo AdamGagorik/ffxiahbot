@@ -1,11 +1,9 @@
-# AUTO-AH, a fork of [pydarkstar][ghWeb]
+# FFXI Auction House Bot
 
 A set of command-line tools for interacting with the auction house of an FFXI private server.
 
-* The pydarkstar code can be found [here][ghRep].
-* The pydarkstar website can be found [here][ghWeb].
-* The **Setup** instructions can be found [here][ghSet] (start here!)
-* The **Usage** instructions can be found [here][ghUse].
+- The **Setup** instructions can be found [here][ghSet] (start here!)
+- The **Usage** instructions can be found [here][ghUse].
 
 ---
 
@@ -13,9 +11,9 @@ Please note that this project is itself a fork of pydarkstar, which was develope
 This project is aimed instead at being used with LandSandBoat and over time may have different features/usage.
 
 | Project            | Status  |
-|--------------------|---------|
+| ------------------ | ------- |
 | Darkstar (DSP)     | defunct |
-| Topaz  (TPZ)       | defunct |
+| Topaz (TPZ)        | defunct |
 | Topaz-next (TPZN)  | defunct |
 | LandSandBoat (LSB) | current |
 
@@ -23,18 +21,18 @@ This project is aimed instead at being used with LandSandBoat and over time may 
 
 ## [Features][ghWeb]
 
-* Create Auction House item database with prices.
-* Detailed control over the buying and selling of items.
-* Buy items put up for sale by players.
-* Stock the Auction House with items for players to buy.
+- Create Auction House item database with prices.
+- Detailed control over the buying and selling of items.
+- Buy items put up for sale by players.
+- Stock the Auction House with items for players to buy.
 
 ---
 
 Here are some links to help you learn how to use a command line.
 
-* [Command Line Interface][clAll]
-* [Windows Batch Scripting][clWin]
-* [Linux Command Line][clLin]
+- [Command Line Interface][clAll]
+- [Windows Batch Scripting][clWin]
+- [Linux Command Line][clLin]
 
 [clAll]: https://en.wikipedia.org/wiki/Command-line_interface
 [clWin]: https://en.wikibooks.org/wiki/Windows_Batch_Scripting
