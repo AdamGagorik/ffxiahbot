@@ -16,7 +16,7 @@ patterns = ["(^__version__\\s*(?::.*?)?=\\s*['\"])[^'\"]*(['\"])", "(^version\\s
 python = "^3.9"
 SQLAlchemy = "^2.0.27"
 PyMySQL = "^1.0.3"
-beautifulsoup4 = "^4.11.2"
+beautifulsoup4 = "^4.12.3"
 requests = "^2.31.0"
 
 [tool.poetry.dev-dependencies]
