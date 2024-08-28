@@ -36,18 +36,18 @@ def main():
     failed, data = scrubber.scrub(force=True, threads=opts.threads, urls=opts.urls, ids=opts.itemids)
 
     if data:
-        # create item list from data
-        ilist = ItemList()
+    # create item list from data
+    ilist = ItemList()
         for itemid in sorted(data.keys()):
-            kwargs = ffxiah.extract(data, itemid, stock01=opts.stock01, stock12=opts.stock12)
-            ilist.add(itemid, **kwargs)
+            kwargs = ffxiah.extract(data, itemid, stock_single=opts.stock_single, stock_stacks=opts.stock_stacks)
+        ilist.add(itemid, **kwargs)
 
-        # backup file
-        if opts.backup:
-            common.backup(oname, copy=True)
+    # backup file
+    if opts.backup:
+        common.backup(oname, copy=True)
 
-        # overwrites if exists, but we checked already
-        ilist.savecsv(oname)
+    # overwrites if exists, but we checked already
+    ilist.savecsv(oname)
 
     if not data:
         raise RuntimeError('no items were scrubbed!')
