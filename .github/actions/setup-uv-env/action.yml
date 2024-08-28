@@ -26,6 +26,7 @@ runs:
     - name: Set up uv
       if: ${{ inputs.os-version == 'ubuntu-latest' || inputs.os-version == 'macos-latest' }}
       run: curl -LsSf https://astral.sh/uv/${{ inputs.uv-version }}/install.sh | sh
+      shell: bash
 
     - name: Set up uv
       if: ${{ inputs.os-version == 'windows-latest' }}
@@ -33,5 +34,5 @@ runs:
       shell: powershell
 
     - name: Install dependencies
-      run: poetry install --no-interaction
+      run: uv pip install .
       shell: bash

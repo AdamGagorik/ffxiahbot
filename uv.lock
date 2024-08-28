@@ -162,7 +162,7 @@ wheels = [
 [[package]]
 name = "ffxiahbot"
 version = "5.0.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
     { name = "pymysql" },
