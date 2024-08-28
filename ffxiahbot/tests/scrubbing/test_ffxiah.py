@@ -46,4 +46,4 @@ class TestCase01(unittest.TestCase):
         self.scrubber.scrub(force=True, threads=4, ids={1, 2, 3, 4})
 
     def test_extract(self):
-        extract(self.scrubber._get_item_data([4096]), 4096)
+        extract(self.scrubber._get_item_data([4096])[1], 4096)

@@ -58,7 +58,7 @@ class TestCase01(unittest.TestCase):
         self.ilist.add(*self._test_item1)
         i, fname = tempfile.mkstemp()
         self.ilist.savecsv(fname)
-        with open(fname, 'rU') as handle:
+        with open(fname, 'r') as handle:
             handle.readline().strip()
             handle.readline().strip()
         try:

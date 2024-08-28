@@ -273,7 +273,7 @@ class FFXIAHScrubber(Scrubber):
         return urls
 
     # step 2
-    def _get_itemids(self, urls, threads):
+    def _get_itemids(self, urls, threads: int | None = None):
         """
         Scrub urls of the form http://www.ffxiah.com/{CategoryNumber} for itemids.
 
@@ -282,23 +282,9 @@ class FFXIAHScrubber(Scrubber):
         self.info('getting itemids')
 
         items = set()
-        if threads is None or threads != 1:
-            threads = threads if threads > 1 else None
-            self.info('executing in parallel with threads=%s', 'ALL' if threads is None else threads)
-            with concurrent.futures.ThreadPoolExecutor(max_workers=threads, thread_name_prefix='ExThread') as executor:
-                futures = {}
-                for i, url in enumerate(urls):
-                    self.info('submit category %02d/%02d : %s', i + 1, len(urls), url)
-                    futures[executor.submit(self._get_itemids_for_category_url, url)] = url
-
-                for future in concurrent.futures.as_completed(futures):
-                    self.info('return category %02d/%02d : %s', i + 1, len(urls), url)
-                    url = futures[future]
-                    items.update(future.result())
-        else:
-            for i, url in enumerate(urls):
-                self.info('category %02d/%02d : %s', i + 1, len(urls), url)
-                items.update(self._get_itemids_for_category_url(url))
+        for i, url in enumerate(urls):
+            self.info('category %02d/%02d : %s', i + 1, len(urls), url)
+            items.update(self._get_itemids_for_category_url(url))
 
         return items
 
@@ -365,7 +351,7 @@ class FFXIAHScrubber(Scrubber):
         return items
 
     # step 3
-    def _get_item_data(self, itemids, threads=None):
+    def _get_item_data(self, itemids, threads: int | None = None):
         """
         Get metadata for many items.
 
@@ -380,31 +366,13 @@ class FFXIAHScrubber(Scrubber):
         data = {}
         failed = {}
         # get data from itemids
-        if threads is None or threads != 1:
-            threads = threads if threads > 1 else None
-            self.info('executing in parallel with threads=%s', 'ALL' if threads is None else threads)
-            with concurrent.futures.ThreadPoolExecutor(max_workers=threads, thread_name_prefix='ExThread') as executor:
-                futures = {
-                    executor.submit(self._get_item_data_for_itemid, itemid,
-                                    index=i, total=len(itemids)): itemid
-                    for i, itemid in enumerate(itemids)
-                }
-                for future in concurrent.futures.as_completed(futures):
-                    itemid = futures[future]
-                    try:
-                        result = future.result()
-                        data[itemid] = result
-                    except Exception as e:
-                        self.exception('failed to scrub %d!', itemid)
-                        failed[itemid] = e
-        else:
-            for i, itemid in enumerate(itemids):
-                try:
-                    result = self._get_item_data_for_itemid(itemid, index=i, total=len(itemids))
-                    data[itemid] = result
-                except Exception as e:
-                    self.exception('failed to scrub %d!', itemid)
-                    failed[itemid] = e
+        for i, itemid in enumerate(itemids):
+            try:
+                result = self._get_item_data_for_itemid(itemid, index=i, total=len(itemids))
+                data[itemid] = result
+            except Exception as e:
+                self.exception('failed to scrub %d!', itemid)
+                failed[itemid] = e
 
         if failed:
             for itemid in failed:
