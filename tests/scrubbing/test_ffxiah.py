@@ -1,26 +1,12 @@
 import unittest
 
-import_error = False
-try:
-    from ffxiahbot.scrubbing.ffxiah import FFXIAHScrubber, extract
-except ImportError:
-    import_error = True
-    FFXIAHScrubber = None
-    extract = None
-
-
-class TestCase00(unittest.TestCase):
-    def test_import(self):
-        self.assertFalse(import_error)
+from ffxiahbot.scrubbing.ffxiah import FFXIAHScrubber, extract
 
 
 class TestCase01(unittest.TestCase):
     def setUp(self):
-        if import_error:
-            self.skipTest("ImportError")
-        else:
-            self.scrubber = FFXIAHScrubber()
-            self.scrubber.save = False
+        self.scrubber = FFXIAHScrubber()
+        self.scrubber.save = False
 
     def test_get_category_urls(self):
         self.scrubber._get_category_urls()
