@@ -1,18 +1,21 @@
 """
 TestCase for SQL.
 """
-from ffxiahbot.database import Database
-import sqlalchemy.exc
-import unittest
+
 import logging
+import unittest
+
+import sqlalchemy.exc
+
+from ffxiahbot.database import Database
 
 # sql database parameters
-mysql_params = dict(
-    hostname='127.0.0.1',
-    database='dspdb',
-    username='root',
-    password='cisco',
-)
+mysql_params = {
+    "hostname": "127.0.0.1",
+    "database": "dspdb",
+    "username": "root",
+    "password": "cisco",
+}
 
 
 class TestSQL(unittest.TestCase):
@@ -21,9 +24,9 @@ class TestSQL(unittest.TestCase):
         try:
             self.db.engine.connect()
         except sqlalchemy.exc.OperationalError:
-            logging.exception('SQL')
-            self.skipTest('OperationalError')
+            logging.exception("SQL")
+            self.skipTest("OperationalError")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

@@ -11,8 +11,8 @@ class Seller(Worker):
     :param seller_name: auction house seller name
     """
 
-    def __init__(self, db, seller=0, seller_name='Zissou', **kwargs):
-        super(Seller, self).__init__(db, **kwargs)
+    def __init__(self, db, seller=0, seller_name="Zissou", **kwargs):
+        super().__init__(db, **kwargs)
         self.seller = int(seller)
         self.seller_name = str(seller_name)
 
@@ -35,7 +35,7 @@ class Seller(Worker):
             # add row
             with self.scopped_session() as session:
                 # add the item multiple times
-                for i in range(count):
+                for _i in range(count):
                     row = AuctionHouse(
                         itemid=itemid,
                         stack=stack,
@@ -69,7 +69,7 @@ class Seller(Worker):
             # add row
             with self.scopped_session() as session:
                 # add the item multiple times
-                for i in range(count):
+                for _i in range(count):
                     row = AuctionHouse(
                         itemid=itemid,
                         stack=stack,
@@ -82,5 +82,5 @@ class Seller(Worker):
                     session.add(row)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

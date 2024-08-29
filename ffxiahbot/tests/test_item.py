@@ -16,12 +16,12 @@ class TestCase00(unittest.TestCase):
 class TestCase01(unittest.TestCase):
     def setUp(self):
         if import_error:
-            self.skipTest('ImportError')
+            self.skipTest("ImportError")
 
     def test_init(self):
-        i0 = Item(0, 'A')
+        i0 = Item(0, "A")
         self.assertEqual(i0.itemid, 0)
-        self.assertEqual(i0.name, 'A')
+        self.assertEqual(i0.name, "A")
 
     def test_price_single(self):
         Item(0, price_single=+1)

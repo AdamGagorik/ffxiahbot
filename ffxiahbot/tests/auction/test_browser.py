@@ -1,5 +1,5 @@
-import unittest
 import logging
+import unittest
 
 from .. import sqltest
 
@@ -18,9 +18,9 @@ class TestCase00(unittest.TestCase):
 
 class TestCase01(sqltest.TestSQL):
     def setUp(self):
-        super(TestCase01, self).setUp()
+        super().setUp()
         if import_error:
-            self.skipTest('ImportError')
+            self.skipTest("ImportError")
         else:
             self.ob = Browser(self.db, fail=True)
 
@@ -28,7 +28,7 @@ class TestCase01(sqltest.TestSQL):
         self.ob.count()
 
     def test_getStock(self):
-        logging.debug('stock = %s', self.ob.get_stock(1, 0))
+        logging.debug("stock = %s", self.ob.get_stock(1, 0))
 
     def test_getPrice(self):
-        logging.debug('price = %s', self.ob.get_price(1, 0))
+        logging.debug("price = %s", self.ob.get_price(1, 0))

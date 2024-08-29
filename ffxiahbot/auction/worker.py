@@ -1,6 +1,7 @@
+import contextlib
+
 from ..darkobject import DarkObject
 from ..database import Database
-import contextlib
 
 
 class Worker(DarkObject):
@@ -11,8 +12,9 @@ class Worker(DarkObject):
     """
 
     def __init__(self, db, rollback=True, fail=False):
-        super(Worker, self).__init__()
-        assert isinstance(db, Database)
+        super().__init__()
+        if not isinstance(db, Database):
+            raise TypeError("expected Database object")
         self._rollback = bool(rollback)
         self._fail = bool(fail)
         self._db = db
@@ -28,7 +30,7 @@ class Worker(DarkObject):
         """
         Create scoped database session.
         """
-        _kwargs = dict(rollback=self.rollback, fail=self.fail)
+        _kwargs = {"rollback": self.rollback, "fail": self.fail}
         _kwargs.update(**kwargs)
         try:
             with self._db.scoped_session(**_kwargs) as session:
@@ -57,5 +59,5 @@ class Worker(DarkObject):
         self._fail = bool(value)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

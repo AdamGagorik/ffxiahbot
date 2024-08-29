@@ -1,8 +1,9 @@
-import sqlalchemy
-import sqlalchemy.orm
-import sqlalchemy.exc
 import contextlib
 import logging
+
+import sqlalchemy
+import sqlalchemy.exc
+import sqlalchemy.orm
 
 from .darkobject import DarkObject
 
@@ -15,7 +16,7 @@ class Database(DarkObject):
     """
 
     def __init__(self, url, **kwargs):
-        super(Database, self).__init__()
+        super().__init__()
 
         # connect
         self.engine = sqlalchemy.create_engine(url, **kwargs)
@@ -50,7 +51,7 @@ class Database(DarkObject):
         # catch errors
         except sqlalchemy.exc.SQLAlchemyError:
             # log the error
-            logging.exception('caught SQL exception')
+            logging.exception("caught SQL exception")
 
             # rollback transactions
             if rollback:
@@ -58,7 +59,7 @@ class Database(DarkObject):
 
             # reraise error
             if fail:
-                raise RuntimeError('SQL Failed')
+                raise RuntimeError("SQL Failed") from None
 
         # cleanup
         finally:
@@ -74,7 +75,7 @@ class Database(DarkObject):
         :param username: database connection parameter
         :param password: database connection parameter
         """
-        url = cls.format_url('mysql', 'pymysql', hostname, database, username, password)
+        url = cls.format_url("mysql", "pymysql", hostname, database, username, password)
         obj = cls(url)
         return obj
 
@@ -83,8 +84,9 @@ class Database(DarkObject):
         """
         Create connection url.
         """
-        return '{}://{u}:{p}@{h}/{d}'.format('+'.join([dialect, driver]),
-                                             h=hostname, d=database, u=username, p=password)
+        return "{}://{u}:{p}@{h}/{d}".format(
+            "+".join([dialect, driver]), h=hostname, d=database, u=username, p=password
+        )
 
     def __str__(self):
         return repr(self.engine)

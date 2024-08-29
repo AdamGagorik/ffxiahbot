@@ -1,6 +1,7 @@
+import sqlalchemy
+
 from ..tables.auctionhouse import AuctionHouse
 from .worker import Worker
-import sqlalchemy
 
 
 class Browser(Worker):
@@ -11,7 +12,7 @@ class Browser(Worker):
     """
 
     def __init__(self, db, **kwargs):
-        super(Browser, self).__init__(db, **kwargs)
+        super().__init__(db, **kwargs)
 
     def count(self):
         """
@@ -39,25 +40,32 @@ class Browser(Worker):
 
             # perform query
             with self.scopped_session() as session:
-
                 # ignore seller
                 if seller is None:
-                    n = session.query(AuctionHouse).filter(
-                        AuctionHouse.itemid == itemid,
-                        AuctionHouse.stack == stack,
-                        AuctionHouse.sale == 0,
-                    ).count()
+                    n = (
+                        session.query(AuctionHouse)
+                        .filter(
+                            AuctionHouse.itemid == itemid,
+                            AuctionHouse.stack == stack,
+                            AuctionHouse.sale == 0,
+                        )
+                        .count()
+                    )
                     return n
 
                 # consider seller
                 else:
                     seller = AuctionHouse.validate_seller(seller)
-                    n = session.query(AuctionHouse).filter(
-                        AuctionHouse.itemid == itemid,
-                        AuctionHouse.seller == seller,
-                        AuctionHouse.stack == stack,
-                        AuctionHouse.sale == 0,
-                    ).count()
+                    n = (
+                        session.query(AuctionHouse)
+                        .filter(
+                            AuctionHouse.itemid == itemid,
+                            AuctionHouse.seller == seller,
+                            AuctionHouse.stack == stack,
+                            AuctionHouse.sale == 0,
+                        )
+                        .count()
+                    )
                     return n
 
     def get_price(self, itemid, stack=False, seller=None, func=sqlalchemy.func.min):
@@ -80,27 +88,34 @@ class Browser(Worker):
 
             # perform query
             with self.scopped_session() as session:
-
                 # ignore seller
                 if seller is None:
-                    n = session.query(func(AuctionHouse.sale)).filter(
-                        AuctionHouse.itemid == itemid,
-                        AuctionHouse.stack == stack,
-                        AuctionHouse.sale != 0,
-                    ).scalar()
+                    n = (
+                        session.query(func(AuctionHouse.sale))
+                        .filter(
+                            AuctionHouse.itemid == itemid,
+                            AuctionHouse.stack == stack,
+                            AuctionHouse.sale != 0,
+                        )
+                        .scalar()
+                    )
                     return n
 
                 # consider seller
                 else:
                     seller = AuctionHouse.validate_seller(seller)
-                    n = session.query(func(AuctionHouse.sale)).filter(
-                        AuctionHouse.itemid == itemid,
-                        AuctionHouse.seller == seller,
-                        AuctionHouse.stack == stack,
-                        AuctionHouse.sale != 0,
-                    ).scalar()
+                    n = (
+                        session.query(func(AuctionHouse.sale))
+                        .filter(
+                            AuctionHouse.itemid == itemid,
+                            AuctionHouse.seller == seller,
+                            AuctionHouse.stack == stack,
+                            AuctionHouse.sale != 0,
+                        )
+                        .scalar()
+                    )
                     return n
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

@@ -1,16 +1,15 @@
-# -*- coding: utf-8 -*-
 """
 Buy and sell items on the auction house.
 """
+
 import datetime
 import logging
 import time
 
-from .options import Options
-
 from ... import logutils
-from ...itemlist import ItemList
 from ...auction.manager import Manager
+from ...itemlist import ItemList
+from .options import Options
 
 
 def main():
@@ -27,25 +26,26 @@ def main():
         username=opts.username,
         password=opts.password,
         name=opts.name,
-        fail=opts.fail
+        fail=opts.fail,
     )
 
     # load data
     idata = ItemList.from_csv(*opts.data)
 
     # main loop
-    logging.info('starting main loop...')
+    logging.info("starting main loop...")
     start = datetime.datetime.now()
     last = start
     while True:
         now = datetime.datetime.now()
         delta = (now - last).total_seconds()
         elapsed = (now - start).total_seconds()
-        logging.debug('time=%012.1f s last restock=%012.1f s next restock=%012.1f s',
-                      elapsed, delta, opts.restock - delta)
+        logging.debug(
+            "time=%012.1f s last restock=%012.1f s next restock=%012.1f s", elapsed, delta, opts.restock - delta
+        )
 
         if delta >= opts.restock:
-            logging.debug('restocking...')
+            logging.debug("restocking...")
             manager.restock_items(itemdata=idata)
             last = datetime.datetime.now()
 
@@ -53,15 +53,15 @@ def main():
         manager.buy_items(itemdata=idata)
 
         # sleep until next tick
-        logging.debug('wait=%012.1f s', opts.tick)
+        logging.debug("wait=%012.1f s", opts.tick)
         time.sleep(opts.tick)
 
 
 def cleanup():
-    logging.info('exit\n')
+    logging.info("exit\n")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     with logutils.capture():
         main()
     cleanup()

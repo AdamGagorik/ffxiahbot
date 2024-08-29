@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Functions for handling dates and times.
 
@@ -46,6 +45,7 @@ Documentation
 
 .. moduleauthor:: Adam Gagorik <adam.gagorik@gmail.com>
 """
+
 import datetime as _datetime
 
 
@@ -66,7 +66,7 @@ def str_to_datetime(date_string):
 
     .. seealso:: :py:meth:`datetime.datetime.strptime`
     """
-    return _datetime.datetime.strptime(date_string, '%m/%d/%Y %H:%M:%S')
+    return _datetime.datetime.strptime(date_string, "%m/%d/%Y %H:%M:%S")
 
 
 def datetime_to_str(datetime_obj):
@@ -86,10 +86,10 @@ def datetime_to_str(datetime_obj):
 
     .. seealso:: :py:meth:`datetime.datetime.strftime`
     """
-    return datetime_obj.strftime('%m/%d/%Y %H:%M:%S')
+    return datetime_obj.strftime("%m/%d/%Y %H:%M:%S")
 
 
-class DatetimeToTimestamp(object):
+class DatetimeToTimestamp:
     """
     Convert datetime object to timestamp.
 
@@ -99,6 +99,7 @@ class DatetimeToTimestamp(object):
 
     .. seealso:: :py:data:`ffxiahbot.timeutils.datetime_to_timestamp`
     """
+
     #: 01/01/1970
     epoch = _datetime.datetime(1970, 1, 1)
 
@@ -187,7 +188,7 @@ def datetime(*args, **kwargs):
     try:
         obj = args[0]
     except IndexError:
-        raise ValueError('expecting argument')
+        raise ValueError("expecting argument") from None
 
     if isinstance(obj, _datetime.datetime):
         return obj
@@ -201,7 +202,7 @@ def datetime(*args, **kwargs):
     if isinstance(obj, float):
         return timestamp_to_datetime(obj)
 
-    raise TypeError('unknown type: %s' % type(obj))
+    raise TypeError(f"unknown type: {type(obj)}")
 
 
 def timestamp(*args, **kwargs):
@@ -236,5 +237,5 @@ def timestamp(*args, **kwargs):
     return datetime_to_timestamp(datetime(*args, **kwargs))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

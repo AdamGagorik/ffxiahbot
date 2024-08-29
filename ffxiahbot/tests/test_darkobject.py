@@ -16,7 +16,7 @@ class TestCase00(unittest.TestCase):
 class TestCase01(unittest.TestCase):
     def setUp(self):
         if import_error:
-            self.skipTest('ImportError')
+            self.skipTest("ImportError")
         else:
             self.do = DarkObject()
 

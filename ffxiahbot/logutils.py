@@ -1,15 +1,15 @@
 import contextlib
-import warnings
 import logging
 import logging.handlers
+import warnings
 
-lfmt = '[%(asctime)s][%(processName)s][%(threadName)s][%(levelname)-5s]: %(message)s'
+lfmt = "[%(asctime)s][%(processName)s][%(threadName)s][%(levelname)-5s]: %(message)s"
 dfmt = "%Y-%m-%d %H:%M:%S"
 logging.basicConfig(level=logging.ERROR, format=lfmt, datefmt=dfmt)
-logging.addLevelName(logging.CRITICAL, 'FATAL')
-logging.addLevelName(logging.WARNING, 'WARN')
-logging.getLogger('requests').setLevel(logging.ERROR)
-logging.getLogger('urllib3').setLevel(logging.ERROR)
+logging.addLevelName(logging.CRITICAL, "FATAL")
+logging.addLevelName(logging.WARNING, "WARN")
+logging.getLogger("requests").setLevel(logging.ERROR)
+logging.getLogger("urllib3").setLevel(logging.ERROR)
 
 
 def set_level(level):
@@ -30,7 +30,7 @@ def set_info():
 
 # noinspection PyUnusedLocal
 def custom_warning_format(message, category, filename, lineno, *args, **kwargs):
-    return '%s:%s\n%s: %s' % (filename, lineno, category.__name__, message)
+    return f"{filename}:{lineno}\n{category.__name__}: {message}"
 
 
 @contextlib.contextmanager
@@ -46,17 +46,16 @@ def capture(capture_warnings=True, fail=False):
         try:
             yield
         except Exception as e:
-            logging.exception('caught unhandled excetion')
-            if fail:
-                if not isinstance(e, Warning):
-                    raise RuntimeError('application failure')
+            logging.exception("caught unhandled excetion")
+            if fail and not isinstance(e, Warning):
+                raise RuntimeError("application failure") from None
     finally:
         if capture_warnings:
             warnings.formatwarning = default_warning_format
             logging.captureWarnings(False)
 
 
-class LoggingObject(object):
+class LoggingObject:
     """
     Inherit from this to get a bunch of logging functions as class methods.
     """
@@ -65,7 +64,7 @@ class LoggingObject(object):
         self._init_notify()
 
     def _init_notify(self):
-        self.debug('init')
+        self.debug("init")
 
     def debug(self, msg, *args, **kwargs):
         logging.debug(self._preprocess(msg), *args, **kwargs)
@@ -77,6 +76,9 @@ class LoggingObject(object):
         logging.fatal(self._preprocess(msg), *args, **kwargs)
         exit(-1)
 
+    def warn(self, msg, *args, **kwargs):
+        logging.warning(self._preprocess(msg), *args, **kwargs)
+
     def info(self, msg, *args, **kwargs):
         logging.info(self._preprocess(msg), *args, **kwargs)
 
@@ -87,7 +89,7 @@ class LoggingObject(object):
         logging.log(level, self._preprocess(msg), *args, **kwargs)
 
     def _preprocess(self, msg):
-        return '{}: {}'.format(repr(self), msg)
+        return f"{self!r}: {msg}"
 
     @contextlib.contextmanager
     def capture(self, **kwargs):
@@ -98,8 +100,7 @@ class LoggingObject(object):
             pass
 
 
-def add_rotating_file_handler(level=logging.DEBUG, fname='app.log',
-                              logger=None, fmt=lfmt, **kwargs):
+def add_rotating_file_handler(level=logging.DEBUG, fname="app.log", logger=None, fmt=lfmt, **kwargs):
     """
     Create rotating file handler and add it to logging.
 
@@ -109,7 +110,7 @@ def add_rotating_file_handler(level=logging.DEBUG, fname='app.log',
     :param fmt: format
     """
 
-    _kwargs = dict(maxBytes=(1048576 * 5), backupCount=5)
+    _kwargs = {"maxBytes": (1048576 * 5), "backupCount": 5}
     _kwargs.update(**kwargs)
 
     handler = logging.handlers.RotatingFileHandler(fname, **kwargs)
@@ -145,5 +146,5 @@ def basic_config(verbose=False, silent=False, fname=None):
         add_rotating_file_handler(fname=fname)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

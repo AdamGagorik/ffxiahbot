@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 """
 Clear the auction house.
 """
-import logging
 
-from .options import Options
+import logging
 
 from ... import logutils
 from ...auction.manager import Manager
+from .options import Options
 
 
 def main():
@@ -24,33 +23,33 @@ def main():
         username=opts.username,
         password=opts.password,
         name=opts.name,
-        fail=opts.fail
+        fail=opts.fail,
     )
 
     # clear all items
     if opts.all:
         # really?
         if not opts.force:
-            raise RuntimeError('clearing all items from auction house is dangerous. use --force')
+            raise RuntimeError("clearing all items from auction house is dangerous. use --force")
         else:
             manager.cleaner.clear(seller=None)
     # clear seller items
     else:
         if not opts.force:
-            raise RuntimeError('clearing all items from auction house is dangerous. use --force')
+            raise RuntimeError("clearing all items from auction house is dangerous. use --force")
         else:
             manager.cleaner.clear(seller=manager.seller.seller)
 
     # exit after clearing
-    logging.info('exit after clear')
+    logging.info("exit after clear")
     return
 
 
 def cleanup():
-    logging.info('exit\n')
+    logging.info("exit\n")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     with logutils.capture():
         main()
     cleanup()

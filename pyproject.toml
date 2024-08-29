@@ -31,6 +31,9 @@ skip_empty = true
 branch = true
 source = ["ffxiahbot"]
 
+[tool.deptry.per_rule_ignores]
+DEP002 = ["pymysql"]
+
 [tool.mypy]
 check_untyped_defs = "True"
 disallow_any_unimported = "True"

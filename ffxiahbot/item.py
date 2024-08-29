@@ -1,40 +1,40 @@
-from .darkobject import DarkObject
 import collections
 
+from .darkobject import DarkObject
+
 fmt = collections.OrderedDict()
-fmt['itemid'] = '{:>8}'
-fmt['name'] = '{:>24}'
-fmt['sell_single'] = '{:>6}'
-fmt['buy_single'] = '{:>6}'
-fmt['price_single'] = '{:>16}'
-fmt['stock_single'] = '{:>7}'
-fmt['rate_single'] = '{:>7}'
-fmt['sell_stacks'] = '{:>6}'
-fmt['buy_stacks'] = '{:>6}'
-fmt['price_stacks'] = '{:>16}'
-fmt['stock_stacks'] = '{:>7}'
-fmt['rate_stacks'] = '{:>7}'
+fmt["itemid"] = "{:>8}"
+fmt["name"] = "{:>24}"
+fmt["sell_single"] = "{:>6}"
+fmt["buy_single"] = "{:>6}"
+fmt["price_single"] = "{:>16}"
+fmt["stock_single"] = "{:>7}"
+fmt["rate_single"] = "{:>7}"
+fmt["sell_stacks"] = "{:>6}"
+fmt["buy_stacks"] = "{:>6}"
+fmt["price_stacks"] = "{:>16}"
+fmt["stock_stacks"] = "{:>7}"
+fmt["rate_stacks"] = "{:>7}"
 
 
 def title_str():
     objs = []
-    for key in fmt.keys():
+    for key in fmt:
         objs.append(fmt[key].format(key))
 
-    return ', '.join(objs) + '\n'
+    return ", ".join(objs) + "\n"
 
 
 def value_str(item):
     objs = []
-    for key in fmt.keys():
+    for key in fmt:
         value = getattr(item, key, None)
         objs.append(fmt[key].format(value))
 
-    return ', '.join(objs) + '\n'
+    return ", ".join(objs) + "\n"
 
 
-_template = \
-    """
+_template = """
 [Item]
     addr        = {addr}
     itemid      = {self.itemid}
@@ -70,20 +70,54 @@ class Item(DarkObject):
     :param stock_stacks: restock count (>= 0) for stack
     """
 
-    keys = ['itemid', 'name',
-            'sell_single', 'buy_single', 'price_single', 'stock_single', 'rate_single',
-            'sell_stacks', 'buy_stacks', 'price_stacks', 'stock_stacks', 'rate_stacks']
+    keys = (
+        "itemid",
+        "name",
+        "sell_single",
+        "buy_single",
+        "price_single",
+        "stock_single",
+        "rate_single",
+        "sell_stacks",
+        "buy_stacks",
+        "price_stacks",
+        "stock_stacks",
+        "rate_stacks",
+    )
 
     @property
     def values(self):
-        return [self.itemid, self.name,
-                self.sell_single, self.buy_single, self.price_single, self.stock_single, self.rate_single,
-                self.sell_stacks, self.buy_stacks, self.price_stacks, self.stock_stacks, self.rate_stacks]
+        return [
+            self.itemid,
+            self.name,
+            self.sell_single,
+            self.buy_single,
+            self.price_single,
+            self.stock_single,
+            self.rate_single,
+            self.sell_stacks,
+            self.buy_stacks,
+            self.price_stacks,
+            self.stock_stacks,
+            self.rate_stacks,
+        ]
 
-    def __init__(self, itemid, name=None,
-                 sell_single=None, buy_single=None, price_single=None, stock_single=None, rate_single=None,
-                 sell_stacks=None, buy_stacks=None, price_stacks=None, stock_stacks=None, rate_stacks=None):
-        super(Item, self).__init__()
+    def __init__(
+        self,
+        itemid,
+        name=None,
+        sell_single=None,
+        buy_single=None,
+        price_single=None,
+        stock_single=None,
+        rate_single=None,
+        sell_stacks=None,
+        buy_stacks=None,
+        price_stacks=None,
+        stock_stacks=None,
+        rate_stacks=None,
+    ):
+        super().__init__()
 
         self._itemid = int(itemid)
         self._name = None
@@ -118,7 +152,7 @@ class Item(DarkObject):
         self.rate_stacks = rate_stacks
 
         if not self._itemid >= 0:
-            raise ValueError('itemid must be positive: %d' % self._itemid)
+            raise ValueError("itemid must be positive: %d" % self._itemid)
 
     def _init_notify(self):
         pass
@@ -137,7 +171,7 @@ class Item(DarkObject):
     @name.setter
     def name(self, value):
         if value is None:
-            value = '?'
+            value = "?"
         self._name = str(value)
 
     @property
@@ -170,7 +204,7 @@ class Item(DarkObject):
             value = 1
         self._price_single = int(value)
         if self._price_single < 1:
-            raise ValueError('price_single must be positive definite: %d' % self._price_single)
+            raise ValueError("price_single must be positive definite: %d" % self._price_single)
 
     @property
     def stock_single(self):
@@ -182,7 +216,7 @@ class Item(DarkObject):
             value = 0
         self._stock_single = int(value)
         if self._stock_single < 0:
-            raise ValueError('stock_single must be positive: %d' % self._stock_single)
+            raise ValueError("stock_single must be positive: %d" % self._stock_single)
 
     @property
     def rate_single(self):
@@ -194,7 +228,7 @@ class Item(DarkObject):
             value = 1.0
         self._rate_single = float(value)
         if self._rate_single < 0.0 or self._rate_single > 1.0:
-            raise ValueError('rate_single must be between 0 and 1: %d' % self._rate_single)
+            raise ValueError("rate_single must be between 0 and 1: %d" % self._rate_single)
 
     @property
     def sell_stacks(self):
@@ -226,7 +260,7 @@ class Item(DarkObject):
             value = 1
         self._price_stacks = int(value)
         if self._price_stacks < 1:
-            raise ValueError('price_stacks must be positive definite: %d' % self._price_stacks)
+            raise ValueError("price_stacks must be positive definite: %d" % self._price_stacks)
 
     @property
     def stock_stacks(self):
@@ -238,7 +272,7 @@ class Item(DarkObject):
             value = 0
         self._stock_stacks = int(value)
         if self._stock_stacks < 0:
-            raise ValueError('stock_stacks must be positive: %d' % self._stock_stacks)
+            raise ValueError("stock_stacks must be positive: %d" % self._stock_stacks)
 
     @property
     def rate_stacks(self):
@@ -250,8 +284,8 @@ class Item(DarkObject):
             value = 1.0
         self._rate_stacks = float(value)
         if self._rate_stacks < 0.0 or self._rate_stacks > 1.0:
-            raise ValueError('rate_stacks must be between 0 and 1: %d' % self._rate_stacks)
+            raise ValueError("rate_stacks must be between 0 and 1: %d" % self._rate_stacks)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

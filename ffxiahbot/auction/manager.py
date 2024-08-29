@@ -1,12 +1,13 @@
-from ..tables.auctionhouse import AuctionHouse
+import datetime
+
+from .. import timeutils
 from ..database import Database
-from .worker import Worker
+from ..tables.auctionhouse import AuctionHouse
 from .browser import Browser
+from .buyer import Buyer
 from .cleaner import Cleaner
 from .seller import Seller
-from .buyer import Buyer
-from .. import timeutils
-import datetime
+from .worker import Worker
 
 
 class Manager(Worker):
@@ -17,7 +18,7 @@ class Manager(Worker):
     """
 
     def __init__(self, db, **kwargs):
-        super(Manager, self).__init__(db, **kwargs)
+        super().__init__(db, **kwargs)
         self.blacklist = set()
         self.browser = Browser(db, **kwargs)
         self.cleaner = Cleaner(db, **kwargs)
@@ -50,7 +51,7 @@ class Manager(Worker):
         """
         Add row to blacklist.
         """
-        self.info('blacklisting: row=%d', rowid)
+        self.info("blacklisting: row=%d", rowid)
         self.blacklist.add(rowid)
 
     def buy_items(self, itemdata):
@@ -73,7 +74,7 @@ class Manager(Worker):
                         try:
                             data = itemdata[row.itemid]
                         except KeyError:
-                            self.error('item missing from database: %d', row.itemid)
+                            self.error("item missing from database: %d", row.itemid)
                             data = None
 
                         if data is not None:
@@ -86,11 +87,15 @@ class Manager(Worker):
                                         date = timeutils.timestamp(datetime.datetime.now())
                                         self.buyer.buy_item(row, date, data.price_stacks)
                                     else:
-                                        self.info('price too high! itemid=%d %d <= %d',
-                                                  row.itemid, row.price, data.price_stacks)
+                                        self.info(
+                                            "price too high! itemid=%d %d <= %d",
+                                            row.itemid,
+                                            row.price,
+                                            data.price_stacks,
+                                        )
                                         self.add_to_blacklist(row.id)
                                 else:
-                                    self.debug('not allowed to buy item! itemid=%d', row.itemid)
+                                    self.debug("not allowed to buy item! itemid=%d", row.itemid)
                                     self.add_to_blacklist(row.id)
                             # buy singles
                             else:
@@ -101,18 +106,22 @@ class Manager(Worker):
                                         date = timeutils.timestamp(datetime.datetime.now())
                                         self.buyer.buy_item(row, date, data.price_single)
                                     else:
-                                        self.info('price too high! itemid=%d %d <= %d',
-                                                  row.itemid, row.price, data.price_single)
+                                        self.info(
+                                            "price too high! itemid=%d %d <= %d",
+                                            row.itemid,
+                                            row.price,
+                                            data.price_single,
+                                        )
                                         self.add_to_blacklist(row.id)
                                 else:
-                                    self.debug('not allowed to buy item! itemid=%d', row.itemid)
+                                    self.debug("not allowed to buy item! itemid=%d", row.itemid)
                                     self.add_to_blacklist(row.id)
                         else:
                             # item data missing
                             self.add_to_blacklist(row.id)
                     else:
                         # row was blacklisted
-                        self.debug('skipping row %d', row.id)
+                        self.debug("skipping row %d", row.id)
 
     def restock_items(self, itemdata):
         """
@@ -120,7 +129,6 @@ class Manager(Worker):
         """
         # loop over items
         for data in itemdata.items.values():
-
             # singles
             if data.sell_single:
                 # check history
@@ -160,5 +168,5 @@ class Manager(Worker):
                     stock += 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

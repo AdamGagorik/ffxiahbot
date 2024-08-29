@@ -1,12 +1,11 @@
 import datetime
 import logging
-import shutil
 import os
 import re
+import shutil
 
 
-def create_path(*args, absolute=True, dt_fmt='%Y_%m_%d_%H_%M_%S', dt=None,
-                **kwargs):
+def create_path(*args, absolute=True, dt_fmt="%Y_%m_%d_%H_%M_%S", dt=None, **kwargs):
     """
     Construct a path.  You can access dt or datetime as objects.
 
@@ -24,7 +23,7 @@ def create_path(*args, absolute=True, dt_fmt='%Y_%m_%d_%H_%M_%S', dt=None,
         dt = datetime.datetime.now()
 
     dt_str = dt.strftime(dt_fmt)
-    _kwargs = dict(dt=dt, datetime=dt, date=dt_str)
+    _kwargs = {"dt": dt, "datetime": dt, "date": dt_str}
     _kwargs.update(**kwargs)
 
     path = os.path.expanduser(os.path.join(*args).format(**_kwargs))
@@ -46,17 +45,17 @@ def backup(path, copy=False):
 
     # nothing to backup
     if not os.path.exists(old_path):
-        return ''
+        return ""
 
     if not os.path.isfile(old_path):
-        raise RuntimeError('can only backup files: %s' % old_path)
+        raise RuntimeError(f"can only backup files: {old_path}")
 
     # extract file info
     dname, bname = os.path.dirname(old_path), os.path.basename(old_path)
     root, dirs, files = next(os.walk(dname))
 
     # look for existing backups
-    regex = re.compile(r'^{}(\.(\d+))?$'.format(bname))
+    regex = re.compile(rf"^{bname}(\.(\d+))?$")
     found = []
     for f in files:
         match = regex.match(f)
@@ -68,25 +67,25 @@ def backup(path, copy=False):
 
     # should of at least found 1 if the file exists
     if not found:
-        raise RuntimeError('can not backup file: %s' % old_path)
+        raise RuntimeError(f"can not backup file: {old_path}")
 
     # create backup name
-    new_path = os.path.join(dname, '{}.{}'.format(bname, max(found) + 1))
+    new_path = os.path.join(dname, f"{bname}.{max(found) + 1}")
 
     # validate old_path
     if os.path.exists(new_path) or new_path == old_path:
-        raise RuntimeError('can not backup file: %s' % old_path)
+        raise RuntimeError(f"can not backup file: {old_path}")
 
     # copy the file
     if copy:
-        logging.debug('backup (old): %s', old_path)
-        logging.debug('backup (new): %s', new_path)
+        logging.debug("backup (old): %s", old_path)
+        logging.debug("backup (new): %s", new_path)
         shutil.copy(old_path, new_path)
 
     return new_path
 
 
-def find_files(top, regex=r'.*', r=False, ignorecase=True, **kwargs):
+def find_files(top, regex=r".*", r=False, ignorecase=True, **kwargs):
     """
     Search for files that match pattern.
 
@@ -95,13 +94,10 @@ def find_files(top, regex=r'.*', r=False, ignorecase=True, **kwargs):
     :param regex: pattern to match
     :param r: recursive search
     """
-    if ignorecase:
-        regex = re.compile(regex, re.IGNORECASE)
-    else:
-        regex = re.compile(regex)
+    regex = re.compile(regex, re.IGNORECASE) if ignorecase else re.compile(regex)
 
     if r:
-        for root, dirs, files in os.walk(top, **kwargs):
+        for root, _dirs, files in os.walk(top, **kwargs):
             for f in files:
                 match = regex.match(f)
                 if match:
@@ -114,5 +110,5 @@ def find_files(top, regex=r'.*', r=False, ignorecase=True, **kwargs):
                 yield os.path.join(root, f)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

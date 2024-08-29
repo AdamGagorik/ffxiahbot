@@ -1,5 +1,6 @@
-import sqlalchemy.exc
 import unittest
+
+import sqlalchemy.exc
 
 from . import sqltest
 
@@ -19,15 +20,14 @@ class TestCase00(unittest.TestCase):
 class TestCase01(sqltest.TestSQL):
     def setUp(self):
         if import_error:
-            self.skipTest('ImportError')
+            self.skipTest("ImportError")
         else:
-            super(TestCase01, self).setUp()
+            super().setUp()
 
     def test_scoped_session1(self):
-        with self.assertRaises(RuntimeError):
-            with self.db.scoped_session(rollback=True, fail=True):
-                raise sqlalchemy.exc.SQLAlchemyError('IGNORE THIS ERROR')
+        with self.assertRaises(RuntimeError), self.db.scoped_session(rollback=True, fail=True):
+            raise sqlalchemy.exc.SQLAlchemyError("IGNORE THIS ERROR")
 
     def test_scoped_session2(self):
         with self.db.scoped_session(rollback=True, fail=False):
-            raise sqlalchemy.exc.SQLAlchemyError('IGNORE THIS ERROR')
+            raise sqlalchemy.exc.SQLAlchemyError("IGNORE THIS ERROR")

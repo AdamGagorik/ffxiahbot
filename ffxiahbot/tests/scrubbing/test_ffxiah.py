@@ -17,7 +17,7 @@ class TestCase00(unittest.TestCase):
 class TestCase01(unittest.TestCase):
     def setUp(self):
         if import_error:
-            self.skipTest('ImportError')
+            self.skipTest("ImportError")
         else:
             self.scrubber = FFXIAHScrubber()
             self.scrubber.save = False
@@ -26,13 +26,13 @@ class TestCase01(unittest.TestCase):
         self.scrubber._get_category_urls()
 
     def test_get_itemids_for_category_url(self):
-        url = r'http://www.ffxiah.com/browse/49/ninja-tools'
+        url = r"http://www.ffxiah.com/browse/49/ninja-tools"
         self.scrubber._get_itemids_for_category_url(url)
 
     def test_get_itemids(self):
         urls = [
-            r'http://www.ffxiah.com/browse/49/ninja-tools',
-            r'http://www.ffxiah.com/browse/56/breads-rice',
+            r"http://www.ffxiah.com/browse/49/ninja-tools",
+            r"http://www.ffxiah.com/browse/56/breads-rice",
         ]
         self.scrubber._get_itemids(urls)
 

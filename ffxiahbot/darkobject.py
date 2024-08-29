@@ -7,11 +7,11 @@ class DarkObject(LoggingObject):
     """
 
     def __init__(self):
-        super(DarkObject, self).__init__()
+        super().__init__()
 
     def __repr__(self):
-        return '({}) {}'.format(hex(id(self)), self.__class__.__name__)
+        return f"({hex(id(self))}) {self.__class__.__name__}"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

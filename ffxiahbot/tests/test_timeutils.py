@@ -1,6 +1,6 @@
-import unittest
 import datetime
 import random
+import unittest
 
 import_error = False
 try:
@@ -10,33 +10,46 @@ except ImportError:
     timeutils = None
 
 
-def randomdt(month=None, day=None, year=None, hour=None, minute=None, second=None,
-             microsecond=None, tzinfo=None, month_range=(1, 12), day_range=(1, 31),
-             year_range=(1900, 2000), hour_range=(0, 23), minute_range=(0, 59),
-             second_range=(0, 59), microsecond_range=(0, 0)):
+def randomdt(
+    month=None,
+    day=None,
+    year=None,
+    hour=None,
+    minute=None,
+    second=None,
+    microsecond=None,
+    tzinfo=None,
+    month_range=(1, 12),
+    day_range=(1, 31),
+    year_range=(1900, 2000),
+    hour_range=(0, 23),
+    minute_range=(0, 59),
+    second_range=(0, 59),
+    microsecond_range=(0, 0),
+):
     """
     Create a random datetime object.
     """
     if month is None:
-        month = random.randint(*month_range)
+        month = random.randint(*month_range)  # noqa: S311
 
     if day is None:
-        day = random.randint(*day_range)
+        day = random.randint(*day_range)  # noqa: S311
 
     if year is None:
-        year = random.randint(*year_range)
+        year = random.randint(*year_range)  # noqa: S311
 
     if hour is None:
-        hour = random.randint(*hour_range)
+        hour = random.randint(*hour_range)  # noqa: S311
 
     if minute is None:
-        minute = random.randint(*minute_range)
+        minute = random.randint(*minute_range)  # noqa: S311
 
     if second is None:
-        second = random.randint(*second_range)
+        second = random.randint(*second_range)  # noqa: S311
 
     if microsecond is None:
-        microsecond = random.randint(*microsecond_range)
+        microsecond = random.randint(*microsecond_range)  # noqa: S311
 
     for i in range(3):
         try:
@@ -57,7 +70,7 @@ class BaseTest(unittest.TestCase):
 
     def setUp(self):
         if import_error:
-            self.skipTest('ImportError')
+            self.skipTest("ImportError")
 
     def assertInRange(self, n, a, b):
         self.assertGreaterEqual(n, a)
@@ -66,26 +79,26 @@ class BaseTest(unittest.TestCase):
 
 class TestCase01(BaseTest):
     def test_construct(self):
-        for i in range(self.N):
+        for _i in range(self.N):
             randomdt()
 
     def test_range(self):
         r = (1, 2)
-        for name in ('month', 'day', 'year', 'hour', 'minute', 'second', 'microsecond'):
-            for i in range(10):
-                n = getattr(randomdt(**{'{}_range'.format(name): r}), name)
+        for name in ("month", "day", "year", "hour", "minute", "second", "microsecond"):
+            for _i in range(10):
+                n = getattr(randomdt(**{f"{name}_range": r}), name)
                 self.assertInRange(n, *r)
 
     def test_explicit(self):
         v = 1
-        for name in ('month', 'day', 'year', 'hour', 'minute', 'second', 'microsecond'):
-            n = getattr(randomdt(**{'{}'.format(name): v}), name)
+        for name in ("month", "day", "year", "hour", "minute", "second", "microsecond"):
+            n = getattr(randomdt(**{f"{name}": v}), name)
             self.assertEqual(n, v)
 
 
 class TestCase02(BaseTest):
     def test_str_to_datetime(self):
-        dobj = timeutils.str_to_datetime('1/2/1971 04:05:06')
+        dobj = timeutils.str_to_datetime("1/2/1971 04:05:06")
         self.assertTrue(isinstance(dobj, datetime.datetime))
         self.assertEqual(dobj.month, 1)
         self.assertEqual(dobj.day, 2)
@@ -99,12 +112,12 @@ class TestCase02(BaseTest):
         dobj = datetime.datetime(1971, 1, 2, 4, 5, 6, 0)
         sobj = timeutils.datetime_to_str(dobj)
         self.assertTrue(isinstance(sobj, str))
-        self.assertEqual(sobj, '01/02/1971 04:05:06')
+        self.assertEqual(sobj, "01/02/1971 04:05:06")
 
 
 class TestCase03(BaseTest):
     def test_datetime_timestamp_conversion(self):
-        for i in range(self.N):
+        for _i in range(self.N):
             dobj1 = randomdt(year_range=(1971, 2015))
             stmp1 = timeutils.datetime_to_timestamp(dobj1)
             dobj2 = timeutils.timestamp_to_datetime(stmp1)
@@ -115,7 +128,7 @@ class TestCase03(BaseTest):
 
 class TestCase04(BaseTest):
     def test_str(self):
-        dobj = timeutils.datetime('1/2/1903 04:05:06')
+        dobj = timeutils.datetime("1/2/1903 04:05:06")
         self.assertTrue(isinstance(dobj, datetime.datetime))
         self.assertEqual(dobj.month, 1)
         self.assertEqual(dobj.day, 2)
@@ -126,7 +139,7 @@ class TestCase04(BaseTest):
         self.assertEqual(dobj.microsecond, 0)
 
     def test_timestamp(self):
-        for i in range(self.N):
+        for _i in range(self.N):
             dobj1 = randomdt(year_range=(1971, 2015))
             stmp1 = timeutils.datetime_to_timestamp(dobj1)
             dobj2 = timeutils.datetime(stmp1)
@@ -134,7 +147,7 @@ class TestCase04(BaseTest):
             self.assertEqual(dobj1, dobj2)
 
     def test_datetime(self):
-        for i in range(self.N):
+        for _i in range(self.N):
             dobj1 = randomdt()
             dobj2 = timeutils.datetime(dobj1)
             self.assertTrue(isinstance(dobj2, datetime.datetime))
@@ -158,7 +171,7 @@ class TestCase04(BaseTest):
 
 class TestCase05(BaseTest):
     def test_str(self):
-        stmp1 = timeutils.timestamp('1/2/1971 04:05:06')
+        stmp1 = timeutils.timestamp("1/2/1971 04:05:06")
         self.assertTrue(isinstance(stmp1, float))
         dobj1 = timeutils.timestamp_to_datetime(stmp1)
         self.assertEqual(dobj1.month, 1)
@@ -170,7 +183,7 @@ class TestCase05(BaseTest):
         self.assertEqual(dobj1.microsecond, 0)
 
     def test_timestamp(self):
-        for i in range(self.N):
+        for _i in range(self.N):
             dobj1 = randomdt(year_range=(1971, 2015))
             stmp1 = timeutils.datetime_to_timestamp(dobj1)
             stmp2 = timeutils.timestamp(stmp1)
@@ -178,7 +191,7 @@ class TestCase05(BaseTest):
             self.assertEqual(stmp1, stmp2)
 
     def test_datetime(self):
-        for i in range(self.N):
+        for _i in range(self.N):
             dobj1 = randomdt()
             stmp1 = timeutils.timestamp(dobj1)
             stmp2 = timeutils.datetime_to_timestamp(dobj1)

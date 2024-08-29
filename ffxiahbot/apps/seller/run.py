@@ -1,15 +1,14 @@
-# -*- coding: utf-8 -*-
 """
 Sell items on the auction house.
 """
+
 import logging
 import time
 
-from .options import Options
-
 from ... import logutils
-from ...itemlist import ItemList
 from ...auction.manager import Manager
+from ...itemlist import ItemList
+from .options import Options
 
 
 def main():
@@ -26,34 +25,34 @@ def main():
         username=opts.username,
         password=opts.password,
         name=opts.name,
-        fail=opts.fail
+        fail=opts.fail,
     )
 
     # load data
     idata = ItemList.from_csv(*opts.data)
 
     # main loop
-    logging.info('starting main loop...')
+    logging.info("starting main loop...")
 
     clock = 0
     while True:
-        logging.debug('time=%012.1f s next restock=%012.1f s', clock, clock + opts.restock)
+        logging.debug("time=%012.1f s next restock=%012.1f s", clock, clock + opts.restock)
 
-        logging.debug('restocking...')
+        logging.debug("restocking...")
         manager.restock_items(itemdata=idata)
 
         # sleep until next tick
-        logging.debug('wait=%012.1f s', opts.restock)
+        logging.debug("wait=%012.1f s", opts.restock)
         time.sleep(opts.restock)
 
         clock += opts.restock
 
 
 def cleanup():
-    logging.info('exit\n')
+    logging.info("exit\n")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     with logutils.capture():
         main()
     cleanup()

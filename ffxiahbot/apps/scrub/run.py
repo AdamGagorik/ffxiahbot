@@ -1,17 +1,15 @@
-# -*- coding: utf-8 -*-
 """
 Create item database.
 """
+
 import logging
 import os
 import re
 
-from .options import Options
-
-from ... import common
-from ... import logutils
-from ...scrubbing import ffxiah
+from ... import common, logutils
 from ...itemlist import ItemList
+from ...scrubbing import ffxiah
+from .options import Options
 
 
 def main():
@@ -22,12 +20,11 @@ def main():
     opts = Options()
 
     # check output file name validity
-    oname = os.path.abspath('{}.csv'.format(re.sub(r'\.csv$', '', opts.stub)))
-    if not opts.overwrite and not opts.backup:
-        if os.path.exists(oname):
-            logging.error('output file already exists!\n\t%s', oname)
-            logging.error('please use --overwrite or --backup')
-            exit(-1)
+    oname = os.path.abspath("{}.csv".format(re.sub(r"\.csv$", "", opts.stub)))
+    if not opts.overwrite and not opts.backup and os.path.exists(oname):
+        logging.error("output file already exists!\n\t%s", oname)
+        logging.error("please use --overwrite or --backup")
+        exit(-1)
 
     # scub data
     scrubber = ffxiah.FFXIAHScrubber()
@@ -50,17 +47,17 @@ def main():
     ilist.savecsv(oname)
 
     if not data:
-        raise RuntimeError('no items were scrubbed!')
+        raise RuntimeError("no items were scrubbed!")
 
     if failed:
-        raise RuntimeError('not all item ids were scrubbed, but a CSV was still saved!')
+        raise RuntimeError("not all item ids were scrubbed, but a CSV was still saved!")
 
 
 def cleanup():
-    logging.info('exit\n')
+    logging.info("exit\n")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     with logutils.capture():
         main()
     cleanup()

@@ -1,2 +1,3 @@
-from . import scrubber
-from . import ffxiah
+from . import ffxiah, scrubber
+
+__all__ = ["ffxiah", "scrubber"]

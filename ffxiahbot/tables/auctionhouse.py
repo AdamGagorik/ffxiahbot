@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, SmallInteger, String, text
-from .base import Base
-from .. import timeutils
 
-_template = \
-    """
+from .. import timeutils
+from .base import Base
+
+_template = """
 [AuctionHouseRow]
     addr        = {addr}
     id          = {self.id}
@@ -20,7 +20,7 @@ _template = \
 
 
 class AuctionHouse(Base):
-    __tablename__ = 'auction_house'
+    __tablename__ = "auction_house"
 
     id = Column(Integer, primary_key=True)
     itemid = Column(SmallInteger, nullable=False, index=True, server_default=text("'0'"))
@@ -34,7 +34,7 @@ class AuctionHouse(Base):
     sell_date = Column(Integer, nullable=False, server_default=text("'0'"))
 
     def __repr__(self):
-        return '({addr}) AuctionHouseRow id={self.id}'.format(self=self, addr=hex(id(self)))
+        return f"({hex(id(self))}) AuctionHouseRow id={self.id}"
 
     def __str__(self):
         return _template.format(self=self, addr=hex(id(self)))
@@ -42,7 +42,8 @@ class AuctionHouse(Base):
     @staticmethod
     def validate_itemid(itemid):
         itemid = int(itemid)
-        assert itemid > 0
+        if itemid < 0:
+            raise ValueError(f"itemid={itemid} is negative")
         return itemid
 
     @staticmethod
@@ -54,7 +55,8 @@ class AuctionHouse(Base):
     @staticmethod
     def validate_seller(seller):
         seller = int(seller)
-        assert seller >= 0
+        if seller < 0:
+            raise ValueError(f"seller={seller} is negative")
         return seller
 
     @staticmethod
@@ -64,7 +66,8 @@ class AuctionHouse(Base):
     @staticmethod
     def validate_price(price):
         price = int(price)
-        assert price >= 0
+        if price < 0:
+            raise ValueError(f"price={price} is negative")
         return price
 
     @property
@@ -74,5 +77,5 @@ class AuctionHouse(Base):
         return timeutils.datetime_to_str(timeutils.timestamp_to_datetime(self.sell_date))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

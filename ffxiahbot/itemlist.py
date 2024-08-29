@@ -1,8 +1,10 @@
-from .darkobject import DarkObject
-from . import item
+import ast
 import collections
-import re
 import os
+import re
+
+from . import item
+from .darkobject import DarkObject
 
 
 class ItemList(DarkObject):
@@ -11,7 +13,7 @@ class ItemList(DarkObject):
     """
 
     def __init__(self):
-        super(ItemList, self).__init__()
+        super().__init__()
         self.items = collections.OrderedDict()
 
     @classmethod
@@ -21,11 +23,11 @@ class ItemList(DarkObject):
         """
         # make sure there is data
         if not data:
-            raise RuntimeError('missing item data CSV!')
+            raise RuntimeError("missing item data CSV!")
 
         # load data
         obj = ItemList()
-        obj.info('loading item data...')
+        obj.info("loading item data...")
         for f in data:
             obj.loadcsv(f)
 
@@ -39,7 +41,7 @@ class ItemList(DarkObject):
         """
         i = item.Item(itemid, *args, **kwargs)
         if i.itemid in self.items:
-            raise KeyError('duplicate item found: %d' % i.itemid)
+            raise KeyError("duplicate item found: %d" % i.itemid)
         self.items[i.itemid] = i
         return i
 
@@ -53,7 +55,7 @@ class ItemList(DarkObject):
                 if hasattr(i, k):
                     setattr(i, k, kwargs[k])
                 else:
-                    raise KeyError('%s' % str(k))
+                    raise KeyError(f"{k!s}")
 
     def get(self, itemid):
         """
@@ -67,7 +69,7 @@ class ItemList(DarkObject):
     def __len__(self):
         return len(self.items)
 
-    def loadcsv(self, fname):
+    def loadcsv(self, fname):  # noqa: C901
         """
         Load Item(s) from CSV file.
 
@@ -75,36 +77,36 @@ class ItemList(DarkObject):
 
         :param fname: name of file
         """
-        regex_c = re.compile(r'#.*$')
+        regex_c = re.compile(r"#.*$")
 
-        regex_t = '[{0}{1}]?True[{0}{1}]?'.format('"', "'")
+        regex_t = "[{0}{1}]?True[{0}{1}]?".format('"', "'")
         regex_t = re.compile(regex_t, re.IGNORECASE)
 
-        regex_f = '[{0}{1}]?False[{0}{1}]?'.format('"', "'")
+        regex_f = "[{0}{1}]?False[{0}{1}]?".format('"', "'")
         regex_f = re.compile(regex_f, re.IGNORECASE)
 
-        self.info('load %s', fname)
+        self.info("load %s", fname)
         line_number = 0
-        with open(fname, 'r') as handle:
+        with open(fname) as handle:
             # first line is item titles
             line = handle.readline()
             line_number += 1
 
             # ignore comments
-            line = regex_c.sub('', line).strip()
+            line = regex_c.sub("", line).strip()
 
             # split into tokens
-            keys = line.split(',')
-            keys = list(map(lambda x: x.strip().lower(), keys))
+            keys = line.split(",")
+            keys = [x.strip().lower() for x in keys]
 
             # make sure keys are valid
             for k in keys:
                 if k not in item.Item.keys:
-                    raise RuntimeError('unknown column: %s' % k)
+                    raise RuntimeError(f"unknown column: {k}")
 
             # check for primary key
-            if 'itemid' not in keys:
-                raise RuntimeError('missing itemid column:\n\t%s' % keys)
+            if "itemid" not in keys:
+                raise RuntimeError(f"missing itemid column:\n\t{keys}")
 
             # other lines are items
             line = handle.readline()
@@ -112,36 +114,38 @@ class ItemList(DarkObject):
 
             while line:
                 # remove comments
-                line = regex_c.sub('', line).strip()
+                line = regex_c.sub("", line).strip()
 
                 # fix True and False
-                line = regex_t.sub('1', line)
-                line = regex_f.sub('0', line)
+                line = regex_t.sub("1", line)
+                line = regex_f.sub("0", line)
 
                 # ignore empty lines
                 if line:
                     # split into tokens
-                    tokens = list(map(lambda x: x.strip(), line.split(',')))
+                    tokens = [x.strip() for x in line.split(",")]
 
                     # check for new title line
                     if set(tokens).issubset(item.Item.keys):
                         keys = tokens
 
                         # check for primary key
-                        if 'itemid' not in keys:
-                            raise RuntimeError('missing itemid column:\n\t%s' % keys)
+                        if "itemid" not in keys:
+                            raise RuntimeError(f"missing itemid column:\n\t{keys}")
 
                     # validate line
                     elif set(tokens).intersection(item.Item.keys):
-                        raise RuntimeError('something wrong with line %d' % line_number)
+                        raise RuntimeError("something wrong with line %d" % line_number)
 
                     # process normal line
                     else:
                         # try to evaluate tokens
                         for i, token in enumerate(tokens):
                             try:
-                                token = eval(token)
+                                token = ast.literal_eval(token)
                             except SyntaxError:
+                                pass
+                            except ValueError:
                                 pass
                             except NameError:
                                 pass
@@ -172,17 +176,17 @@ class ItemList(DarkObject):
         :param itertitle: how often to write title line
         """
         if os.path.exists(fname):
-            self.info('overwriting file...')
-            self.info('save %s', fname)
+            self.info("overwriting file...")
+            self.info("save %s", fname)
         else:
-            self.info('save %s', fname)
+            self.info("save %s", fname)
 
-        with open(fname, 'w') as handle:
+        with open(fname, "w") as handle:
             for j, i in enumerate(self.items):
                 if j % itertitle == 0:
                     handle.write(item.title_str())
                 handle.write(item.value_str(self.items[i]))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

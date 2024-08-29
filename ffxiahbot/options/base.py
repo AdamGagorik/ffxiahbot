@@ -1,9 +1,10 @@
 import argparse
-import warnings
+import ast
 import logging
-import yaml
 import os
 import re
+
+import yaml
 
 from ffxiahbot.darkobject import DarkObject
 
@@ -11,30 +12,31 @@ from ffxiahbot.darkobject import DarkObject
 class MetaOptions(type):
     def __call__(cls, *args, **kwargs):
         obj = type.__call__(cls, *args, **kwargs)
-        getattr(obj, '__after__', lambda: 1)()
+        getattr(obj, "__after__", lambda: 1)()
         return obj
 
 
 class BaseOptions(DarkObject, metaclass=MetaOptions):
-    regex_tuple = re.compile('([^=]+)=([^=]+)')
+    regex_tuple = re.compile("([^=]+)=([^=]+)")
 
-    def __init__(self, config='config.yaml', description=None):
-        super(BaseOptions, self).__init__()
-        logging.debug('BaseOptions.__init__')
+    def __init__(self, config="config.yaml", description=None):
+        super().__init__()
+        logging.debug("BaseOptions.__init__")
         self._ordered_keys = []
         self._exclude_keys = set()
 
         self._parent = argparse.ArgumentParser(add_help=False)
-        self._parser = argparse.ArgumentParser(parents=[self._parent],
-                                               description=description,
-                                               formatter_class=argparse.RawDescriptionHelpFormatter)
+        self._parser = argparse.ArgumentParser(
+            parents=[self._parent], description=description, formatter_class=argparse.RawDescriptionHelpFormatter
+        )
 
         # config file option
         self.config = config
 
         # config file
-        self._parent.add_argument('--config', type=str, default=self.config, metavar=self.config,
-                                  help='configuration file name')
+        self._parent.add_argument(
+            "--config", type=str, default=self.config, metavar=self.config, help="configuration file name"
+        )
 
     def __after__(self):
         results, remaining_args = self._parse_known_args()
@@ -54,21 +56,20 @@ class BaseOptions(DarkObject, metaclass=MetaOptions):
         self._parser.parse_args(args, namespace=self)
 
     def __setattr__(self, key, value):
-        super(BaseOptions, self).__setattr__(key, value)
-        if not key.startswith('_'):
-            if key not in self._ordered_keys:
-                self._ordered_keys.append(key)
+        super().__setattr__(key, value)
+        if not key.startswith("_") and key not in self._ordered_keys:
+            self._ordered_keys.append(key)
 
     def __setitem__(self, key, value):
         if key not in self._ordered_keys:
-            raise KeyError('unknown key : %s' % key)
+            raise KeyError(f"unknown key : {key}")
         setattr(self, key, value)
 
     def __getitem__(self, item):
         try:
-            return super(BaseOptions, self).__getattribute__(item)
+            return super().__getattribute__(item)
         except AttributeError:
-            raise KeyError('unknown key : %s' % item)
+            raise KeyError(f"unknown key : {item}") from None
 
     def add_argument(self, *args, **kwargs):
         """
@@ -104,12 +105,12 @@ class BaseOptions(DarkObject, metaclass=MetaOptions):
             if not os.path.exists(self.config):
                 return
 
-            self.debug('load %s', self.config)
-            with open(self.config, 'rb') as handle:
+            self.debug("load %s", self.config)
+            with open(self.config, "rb") as handle:
                 data = yaml.safe_load(handle)
 
         else:
-            self.debug('load %s', stream)
+            self.debug("load %s", stream)
             data = yaml.safe_load(stream, **kwargs)
 
         if data is None:
@@ -117,22 +118,22 @@ class BaseOptions(DarkObject, metaclass=MetaOptions):
 
         try:
             self.update(**data)
-        except TypeError:
-            logging.exception('yaml is invalid')
-            raise RuntimeError
+        except TypeError as e:
+            logging.exception("yaml is invalid")
+            raise e from None
 
     def dump(self, stream=None):
         """
         Save data to yaml.
         """
         if stream is None:
-            self.debug('save %s', self.config)
-            with open(self.config, 'wb') as handle:
+            self.debug("save %s", self.config)
+            with open(self.config, "wb") as handle:
                 for k in self._ordered_keys:
                     if k not in self._exclude_keys:
                         yaml.dump({k: self[k]}, handle, default_flow_style=False)
         else:
-            self.debug('save %s', stream)
+            self.debug("save %s", stream)
             for k in self._ordered_keys:
                 if k not in self._exclude_keys:
                     yaml.dump({k: self[k]}, stream, default_flow_style=False)
@@ -145,15 +146,14 @@ class BaseOptions(DarkObject, metaclass=MetaOptions):
             v = kwargs[k]
 
             if not hasattr(self, k):
-                logging.info('ignoring key in update: {}'.format(k))
+                logging.info(f"ignoring key in update: {k}")
             else:
                 t = type(getattr(self, k))
 
                 if not isinstance(v, t):
-                    warnings.warn('key={} is {}, expecting {}'.format(
-                        k, type(v).__name__, t.__name__))
+                    self.warn(f"key={k} is {type(v).__name__}, expecting {t.__name__}")
 
-                if k in {'server'}:
+                if k in {"server"}:
                     self[k] = v
                 else:
                     self[k] = t(v)
@@ -164,14 +164,14 @@ class BaseOptions(DarkObject, metaclass=MetaOptions):
         """
         return {k: self[k] for k in self._ordered_keys if k not in self._exclude_keys}
 
-    def log_values(self, level=logging.DEBUG, fmt='%-10s = %s'):
+    def log_values(self, level=logging.DEBUG, fmt="%-10s = %s"):
         """
         Write values to logger.
         """
         for k in self.keys:
             v = self[k]
             if k in self._exclude_keys:
-                self.log(level, fmt, k, '????')
+                self.log(level, fmt, k, "????")
             else:
                 self.log(level, fmt, k, v)
 
@@ -186,21 +186,20 @@ class BaseOptions(DarkObject, metaclass=MetaOptions):
         """
         Iterate over keys.
         """
-        for k in self._ordered_keys:
-            yield k
+        yield from self._ordered_keys
 
     def parse_tuple(self, string):
         # make sure string is of the form key=value
         m = self.regex_tuple.match(string)
         if not m:
-            raise TypeError('can not parse string: %s' % string)
+            raise TypeError(f"can not parse string: {string}")
 
         # extract key
         k = m.group(1)
 
         # extract value
         try:
-            v = eval(m.group(2))
+            v = ast.literal_eval(m.group(2))
         except (NameError, TypeError):
             v = m.group(2)
 
@@ -208,5 +207,5 @@ class BaseOptions(DarkObject, metaclass=MetaOptions):
         return k, v
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     opts = BaseOptions()

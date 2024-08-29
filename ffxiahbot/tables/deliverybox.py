@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, SmallInteger, String, text
 from sqlalchemy.dialects.mysql.base import BIT
+
 from .base import Base
 
-_template = \
-    """
+_template = """
 [DeliveryBoxRow]
     charid      = {self.charid}
     charname    = {self.charname}
@@ -20,7 +20,7 @@ _template = \
 
 
 class DeliveryBox(Base):
-    __tablename__ = 'delivery_box'
+    __tablename__ = "delivery_box"
 
     charid = Column(Integer, primary_key=True, nullable=False)
     charname = Column(String(15))
@@ -35,11 +35,11 @@ class DeliveryBox(Base):
     sent = Column(BIT(1), nullable=False)
 
     def __repr__(self):
-        return '({addr}) DeliveryBoxRow charid={self.charid}'.format(self=self, addr=hex(id(self)))
+        return f"({hex(id(self))}) DeliveryBoxRow charid={self.charid}"
 
     def __str__(self):
         return _template.format(self=self, addr=hex(id(self)))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

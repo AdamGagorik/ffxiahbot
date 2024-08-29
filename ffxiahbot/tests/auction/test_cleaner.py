@@ -17,9 +17,9 @@ class TestCase00(unittest.TestCase):
 
 class TestCase01(sqltest.TestSQL):
     def setUp(self):
-        super(TestCase01, self).setUp()
+        super().setUp()
         if import_error:
-            self.skipTest('ImportError')
+            self.skipTest("ImportError")
         else:
             self.ob = Cleaner(self.db, fail=True)
 
