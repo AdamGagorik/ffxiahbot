@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import collections
 
 from ffxiahbot.darkobject import DarkObject
@@ -5,19 +7,19 @@ from ffxiahbot.darkobject import DarkObject
 fmt = collections.OrderedDict()
 fmt["itemid"] = "{:>8}"
 fmt["name"] = "{:>24}"
-fmt["sell_single"] = "{:>6}"
-fmt["buy_single"] = "{:>6}"
+fmt["sell_single"] = "{:>11}"
+fmt["buy_single"] = "{:>11}"
 fmt["price_single"] = "{:>16}"
-fmt["stock_single"] = "{:>7}"
-fmt["rate_single"] = "{:>7}"
-fmt["sell_stacks"] = "{:>6}"
-fmt["buy_stacks"] = "{:>6}"
+fmt["stock_single"] = "{:>12}"
+fmt["rate_single"] = "{:>12}"
+fmt["sell_stacks"] = "{:>11}"
+fmt["buy_stacks"] = "{:>11}"
 fmt["price_stacks"] = "{:>16}"
-fmt["stock_stacks"] = "{:>7}"
-fmt["rate_stacks"] = "{:>7}"
+fmt["stock_stacks"] = "{:>12}"
+fmt["rate_stacks"] = "{:>12}"
 
 
-def title_str():
+def item_csv_title_str() -> str:
     objs = []
     for key in fmt:
         objs.append(fmt[key].format(key))
@@ -25,7 +27,7 @@ def title_str():
     return ", ".join(objs) + "\n"
 
 
-def value_str(item):
+def item_csv_value_str(item: Item) -> str:
     objs = []
     for key in fmt:
         value = getattr(item, key, None)
@@ -285,7 +287,3 @@ class Item(DarkObject):
         self._rate_stacks = float(value)
         if self._rate_stacks < 0.0 or self._rate_stacks > 1.0:
             raise ValueError("rate_stacks must be between 0 and 1: %d" % self._rate_stacks)
-
-
-if __name__ == "__main__":
-    pass

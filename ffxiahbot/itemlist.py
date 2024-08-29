@@ -1,53 +1,75 @@
+from __future__ import annotations
+
 import ast
-import collections
-import os
 import re
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
 
-from ffxiahbot import item
 from ffxiahbot.darkobject import DarkObject
+from ffxiahbot.item import Item, item_csv_title_str, item_csv_value_str
+from ffxiahbot.logutils import logger
 
 
+@dataclass
 class ItemList(DarkObject):
     """
     Container for Item objects.
     """
 
-    def __init__(self):
-        super().__init__()
-        self.items = collections.OrderedDict()
+    items: dict[int,] = field(default_factory=dict)
 
     @classmethod
-    def from_csv(cls, *data):
+    def from_csv(cls, *csv_paths: Path) -> ItemList:
         """
         Create ItemList from CSV file(s).
+
+        Args:
+            *csv_paths: The path(s) to the CSV file(s).
+
+        Returns:
+            ItemList: The ItemList object created from the CSV file(s).
         """
         # make sure there is data
-        if not data:
+        if not csv_paths:
             raise RuntimeError("missing item data CSV!")
 
         # load data
-        obj = ItemList()
-        obj.info("loading item data...")
-        for f in data:
-            obj.loadcsv(f)
+        item_list = cls()
+        logger.info("loading item data...")
+        for csv_path in csv_paths:
+            item_list.load_csv(csv_path)
 
-        return obj
+        return item_list
 
-    def add(self, itemid, *args, **kwargs):
+    def add(self, itemid: int, *args: Any, **kwargs: Any) -> Item:
         """
         Add Item to ItemList.  Item must not already exist.
 
-        .. seealso:: py:class:`ffxiahbot.item.Item`
-        """
-        i = item.Item(itemid, *args, **kwargs)
-        if i.itemid in self.items:
-            raise KeyError("duplicate item found: %d" % i.itemid)
-        self.items[i.itemid] = i
-        return i
+        Args:
+            itemid: The item id.
+            *args: The arguments to pass to the Item constructor.
+            **kwargs: The keyword arguments to pass to the Item constructor.
 
-    def set(self, *itemids, **kwargs):
+        Returns:
+            Item: The Item object created.
+        """
+        item = Item(itemid, *args, **kwargs)
+        if item.itemid in self.items:
+            raise KeyError("duplicate item found: %d" % item.itemid)
+        self.items[item.itemid] = item
+        return item
+
+    def set(self, *itemids: int, **kwargs: Any) -> None:
         """
         Set Item(s) properties.
+
+        Args:
+            *itemids: The item id(s) to set the properties for.
+            **kwargs: The properties to set.
+
+        Raises:
+            KeyError: If a property is not found.
         """
         for itemid in itemids:
             i = self[itemid]
@@ -57,25 +79,52 @@ class ItemList(DarkObject):
                 else:
                     raise KeyError(f"{k!s}")
 
-    def get(self, itemid):
+    def get(self, itemid: int) -> Item:
         """
         Get Item by itemid.
+
+        Args:
+            itemid: The item id.
+
+        Returns:
+            Item: The Item object.
         """
         return self.items[itemid]
 
-    def __getitem__(self, itemid):
+    def __getitem__(self, itemid: int) -> Item:
+        """
+        Get Item by itemid.
+
+        Args:
+            itemid: The item id.
+
+        Returns:
+            Item: The Item object.
+        """
         return self.items[itemid]
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """
+        Get the number of items in the ItemList.
+
+        Returns:
+            int: The number of items in the ItemList.
+        """
         return len(self.items)
 
-    def loadcsv(self, fname):  # noqa: C901
+    def load_csv(self, csv_path: Path | str) -> None:  # noqa: C901
         """
         Load Item(s) from CSV file.
 
         Columns are Item attributes.  The 'itemid' column is required.
 
-        :param fname: name of file
+        Args:
+            csv_path: The path to the CSV file.
+
+        Raises:
+            RuntimeError: If the itemid column is missing.
+            RuntimeError: If an unknown column is found.
+            RuntimeError: If something is wrong with a line.
         """
         regex_c = re.compile(r"#.*$")
 
@@ -85,9 +134,9 @@ class ItemList(DarkObject):
         regex_f = "[{0}{1}]?False[{0}{1}]?".format('"', "'")
         regex_f = re.compile(regex_f, re.IGNORECASE)
 
-        self.info("load %s", fname)
+        logger.info("load %s", csv_path)
         line_number = 0
-        with open(fname) as handle:
+        with open(csv_path) as handle:
             # first line is item titles
             line = handle.readline()
             line_number += 1
@@ -101,7 +150,7 @@ class ItemList(DarkObject):
 
             # make sure keys are valid
             for k in keys:
-                if k not in item.Item.keys:
+                if k not in Item.keys:
                     raise RuntimeError(f"unknown column: {k}")
 
             # check for primary key
@@ -126,7 +175,7 @@ class ItemList(DarkObject):
                     tokens = [x.strip() for x in line.split(",")]
 
                     # check for new title line
-                    if set(tokens).issubset(item.Item.keys):
+                    if set(tokens).issubset(Item.keys):
                         keys = tokens
 
                         # check for primary key
@@ -134,7 +183,7 @@ class ItemList(DarkObject):
                             raise RuntimeError(f"missing itemid column:\n\t{keys}")
 
                     # validate line
-                    elif set(tokens).intersection(item.Item.keys):
+                    elif set(tokens).intersection(Item.keys):
                         raise RuntimeError("something wrong with line %d" % line_number)
 
                     # process normal line
@@ -168,25 +217,22 @@ class ItemList(DarkObject):
                 line = handle.readline()
                 line_number += 1
 
-    def savecsv(self, fname, itertitle=100):
+    def save_csv(self, csv_path: Path, iter_title: int = 1024) -> None:
         """
         Save Item data to CSV file.
 
-        :param fname: name of file
-        :param itertitle: how often to write title line
+        Args:
+            csv_path: The path to save the CSV file.
+            iter_title: The number of items to write before writing the title row.
         """
-        if os.path.exists(fname):
-            self.info("overwriting file...")
-            self.info("save %s", fname)
+        if csv_path.exists():
+            logger.info("overwriting file...")
+            logger.info("save %s", csv_path)
         else:
-            self.info("save %s", fname)
+            logger.info("save %s", csv_path)
 
-        with open(fname, "w") as handle:
+        with csv_path.open("w") as stream:
             for j, i in enumerate(self.items):
-                if j % itertitle == 0:
-                    handle.write(item.title_str())
-                handle.write(item.value_str(self.items[i]))
-
-
-if __name__ == "__main__":
-    pass
+                if j % iter_title == 0:
+                    stream.write(item_csv_title_str())
+                stream.write(item_csv_value_str(self.items[i]))

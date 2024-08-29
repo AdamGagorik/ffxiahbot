@@ -26,10 +26,10 @@ class TestCase01(unittest.TestCase):
         self.scrubber._get_item_data_for_itemid(4096)
 
     def test_get_item_data(self):
-        self.scrubber._get_item_data(list(range(1, 9)), threads=4)
+        self.scrubber._get_item_data(list(range(1, 9)))
 
     def test_scrub(self):
-        self.scrubber.scrub(force=True, threads=4, ids={1, 2, 3, 4})
+        self.scrubber.scrub(item_ids={1, 2, 3, 4})
 
     def test_extract(self):
         extract(self.scrubber._get_item_data([4096])[1], 4096)

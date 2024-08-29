@@ -3,6 +3,7 @@ import logging
 import os
 import re
 import shutil
+from pathlib import Path
 
 
 def create_path(*args, absolute=True, dt_fmt="%Y_%m_%d_%H_%M_%S", dt=None, **kwargs):
@@ -34,7 +35,7 @@ def create_path(*args, absolute=True, dt_fmt="%Y_%m_%d_%H_%M_%S", dt=None, **kwa
     return path
 
 
-def backup(path, copy=False):
+def backup(path: str | Path, copy: bool = False) -> Path:
     """
     Create backup file name.
 
@@ -82,7 +83,7 @@ def backup(path, copy=False):
         logging.debug("backup (new): %s", new_path)
         shutil.copy(old_path, new_path)
 
-    return new_path
+    return Path(new_path)
 
 
 def find_files(top, regex=r".*", r=False, ignorecase=True, **kwargs):

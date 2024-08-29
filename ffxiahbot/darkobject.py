@@ -1,9 +1,10 @@
-from ffxiahbot.logutils import LoggingObject
+from dataclasses import dataclass
 
 
-class DarkObject(LoggingObject):
+@dataclass()
+class DarkObject:
     """
-    Base class for all objects in ffxiahbot.
+    Base class for all objects.
     """
 
     def __init__(self):
@@ -11,7 +12,3 @@ class DarkObject(LoggingObject):
 
     def __repr__(self):
         return f"({hex(id(self))}) {self.__class__.__name__}"
-
-
-if __name__ == "__main__":
-    pass

@@ -1,5 +1,7 @@
 import logging
 import time
+from dataclasses import dataclass
+from typing import Any
 
 import bs4
 import requests
@@ -10,11 +12,9 @@ from ffxiahbot.darkobject import DarkObject
 TIMEOUT: int = 1024
 
 
+@dataclass()
 class Scrubber(DarkObject):
-    def __init__(self):
-        super().__init__()
-
-    def scrub(self):
+    def scrub(self) -> dict[str, dict[str, Any]]:
         """
         Get item metadata.
         """
@@ -22,7 +22,7 @@ class Scrubber(DarkObject):
 
     # noinspection PyBroadException
     @staticmethod
-    def soup(url, absolute: bool = False, **kwargs):
+    def soup(url: str, absolute: bool = False, **kwargs: Any) -> BeautifulSoup:
         """
         Open URL and create tag soup.
 
@@ -54,7 +54,3 @@ class Scrubber(DarkObject):
             s = BeautifulSoup(handle, features="html.parser")
 
         return s
-
-
-if __name__ == "__main__":
-    pass
