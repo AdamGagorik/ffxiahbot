@@ -5,10 +5,10 @@ Sell items on the auction house.
 import logging
 import time
 
-from ... import logutils
-from ...auction.manager import Manager
-from ...itemlist import ItemList
-from .options import Options
+from ffxiahbot import logutils
+from ffxiahbot.apps.seller.options import Options
+from ffxiahbot.auction.manager import Manager
+from ffxiahbot.itemlist import ItemList
 
 
 def main():

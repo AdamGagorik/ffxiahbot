@@ -1,11 +1,11 @@
 import logging
 import unittest
 
-from .. import sqltest
+from ffxiahbot.tests import sqltest
 
 import_error = False
 try:
-    from ...auction.browser import Browser
+    from ffxiahbot.auction.browser import Browser
 except ImportError:
     import_error = True
     Browser = None

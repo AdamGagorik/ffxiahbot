@@ -2,7 +2,7 @@ import unittest
 
 import_error = False
 try:
-    from ..item import Item
+    from ffxiahbot.item import Item
 except ImportError:
     import_error = True
     Item = None

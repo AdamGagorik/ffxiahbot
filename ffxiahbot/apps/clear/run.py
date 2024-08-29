@@ -4,9 +4,9 @@ Clear the auction house.
 
 import logging
 
-from ... import logutils
-from ...auction.manager import Manager
-from .options import Options
+from ffxiahbot import logutils
+from ffxiahbot.apps.clear.options import Options
+from ffxiahbot.auction.manager import Manager
 
 
 def main():

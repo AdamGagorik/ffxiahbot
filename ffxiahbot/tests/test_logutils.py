@@ -2,7 +2,7 @@ import unittest
 
 import_error = False
 try:
-    from .. import logutils
+    from ffxiahbot import logutils
 except ImportError:
     import_error = True
     logutils = None

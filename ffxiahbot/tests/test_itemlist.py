@@ -6,8 +6,8 @@ from typing import Any, ClassVar
 
 import_error = False
 try:
-    from ..item import Item
-    from ..itemlist import ItemList
+    from ffxiahbot.item import Item
+    from ffxiahbot.itemlist import ItemList
 except ImportError:
     import_error = True
     ItemList = None

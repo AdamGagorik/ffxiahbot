@@ -2,9 +2,9 @@
 Clear the auction house.
 """
 
-from ...options.ah import AHOptions
-from ...options.basic import BasicOptions
-from ...options.sql import SQLOptions
+from ffxiahbot.options.ah import AHOptions
+from ffxiahbot.options.basic import BasicOptions
+from ffxiahbot.options.sql import SQLOptions
 
 
 class Options(AHOptions, SQLOptions, BasicOptions):

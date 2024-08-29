@@ -2,7 +2,7 @@ import unittest
 
 import_error = False
 try:
-    from ...tables.deliverybox import DeliveryBox
+    from ffxiahbot.tables.deliverybox import DeliveryBox
 except ImportError:
     import_error = True
     DeliveryBox = None

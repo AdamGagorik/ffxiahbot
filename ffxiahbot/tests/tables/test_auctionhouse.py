@@ -2,7 +2,7 @@ import unittest
 
 import_error = False
 try:
-    from ...tables.auctionhouse import AuctionHouse
+    from ffxiahbot.tables.auctionhouse import AuctionHouse
 except ImportError:
     import_error = True
     AuctionHouse = None

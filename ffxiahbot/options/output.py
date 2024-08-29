@@ -2,7 +2,7 @@
 Output options.
 """
 
-from .base import BaseOptions
+from ffxiahbot.options.base import BaseOptions
 
 
 class OutputOptions(BaseOptions):

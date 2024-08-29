@@ -2,7 +2,7 @@ import unittest
 
 import_error = False
 try:
-    from ...scrubbing.ffxiah import FFXIAHScrubber, extract
+    from ffxiahbot.scrubbing.ffxiah import FFXIAHScrubber, extract
 except ImportError:
     import_error = True
     FFXIAHScrubber = None

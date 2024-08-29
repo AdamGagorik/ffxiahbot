@@ -3,7 +3,7 @@ import unittest
 
 import_error = False
 try:
-    from .. import common
+    from ffxiahbot import common
 except ImportError:
     import_error = True
     common = None

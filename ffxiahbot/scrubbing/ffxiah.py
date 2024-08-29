@@ -1,7 +1,7 @@
 import contextlib
 import re
 
-from .scrubber import Scrubber
+from ffxiahbot.scrubbing.scrubber import Scrubber
 
 SERVER_ID = {
     "bahamut": 1,

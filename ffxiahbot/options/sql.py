@@ -2,7 +2,7 @@
 SQL options.
 """
 
-from .base import BaseOptions
+from ffxiahbot.options.base import BaseOptions
 
 
 class SQLOptions(BaseOptions):

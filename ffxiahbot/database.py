@@ -1,11 +1,10 @@
 import contextlib
 import logging
 
-import sqlalchemy
 import sqlalchemy.exc
 import sqlalchemy.orm
 
-from .darkobject import DarkObject
+from ffxiahbot.darkobject import DarkObject
 
 
 class Database(DarkObject):

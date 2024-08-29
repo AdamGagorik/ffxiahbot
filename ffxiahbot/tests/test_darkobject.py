@@ -2,7 +2,7 @@ import unittest
 
 import_error = False
 try:
-    from ..darkobject import DarkObject
+    from ffxiahbot.darkobject import DarkObject
 except ImportError:
     import_error = True
     DarkObject = None

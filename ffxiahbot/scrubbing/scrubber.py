@@ -5,7 +5,7 @@ import bs4
 import requests
 from bs4 import BeautifulSoup
 
-from ..darkobject import DarkObject
+from ffxiahbot.darkobject import DarkObject
 
 TIMEOUT: int = 1024
 

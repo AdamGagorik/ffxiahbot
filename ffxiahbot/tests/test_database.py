@@ -2,11 +2,11 @@ import unittest
 
 import sqlalchemy.exc
 
-from . import sqltest
+from ffxiahbot.tests import sqltest
 
 import_error = False
 try:
-    from ..database import Database
+    from ffxiahbot.database import Database
 except ImportError:
     import_error = True
     Database = None

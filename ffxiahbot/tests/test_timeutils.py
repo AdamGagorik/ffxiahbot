@@ -4,7 +4,7 @@ import unittest
 
 import_error = False
 try:
-    from .. import timeutils
+    from ffxiahbot import timeutils
 except ImportError:
     import_error = True
     timeutils = None

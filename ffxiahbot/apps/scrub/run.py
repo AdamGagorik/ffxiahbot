@@ -6,10 +6,10 @@ import logging
 import os
 import re
 
-from ... import common, logutils
-from ...itemlist import ItemList
-from ...scrubbing import ffxiah
-from .options import Options
+from ffxiahbot import common, logutils
+from ffxiahbot.apps.scrub.options import Options
+from ffxiahbot.itemlist import ItemList
+from ffxiahbot.scrubbing import ffxiah
 
 
 def main():

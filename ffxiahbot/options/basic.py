@@ -5,8 +5,7 @@ Basic options.
 import logging
 
 from ffxiahbot import logutils
-
-from .base import BaseOptions
+from ffxiahbot.options.base import BaseOptions
 
 
 class BasicOptions(BaseOptions):

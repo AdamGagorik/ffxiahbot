@@ -1,10 +1,10 @@
 import unittest
 
-from .. import sqltest
+from ffxiahbot.tests import sqltest
 
 import_error = False
 try:
-    from ...auction.buyer import Buyer
+    from ffxiahbot.auction.buyer import Buyer
 except ImportError:
     import_error = True
     Buyer = None

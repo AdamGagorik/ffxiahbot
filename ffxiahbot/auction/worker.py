@@ -1,7 +1,7 @@
 import contextlib
 
-from ..darkobject import DarkObject
-from ..database import Database
+from ffxiahbot.darkobject import DarkObject
+from ffxiahbot.database import Database
 
 
 class Worker(DarkObject):

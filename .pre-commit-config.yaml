@@ -5,12 +5,47 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-builtin-literals
       - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-json
       - id: check-merge-conflict
+      - id: check-symlinks
       - id: check-toml
+      - id: check-vcs-permalinks
+      - id: check-xml
+        exclude: |
+          (?x)^(.*\.idea.*)$
       - id: check-yaml
+        exclude: |
+          (?x)^(.*templates.*|.github.*)$
+        args:
+          - --unsafe # allow custom !include constructors
+      - id: debug-statements
+      - id: detect-aws-credentials
+        args:
+          - --allow-missing-credentials # allow hook to pass when no creds file is available
       - id: end-of-file-fixer
+      - id: file-contents-sorter
+      - id: fix-byte-order-marker
+      - id: forbid-new-submodules
+      - id: mixed-line-ending
+      - id: requirements-txt-fixer
       - id: trailing-whitespace
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.17.0
+    hooks:
+      - id: pyupgrade
+        args:
+          - --py312-plus
+
+  - repo: https://github.com/MarcoGorelli/absolufy-imports
+    rev: v0.3.1
+    hooks:
+      - id: absolufy-imports
 
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
     rev: v2.14.0

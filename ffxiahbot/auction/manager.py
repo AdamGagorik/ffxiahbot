@@ -1,13 +1,13 @@
 import datetime
 
-from .. import timeutils
-from ..database import Database
-from ..tables.auctionhouse import AuctionHouse
-from .browser import Browser
-from .buyer import Buyer
-from .cleaner import Cleaner
-from .seller import Seller
-from .worker import Worker
+from ffxiahbot import timeutils
+from ffxiahbot.auction.browser import Browser
+from ffxiahbot.auction.buyer import Buyer
+from ffxiahbot.auction.cleaner import Cleaner
+from ffxiahbot.auction.seller import Seller
+from ffxiahbot.auction.worker import Worker
+from ffxiahbot.database import Database
+from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
 class Manager(Worker):

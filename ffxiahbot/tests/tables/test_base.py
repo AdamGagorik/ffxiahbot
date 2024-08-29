@@ -2,7 +2,7 @@ import unittest
 
 import_error = False
 try:
-    from ...tables.base import Base
+    from ffxiahbot.tables.base import Base
 except ImportError:
     import_error = True
     Base = None

@@ -1,6 +1,6 @@
 import collections
 
-from .darkobject import DarkObject
+from ffxiahbot.darkobject import DarkObject
 
 fmt = collections.OrderedDict()
 fmt["itemid"] = "{:>8}"

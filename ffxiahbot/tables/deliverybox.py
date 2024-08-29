@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, SmallInteger, String, text
 from sqlalchemy.dialects.mysql.base import BIT
 
-from .base import Base
+from ffxiahbot.tables.base import Base
 
 _template = """
 [DeliveryBoxRow]

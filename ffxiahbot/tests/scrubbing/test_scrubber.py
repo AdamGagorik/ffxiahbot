@@ -2,7 +2,7 @@ import unittest
 
 import_error = False
 try:
-    from ...scrubbing.scrubber import Scrubber
+    from ffxiahbot.scrubbing.scrubber import Scrubber
 except ImportError:
     import_error = True
     Scrubber = None

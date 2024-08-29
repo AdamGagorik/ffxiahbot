@@ -2,9 +2,9 @@
 Create item database.
 """
 
-from ...options.basic import BasicOptions
-from ...options.output import OutputOptions
-from ...scrubbing.ffxiah import SERVER_ID
+from ffxiahbot.options.basic import BasicOptions
+from ffxiahbot.options.output import OutputOptions
+from ffxiahbot.scrubbing.ffxiah import SERVER_ID
 
 
 class Options(OutputOptions, BasicOptions):

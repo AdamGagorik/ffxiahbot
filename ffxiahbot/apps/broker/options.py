@@ -2,10 +2,10 @@
 Buy and sell items on the auction house.
 """
 
-from ...options.ah import AHOptions
-from ...options.basic import BasicOptions
-from ...options.input import InputOptions
-from ...options.sql import SQLOptions
+from ffxiahbot.options.ah import AHOptions
+from ffxiahbot.options.basic import BasicOptions
+from ffxiahbot.options.input import InputOptions
+from ffxiahbot.options.sql import SQLOptions
 
 
 class Options(AHOptions, InputOptions, SQLOptions, BasicOptions):

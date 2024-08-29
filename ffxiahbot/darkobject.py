@@ -1,4 +1,4 @@
-from .logutils import LoggingObject
+from ffxiahbot.logutils import LoggingObject
 
 
 class DarkObject(LoggingObject):

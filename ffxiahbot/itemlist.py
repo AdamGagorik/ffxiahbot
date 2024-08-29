@@ -3,8 +3,8 @@ import collections
 import os
 import re
 
-from . import item
-from .darkobject import DarkObject
+from ffxiahbot import item
+from ffxiahbot.darkobject import DarkObject
 
 
 class ItemList(DarkObject):

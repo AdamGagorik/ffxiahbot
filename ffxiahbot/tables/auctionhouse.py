@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, SmallInteger, String, text
 
-from .. import timeutils
-from .base import Base
+from ffxiahbot import timeutils
+from ffxiahbot.tables.base import Base
 
 _template = """
 [AuctionHouseRow]

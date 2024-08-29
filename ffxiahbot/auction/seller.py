@@ -1,5 +1,5 @@
-from ..tables.auctionhouse import AuctionHouse
-from .worker import Worker
+from ffxiahbot.auction.worker import Worker
+from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
 class Seller(Worker):

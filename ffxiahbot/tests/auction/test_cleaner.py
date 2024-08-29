@@ -1,10 +1,10 @@
 import unittest
 
-from .. import sqltest
+from ffxiahbot.tests import sqltest
 
 import_error = False
 try:
-    from ...auction.cleaner import Cleaner
+    from ffxiahbot.auction.cleaner import Cleaner
 except ImportError:
     import_error = True
     Cleaner = None

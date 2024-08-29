@@ -1,10 +1,10 @@
 import unittest
 
-from .. import sqltest
+from ffxiahbot.tests import sqltest
 
 import_error = False
 try:
-    from ...auction.manager import Manager
+    from ffxiahbot.auction.manager import Manager
 except ImportError:
     import_error = True
     Manager = None
