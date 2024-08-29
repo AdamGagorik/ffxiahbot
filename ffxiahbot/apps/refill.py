@@ -2,18 +2,17 @@
 Refill the auction house.
 """
 
-import logging
-
-from ffxiahbot import logutils
-from ffxiahbot.apps.refill.options import Options
-from ffxiahbot.auction.manager import Manager
-from ffxiahbot.itemlist import ItemList
+from ffxiahbot.logutils import logger
 
 
 def main():
     """
     Main function.
     """
+    from ffxiahbot.apps.refill.options import Options
+    from ffxiahbot.auction.manager import Manager
+    from ffxiahbot.itemlist import ItemList
+
     # get options
     opts = Options()
 
@@ -33,17 +32,7 @@ def main():
     if not opts.force:
         raise RuntimeError("refilling all items from auction house is dangerous. use --force")
     else:
-        logging.info("restocking...")
+        logger.info("restocking...")
         manager.restock_items(itemdata=idata)
-        logging.info("exit after restock")
+        logger.info("exit after restock")
         return
-
-
-def cleanup():
-    logging.info("exit\n")
-
-
-if __name__ == "__main__":
-    with logutils.capture():
-        main()
-    cleanup()

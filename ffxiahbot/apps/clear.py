@@ -2,17 +2,16 @@
 Clear the auction house.
 """
 
-import logging
-
-from ffxiahbot import logutils
-from ffxiahbot.apps.clear.options import Options
-from ffxiahbot.auction.manager import Manager
+from ffxiahbot.logutils import logger
 
 
 def main():
     """
     Main function.
     """
+    from ffxiahbot.apps.clear.options import Options
+    from ffxiahbot.auction.manager import Manager
+
     # get options
     opts = Options()
 
@@ -41,15 +40,5 @@ def main():
             manager.cleaner.clear(seller=manager.seller.seller)
 
     # exit after clearing
-    logging.info("exit after clear")
+    logger.info("exit after clear")
     return
-
-
-def cleanup():
-    logging.info("exit\n")
-
-
-if __name__ == "__main__":
-    with logutils.capture():
-        main()
-    cleanup()
