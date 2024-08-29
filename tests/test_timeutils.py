@@ -2,12 +2,7 @@ import datetime
 import random
 import unittest
 
-import_error = False
-try:
-    from ffxiahbot import timeutils
-except ImportError:
-    import_error = True
-    timeutils = None
+from ffxiahbot import timeutils
 
 
 def randomdt(
@@ -60,17 +55,8 @@ def randomdt(
     return datetime.datetime(year, month, day - 3, hour, minute, second, microsecond)
 
 
-class TestCase00(unittest.TestCase):
-    def test_import(self):
-        self.assertFalse(import_error)
-
-
 class BaseTest(unittest.TestCase):
     N = 10000
-
-    def setUp(self):
-        if import_error:
-            self.skipTest("ImportError")
 
     def assertInRange(self, n, a, b):
         self.assertGreaterEqual(n, a)

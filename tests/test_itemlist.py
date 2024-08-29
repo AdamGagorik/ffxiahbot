@@ -4,27 +4,13 @@ import tempfile
 import unittest
 from typing import Any, ClassVar
 
-import_error = False
-try:
-    from ffxiahbot.item import Item
-    from ffxiahbot.itemlist import ItemList
-except ImportError:
-    import_error = True
-    ItemList = None
-    Item = None
-
-
-class TestCase00(unittest.TestCase):
-    def test_import(self):
-        self.assertFalse(import_error)
+from ffxiahbot.item import Item
+from ffxiahbot.itemlist import ItemList
 
 
 class TestCase01(unittest.TestCase):
     def setUp(self):
-        if import_error:
-            self.skipTest("ImportError")
-        else:
-            self.ilist = ItemList()
+        self.ilist = ItemList()
 
     def test_init(self):
         pass

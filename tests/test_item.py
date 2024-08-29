@@ -1,23 +1,9 @@
 import unittest
 
-import_error = False
-try:
-    from ffxiahbot.item import Item
-except ImportError:
-    import_error = True
-    Item = None
-
-
-class TestCase00(unittest.TestCase):
-    def test_import(self):
-        self.assertFalse(import_error)
+from ffxiahbot.item import Item
 
 
 class TestCase01(unittest.TestCase):
-    def setUp(self):
-        if import_error:
-            self.skipTest("ImportError")
-
     def test_init(self):
         i0 = Item(0, "A")
         self.assertEqual(i0.itemid, 0)
