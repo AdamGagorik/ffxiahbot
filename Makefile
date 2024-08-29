@@ -18,7 +18,7 @@ test: ## Test the code with pytest
 
 .PHONY: build
 build: clean-build ## Build wheel file
-	@uv build
+	@uvx --from build pyproject-build --installer uv
 
 .PHONY: clean-build
 clean-build: ## clean build artifacts
@@ -26,9 +26,7 @@ clean-build: ## clean build artifacts
 
 .PHONY: publish
 publish: ## publish a release to pypi.
-	@uv run config pypi-token.pypi $(PYPI_TOKEN)
-	@uv run publish --dry-run
-	@uv run publish
+	@uvx twine upload dist/*
 
 .PHONY: build-and-publish
 build-and-publish: build publish ## Build and publish.

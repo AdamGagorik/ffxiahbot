@@ -1,4 +1,4 @@
-__version__ = "0.0.0"
+__version__ = "4.1.0"
 
 from ffxiahbot import common, darkobject, database, item, itemlist, logutils, options, timeutils
 
