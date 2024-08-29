@@ -1,0 +1,42 @@
+name: "setup-uv-env"
+description: "Composite action to setup the uv environment."
+
+inputs:
+  os-version:
+    required: false
+    description: "The os to run on"
+    default: "ubuntu-latest"
+  uv-version:
+    required: false
+    description: "The uv version to use"
+    default: "0.4.0"
+  python-version:
+    required: false
+    description: "The python version to use"
+    default: "3.12"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Set up uv
+      if: ${{ inputs.os-version == 'ubuntu-latest' || inputs.os-version == 'macos-latest' }}
+      run: curl -LsSf https://astral.sh/uv/${{ inputs.uv-version }}/install.sh | sh
+      shell: bash
+
+    - name: Set up uv
+      if: ${{ inputs.os-version == 'windows-latest' }}
+      run: irm https://astral.sh/uv/${{ inputs.uv-version }}/install.ps1 | iex
+      shell: powershell
+
+    - name: Create venv
+      run: uv venv
+      shell: bash
+
+    - name: Install dependencies
+      run: uv pip install .
+      shell: bash

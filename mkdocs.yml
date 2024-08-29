@@ -1,0 +1,58 @@
+site_name: ffxiahbot
+repo_url: https://github.com/AdamGagorik/ffxiahbot
+site_url: https://AdamGagorik.github.io/ffxiahbot
+site_description: A jinja2 block to render a mermaid diagram
+site_author: Adam Gagorik
+edit_uri: edit/main/docs/
+repo_name: AdamGagorik/ffxiahbot
+copyright: Maintained by <a href="https://AdamGagorik.com">Adam</a>.
+
+nav:
+  - Home: index.md
+  - Setup: setup.md
+  - Usage: usage.md
+  - Scrubbing: scrubbing.md
+  - Advanced: advanced.md
+plugins:
+  - search
+  - include-markdown
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - import sys
+            - sys.path.append('../')
+theme:
+  name: material
+  feature:
+    tabs: true
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/AdamGagorik/ffxiahbot
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/ffxiahbot
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
