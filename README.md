@@ -6,20 +6,22 @@ Please see the [docs][ghWeb] for more information.
 
 ---
 
-| Project            | Status  |
-| ------------------ | ------- |
-| Darkstar (DSP)     | defunct |
-| Topaz (TPZ)        | defunct |
-| Topaz-next (TPZN)  | defunct |
-| LandSandBoat (LSB) | current |
+This project was originally developed for the [Darkstar][DSP] server, but it will also work with new variations below.
+
+| FFXI Server Project | Status  |
+| ------------------- | ------- |
+| [Darkstar][DSP]     | defunct |
+| [Topaz][TPZ]        | defunct |
+| [Topaz-next][TPZN]  | defunct |
+| [LandSandBoat][LSB] | current |
 
 ---
 
 ## [Features][ghWeb]
 
-- A script can create an item database with prices.
-- The bot can buy items put up for sale by players.
-- The bot can stock the auction house with items for players to buy.
+- Create a database of item prices by scraping ffxiah.com.
+- Start a bot that can buy items put up for sale by players.
+- The bot can also stock the auction house with items for players to buy.
 
 ---
 
