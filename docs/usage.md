@@ -23,13 +23,13 @@ All other options are passed as command line arguments.
 
 ```yaml
 # ah
-name: Zissou # Name that appears on AH when buying and selling
+name: M.H.M.U. # Name that appears on AH when buying and selling
 tick: 30 # seconds between buying
 restock: 3600 # seconds between selling
 
 # sql
 hostname: 127.0.0.1 # SQL parameter
-database: dspdb # SQL parameter
+database: xidb # SQL parameter
 username: root # SQL parameter
 password: ???? # SQL parameter
 fail: true # fail on SQL database errors?
