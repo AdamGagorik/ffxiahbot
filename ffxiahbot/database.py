@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import contextlib
 import logging
+from typing import Any
 
 import sqlalchemy.exc
 import sqlalchemy.orm
@@ -12,7 +15,7 @@ class Database:
     :param url: sql database connection url
     """
 
-    def __init__(self, url, **kwargs):
+    def __init__(self, url: str, **kwargs):
         super().__init__()
 
         # connect
@@ -21,14 +24,14 @@ class Database:
         # create Session object
         self._Session = sqlalchemy.orm.sessionmaker(bind=self.engine)
 
-    def session(self, **kwargs):
+    def session(self, **kwargs: Any) -> sqlalchemy.orm.Session:
         """
         Create session.
         """
         return self._Session(**kwargs)
 
     @contextlib.contextmanager
-    def scoped_session(self, rollback=True, fail=False):
+    def scoped_session(self, rollback: bool = True, fail: bool = False) -> sqlalchemy.orm.Session:
         """
         Provide a transactional scope around a series of operations.
 
@@ -63,27 +66,36 @@ class Database:
             session.close()
 
     @classmethod
-    def pymysql(cls, hostname, database, username, password):
+    def pymysql(cls, hostname: str, database: str, username: str, password: str, port: int) -> Database:
         """
         Alternate constructor.  dialect=mysql, driver=pymysql
 
-        :param hostname: database connection parameter
-        :param database: database connection parameter
-        :param username: database connection parameter
-        :param password: database connection parameter
+        Args:
+            hostname: database hostname
+            database: database name
+            username: database username
+            password: database password
+            port: database port
         """
-        url = cls.format_url("mysql", "pymysql", hostname, database, username, password)
+        url = cls.format_url("mysql", "pymysql", hostname, database, username, password, port)
         obj = cls(url)
         return obj
 
     @staticmethod
-    def format_url(dialect, driver, hostname, database, username, password):
+    def format_url(
+        dialect: str, driver: str, hostname: str, database: str, username: str, password: str, port: int
+    ) -> str:
         """
         Create connection url.
         """
-        return "{}://{u}:{p}@{h}/{d}".format(
-            "+".join([dialect, driver]), h=hostname, d=database, u=username, p=password
+        return "{}://{username}:{password}@{hostname}:{port}/{database}".format(
+            "+".join([dialect, driver]),
+            hostname=hostname,
+            database=database,
+            username=username,
+            password=password,
+            port=port,
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return repr(self.engine)

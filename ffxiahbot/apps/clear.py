@@ -30,6 +30,7 @@ def main(
         database=config.database,
         username=config.username,
         password=config.password,
+        port=config.port,
         name=config.name,
         fail=config.fail,
     )

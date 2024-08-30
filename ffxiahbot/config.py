@@ -30,6 +30,7 @@ class Config(BaseModel):
     database: str = Field(default="dspdb", help="SQL database")
     username: str = Field(default="root", help="SQL username")
     password: SecretStr | str = Field(default=SecretStr("?"), help="SQL password")
+    port: int = Field(default=3306, help="SQL port")
     fail: bool = Field(default=False, help="Fail on SQL errors?")
 
     @classmethod

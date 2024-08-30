@@ -27,7 +27,16 @@ class Manager(Worker):
         self.buyer = Buyer(db, **kwargs)
 
     @classmethod
-    def create_database_and_manager(cls, hostname, database, username, password, name=None, fail=True):
+    def create_database_and_manager(
+        cls,
+        hostname: str,
+        database: str,
+        username: str,
+        password: str,
+        port: int,
+        name: str | None = None,
+        fail: bool = True,
+    ):
         """
         Create database and manager at the same time.
         """
@@ -37,6 +46,7 @@ class Manager(Worker):
             database=database,
             username=username,
             password=password,
+            port=port,
         )
 
         # create auction house manager

@@ -7,5 +7,6 @@ restock: 3600
 hostname: 127.0.0.1
 database: xidb
 username: root
-password: ????
+password: root
+port: 3306
 fail: true

@@ -31,7 +31,8 @@ restock: 3600 # seconds between selling
 hostname: 127.0.0.1 # SQL parameter
 database: xidb # SQL parameter
 username: root # SQL parameter
-password: ???? # SQL parameter
+password: root # SQL parameter
+port: 3306 # SQL parameter
 fail: true # fail on SQL database errors?
 ```
 
