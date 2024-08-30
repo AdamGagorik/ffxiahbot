@@ -6,13 +6,12 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from ffxiahbot.darkobject import DarkObject
 from ffxiahbot.item import Item, item_csv_title_str, item_csv_value_str
 from ffxiahbot.logutils import logger
 
 
 @dataclass
-class ItemList(DarkObject):
+class ItemList:
     """
     Container for Item objects.
     """

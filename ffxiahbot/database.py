@@ -4,10 +4,8 @@ import logging
 import sqlalchemy.exc
 import sqlalchemy.orm
 
-from ffxiahbot.darkobject import DarkObject
 
-
-class Database(DarkObject):
+class Database:
     """
     Database connection using sqlalchemy.
 

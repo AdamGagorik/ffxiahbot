@@ -1,10 +1,9 @@
 import contextlib
 
-from ffxiahbot.darkobject import DarkObject
 from ffxiahbot.database import Database
 
 
-class Worker(DarkObject):
+class Worker:
     """
     Base class for Auction House objects.
 

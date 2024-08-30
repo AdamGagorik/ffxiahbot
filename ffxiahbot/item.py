@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import collections
 
-from ffxiahbot.darkobject import DarkObject
-
 fmt = collections.OrderedDict()
 fmt["itemid"] = "{:>8}"
 fmt["name"] = "{:>24}"
@@ -54,7 +52,7 @@ _template = """
 """[:-1]
 
 
-class Item(DarkObject):
+class Item:
     """
     Item properties.
 

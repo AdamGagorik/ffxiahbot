@@ -7,13 +7,11 @@ import bs4
 import requests
 from bs4 import BeautifulSoup
 
-from ffxiahbot.darkobject import DarkObject
-
 TIMEOUT: int = 1024
 
 
 @dataclass()
-class Scrubber(DarkObject):
+class Scrubber:
     def scrub(self) -> dict[str, dict[str, Any]]:
         """
         Get item metadata.

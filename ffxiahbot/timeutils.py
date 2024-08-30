@@ -48,6 +48,8 @@ Documentation
 
 import datetime as _datetime
 
+from dateutil.parser import parse as _parse
+
 
 def str_to_datetime(date_string):
     """
@@ -66,7 +68,7 @@ def str_to_datetime(date_string):
 
     .. seealso:: :py:meth:`datetime.datetime.strptime`
     """
-    return _datetime.datetime.strptime(date_string, "%m/%d/%Y %H:%M:%S")
+    return _datetime.datetime.replace(_parse(date_string), tzinfo=_datetime.timezone.utc)
 
 
 def datetime_to_str(datetime_obj):
@@ -101,7 +103,7 @@ class DatetimeToTimestamp:
     """
 
     #: 01/01/1970
-    epoch = _datetime.datetime(1970, 1, 1)
+    epoch = _datetime.datetime(1970, 1, 1, tzinfo=_datetime.timezone.utc)
 
     def __call__(self, datetime_obj):
         return float((datetime_obj - self.epoch).total_seconds())
@@ -143,7 +145,7 @@ def timestamp_to_datetime(stamp):
 
     .. seealso:: :py:meth:`datetime.timedelta.utcfromtimestamp`
     """
-    return _datetime.datetime.fromtimestamp(stamp, _datetime.UTC)
+    return _datetime.datetime.fromtimestamp(stamp, _datetime.timezone.utc)
 
 
 def datetime(*args, **kwargs):
@@ -183,7 +185,7 @@ def datetime(*args, **kwargs):
         :py:class:`datetime.datetime`
     """
     if len(args) > 1 or kwargs:
-        return _datetime.datetime(*args, **kwargs)
+        return _datetime.datetime(*args, **(kwargs | {"tzinfo": _datetime.timezone.utc}))
 
     try:
         obj = args[0]
@@ -191,7 +193,7 @@ def datetime(*args, **kwargs):
         raise ValueError("expecting argument") from None
 
     if isinstance(obj, _datetime.datetime):
-        return obj
+        return obj.replace(tzinfo=_datetime.timezone.utc)
 
     if isinstance(obj, str):
         return str_to_datetime(obj)
@@ -235,7 +237,3 @@ def timestamp(*args, **kwargs):
         :py:data:`ffxiahbot.timeutils.datetime_to_timestamp`
     """
     return datetime_to_timestamp(datetime(*args, **kwargs))
-
-
-if __name__ == "__main__":
-    pass

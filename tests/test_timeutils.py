@@ -13,7 +13,7 @@ def randomdt(
     minute=None,
     second=None,
     microsecond=None,
-    tzinfo=None,
+    tzinfo=datetime.UTC,
     month_range=(1, 12),
     day_range=(1, 31),
     year_range=(1900, 2000),
@@ -52,7 +52,7 @@ def randomdt(
         except ValueError:
             pass
 
-    return datetime.datetime(year, month, day - 3, hour, minute, second, microsecond)
+    return datetime.datetime(year, month, day - 3, hour, minute, second, microsecond, tzinfo)
 
 
 class BaseTest(unittest.TestCase):
@@ -185,7 +185,7 @@ class TestCase05(BaseTest):
             self.assertEqual(stmp1, stmp2)
 
     def test_args(self):
-        stmp1 = timeutils.timestamp(1971, 1, 2)
+        stmp1 = timeutils.timestamp(1971, 1, 2, tzinfo=datetime.UTC)
         dobj1 = timeutils.timestamp_to_datetime(stmp1)
         self.assertTrue(isinstance(dobj1, datetime.datetime))
         self.assertEqual(dobj1.month, 1)
@@ -193,7 +193,7 @@ class TestCase05(BaseTest):
         self.assertEqual(dobj1.year, 1971)
 
     def test_kwargs(self):
-        stmp1 = timeutils.timestamp(1971, 1, 2)
+        stmp1 = timeutils.timestamp(1971, 1, 2, tzinfo=datetime.UTC)
         dobj1 = timeutils.timestamp_to_datetime(stmp1)
         self.assertTrue(isinstance(dobj1, datetime.datetime))
         self.assertEqual(dobj1.month, 1)
