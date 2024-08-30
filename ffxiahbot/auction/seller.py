@@ -1,4 +1,5 @@
 from ffxiahbot.auction.worker import Worker
+from ffxiahbot.logutils import capture
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
@@ -26,7 +27,7 @@ class Seller(Worker):
         :param price: price
         :param count: rows
         """
-        with self.capture(fail=self.fail):
+        with capture(fail=self.fail):
             itemid = AuctionHouse.validate_itemid(itemid)
             stack = AuctionHouse.validate_stack(stack)
             price = AuctionHouse.validate_price(price)
@@ -60,7 +61,7 @@ class Seller(Worker):
         :param price: price
         :param count: rows
         """
-        with self.capture(fail=self.fail):
+        with capture(fail=self.fail):
             itemid = AuctionHouse.validate_itemid(itemid)
             stack = AuctionHouse.validate_stack(stack)
             price = AuctionHouse.validate_price(price)

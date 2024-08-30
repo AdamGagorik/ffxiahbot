@@ -1,6 +1,7 @@
 import sqlalchemy
 
 from ffxiahbot.auction.worker import Worker
+from ffxiahbot.logutils import capture
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
@@ -33,7 +34,7 @@ class Browser(Worker):
         :type stack: int
         :type seller: int
         """
-        with self.capture(fail=self.fail):
+        with capture(fail=self.fail):
             # validate
             itemid = AuctionHouse.validate_itemid(itemid)
             stack = AuctionHouse.validate_stack(stack)
@@ -81,7 +82,7 @@ class Browser(Worker):
         :type stack: int
         :type seller: int
         """
-        with self.capture(fail=self.fail):
+        with capture(fail=self.fail):
             # validate
             itemid = AuctionHouse.validate_itemid(itemid)
             stack = AuctionHouse.validate_stack(stack)
@@ -115,7 +116,3 @@ class Browser(Worker):
                         .scalar()
                     )
                     return n
-
-
-if __name__ == "__main__":
-    pass

@@ -35,7 +35,7 @@ def create_path(*args, absolute=True, dt_fmt="%Y_%m_%d_%H_%M_%S", dt=None, **kwa
     return path
 
 
-def backup(path: str | Path, copy: bool = False) -> Path:
+def backup(path: str | Path, copy: bool = False) -> Path | None:
     """
     Create backup file name.
 
@@ -44,9 +44,9 @@ def backup(path: str | Path, copy: bool = False) -> Path:
     """
     old_path = os.path.abspath(os.path.expanduser(path))
 
-    # nothing to backup
+    # nothing to back up
     if not os.path.exists(old_path):
-        return ""
+        return
 
     if not os.path.isfile(old_path):
         raise RuntimeError(f"can only backup files: {old_path}")
@@ -66,7 +66,7 @@ def backup(path: str | Path, copy: bool = False) -> Path:
             except TypeError:
                 found.append(0)
 
-    # should of at least found 1 if the file exists
+    # should have at least found 1 if the file exists
     if not found:
         raise RuntimeError(f"can not backup file: {old_path}")
 

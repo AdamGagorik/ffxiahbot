@@ -1,4 +1,5 @@
 from ffxiahbot.auction.worker import Worker
+from ffxiahbot.logutils import capture, logger
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
@@ -21,12 +22,12 @@ class Cleaner(Worker):
             # perform query
             with self.scopped_session() as session:
                 n = session.query(AuctionHouse).delete()
-                self.info("%d rows dropped", n)
+                logger.info("%d rows dropped", n)
 
         # clear rows of seller
         else:
             # validate seller
-            with self.capture(fail=self.fail):
+            with capture(fail=self.fail):
                 if not isinstance(seller, int) or not seller >= 0:
                     raise RuntimeError("invalid seller: %s", seller)
 
@@ -39,8 +40,4 @@ class Cleaner(Worker):
                         )
                         .delete()
                     )
-                    self.info("%d rows dropped", n)
-
-
-if __name__ == "__main__":
-    pass
+                    logger.info("%d rows dropped", n)

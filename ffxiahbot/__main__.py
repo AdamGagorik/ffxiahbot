@@ -19,7 +19,7 @@ import ffxiahbot.apps.scrub
 OptionalPath = Optional[Path]
 
 
-app = Typer(add_completion=False, help=__doc__, invoke_without_command=True, rich_markup_mode="emoji")
+app = Typer(add_completion=False, help=__doc__, invoke_without_command=True, rich_markup_mode="rich")
 
 
 @app.callback()

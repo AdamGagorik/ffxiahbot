@@ -7,6 +7,7 @@ from ffxiahbot.auction.cleaner import Cleaner
 from ffxiahbot.auction.seller import Seller
 from ffxiahbot.auction.worker import Worker
 from ffxiahbot.database import Database
+from ffxiahbot.logutils import capture, logger
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
@@ -51,7 +52,7 @@ class Manager(Worker):
         """
         Add row to blacklist.
         """
-        self.info("blacklisting: row=%d", rowid)
+        logger.info("blacklisting: row=%d", rowid)
         self.blacklist.add(rowid)
 
     def buy_items(self, itemdata):
@@ -67,14 +68,14 @@ class Manager(Worker):
             )
             # loop rows
             for row in q:
-                with self.capture(fail=self.fail):
+                with capture(fail=self.fail):
                     # skip blacklisted rows
                     if row.id not in self.blacklist:
                         # get item data
                         try:
                             data = itemdata[row.itemid]
                         except KeyError:
-                            self.error("item missing from database: %d", row.itemid)
+                            logger.error("item missing from database: %d", row.itemid)
                             data = None
 
                         if data is not None:
@@ -87,7 +88,7 @@ class Manager(Worker):
                                         date = timeutils.timestamp(datetime.datetime.now())
                                         self.buyer.buy_item(row, date, data.price_stacks)
                                     else:
-                                        self.info(
+                                        logger.info(
                                             "price too high! itemid=%d %d <= %d",
                                             row.itemid,
                                             row.price,
@@ -95,7 +96,7 @@ class Manager(Worker):
                                         )
                                         self.add_to_blacklist(row.id)
                                 else:
-                                    self.debug("not allowed to buy item! itemid=%d", row.itemid)
+                                    logger.debug("not allowed to buy item! itemid=%d", row.itemid)
                                     self.add_to_blacklist(row.id)
                             # buy singles
                             else:
@@ -106,7 +107,7 @@ class Manager(Worker):
                                         date = timeutils.timestamp(datetime.datetime.now())
                                         self.buyer.buy_item(row, date, data.price_single)
                                     else:
-                                        self.info(
+                                        logger.info(
                                             "price too high! itemid=%d %d <= %d",
                                             row.itemid,
                                             row.price,
@@ -114,14 +115,14 @@ class Manager(Worker):
                                         )
                                         self.add_to_blacklist(row.id)
                                 else:
-                                    self.debug("not allowed to buy item! itemid=%d", row.itemid)
+                                    logger.debug("not allowed to buy item! itemid=%d", row.itemid)
                                     self.add_to_blacklist(row.id)
                         else:
                             # item data missing
                             self.add_to_blacklist(row.id)
                     else:
                         # row was blacklisted
-                        self.debug("skipping row %d", row.id)
+                        logger.debug("skipping row %d", row.id)
 
     def restock_items(self, itemdata):
         """

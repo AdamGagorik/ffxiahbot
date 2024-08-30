@@ -1,4 +1,5 @@
 from ffxiahbot.auction.worker import Worker
+from ffxiahbot.logutils import logger
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
@@ -24,7 +25,7 @@ class Buyer(Worker):
         row.buyer_name = self.buyer_name
         row.sell_date = AuctionHouse.validate_date(date)
         row.sale = AuctionHouse.validate_price(price)
-        self.info("%s", row)
+        logger.info("%s", row)
 
 
 if __name__ == "__main__":

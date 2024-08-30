@@ -143,7 +143,7 @@ def timestamp_to_datetime(stamp):
 
     .. seealso:: :py:meth:`datetime.timedelta.utcfromtimestamp`
     """
-    return _datetime.datetime.utcfromtimestamp(stamp)
+    return _datetime.datetime.fromtimestamp(stamp, _datetime.UTC)
 
 
 def datetime(*args, **kwargs):
