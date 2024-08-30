@@ -41,8 +41,8 @@ class FFXIAHScrubber(Scrubber):
             failed: failed item ids
             data: item data
         """
-        if item_ids is None:
-            if cat_urls is None:
+        if not item_ids:
+            if not cat_urls:
                 cat_urls = sorted(self._get_category_urls(), key=lambda x: list(map(float, re.findall(r"\d+", x))))
 
             logger.debug("# urls = %d", len(cat_urls))
@@ -51,7 +51,7 @@ class FFXIAHScrubber(Scrubber):
             logger.debug("using passed ids")
             item_ids = sorted(set(item_ids))
 
-            if cat_urls is not None:
+            if cat_urls:
                 logger.warning("passed urls ignored")
 
         failed, data = self._get_item_data(item_ids)

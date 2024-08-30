@@ -23,8 +23,6 @@ Please see the [docs][ghWeb] for more information.
 
 ---
 
-Here are some links to help you learn how to use a command line.
-
 [ghRep]: https://github.com/AdamGagorik/pydarkstar
 [ghWeb]: http://adamgagorik.github.io/pydarkstar
 [DSP]: https://github.com/DarkstarProject/darkstar

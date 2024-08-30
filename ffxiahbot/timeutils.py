@@ -48,8 +48,6 @@ Documentation
 
 import datetime as _datetime
 
-from dateutil.parser import parse as _parse
-
 
 def str_to_datetime(date_string):
     """
@@ -68,7 +66,7 @@ def str_to_datetime(date_string):
 
     .. seealso:: :py:meth:`datetime.datetime.strptime`
     """
-    return _datetime.datetime.replace(_parse(date_string), tzinfo=_datetime.timezone.utc)
+    return _datetime.datetime.strptime(date_string, "%m/%d/%Y %H:%M:%S").replace(tzinfo=_datetime.timezone.utc)
 
 
 def datetime_to_str(datetime_obj):

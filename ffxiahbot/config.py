@@ -25,10 +25,6 @@ class Config(BaseModel):
     tick: int = Field(default=30, help="Tick interval (seconds)")
     restock: int = Field(default=3600, help="Restock interval (seconds)")
 
-    # Logging
-    silent: bool = Field(default=False, help="Set logging level to ERROR")
-    verbose: bool = Field(default=False, help="Set logging level to DEBUG")
-
     # Database
     hostname: str = Field(default="127.0.0.1", help="SQL address")
     database: str = Field(default="dspdb", help="SQL database")
@@ -70,6 +66,8 @@ DEPRECATED = {
     "stock_single": "use --default-stock-single",
     "itemids": "use --item-ids",
     "urls": "use --urls",
+    "verbose": "use --verbose",
+    "silent": "use --silent",
 }
 
 

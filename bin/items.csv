@@ -1,2 +1,2 @@
   itemid,                     name, sell_single,  buy_single,     price_single, stock_single,  rate_single, sell_stacks,  buy_stacks,     price_stacks, stock_stacks,  rate_stacks
-       1,          Chocobo Bedding,           0,           1,                1,           10,          1.0,           0,           1,                1,           10,          1.0
+       0,                         ,           0,           1,                1,           10,          1.0,           0,           1,                1,           10,          1.0

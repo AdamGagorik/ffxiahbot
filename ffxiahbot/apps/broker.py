@@ -16,8 +16,8 @@ from ffxiahbot.logutils import logger
 def main(
     cfg_path: Annotated[Path, Option("--config", help="Config file path.")] = Path("config.yaml"),
     inp_csvs: Annotated[list[Path], Option("--inp-csv", help="Input CSV file path.")] = (Path("items.csv"),),
-    buy_items: Annotated[bool, Option("--buy", help="Enable the buying of items.")] = True,
-    sell_items: Annotated[bool, Option("--sell", help="Enable the selling of items.")] = True,
+    buy_items: Annotated[bool, Option(help="Enable the buying of items.")] = True,
+    sell_items: Annotated[bool, Option(help="Enable the selling of items.")] = True,
 ):
     """
     Run a bot that buys and sells items on the auction house continuously.
