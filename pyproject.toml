@@ -22,7 +22,10 @@ license = {file = "LICENSE"}
 name = "ffxiahbot"
 readme = "README.md"
 requires-python = ">=3.12"
-version = "4.1.0"
+version = "4.2.0"
+
+[project.scripts]
+ffxiahbot = "ffxiahbot.__main__:app"
 
 [project.urls]
 Documentation = "https://AdamGagorik.github.io/ffxiahbot/"
