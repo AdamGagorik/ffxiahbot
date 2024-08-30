@@ -1,17 +1,7 @@
 # ah
 name: M.H.M.U.
-
-# basic
-verbose: true
-silent: false
-
-# input
-data: [items.csv]
-
-# output
-stub: items
-overwrite: false
-backup: true
+tick: 30
+restock: 3600
 
 # sql
 hostname: 127.0.0.1
@@ -19,15 +9,3 @@ database: xidb
 username: root
 password: ????
 fail: true
-
-# broker
-restock: 3600
-tick: 30
-
-# scrub
-server: bahamut
-threads: -1
-itemids: []
-stock_single: 10
-stock_stacks: 10
-urls: []

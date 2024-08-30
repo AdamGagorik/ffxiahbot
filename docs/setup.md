@@ -25,4 +25,4 @@ uv run ffxiahbot --help
 Follow the instructions on the [usage][USAGE] page.
 
 [uv]: https://docs.astral.sh/uv
-[USAGE]: http://adamgagorik.github.io/pydarkstar/generated/usage.html
+[USAGE]: http://adamgagorik.github.io/pydarkstar/usage
