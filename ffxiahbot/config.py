@@ -22,9 +22,8 @@ class Config(BaseModel):
 
     # Bot
     name: str = Field(default="M.H.M.U.", help="Bot name")
-    tick: int = Field(default=30, help="Tick interval")
-    data: tuple[Path, ...] = Field(default=("items.csv",), help="item data CSV file(s)")
-    restock: int = Field(default=3600, help="Restock interval")
+    tick: int = Field(default=30, help="Tick interval (seconds)")
+    restock: int = Field(default=3600, help="Restock interval (seconds)")
 
     # Logging
     silent: bool = Field(default=False, help="Set logging level to ERROR")
@@ -61,15 +60,16 @@ class Config(BaseModel):
 
 
 DEPRECATED = {
-    "overwrite": "use the `--overwrite` flag instead.",
-    "backup": "use the `--backup` flag instead.",
-    "stub": "use the `--out-csv` flag instead.",
-    "server": "use the `--server` flag instead.",
-    "threads": "use the `--threads` flag instead.",
-    "stock_stacks": "use the `--default-stock-stack` flag instead.",
-    "stock_single": "use the `--default-stock-single` flag instead.",
-    "itemids": "use the `--item-ids` flag instead.",
-    "urls": "use the `--urls` flag instead.",
+    "data": "use --inp-csv",
+    "overwrite": "use --overwrite",
+    "backup": "use --backup",
+    "stub": "use --out-csv",
+    "server": "use --server",
+    "threads": "use --threads",
+    "stock_stacks": "use --default-stock-stack",
+    "stock_single": "use --default-stock-single",
+    "itemids": "use --item-ids",
+    "urls": "use --urls",
 }
 
 

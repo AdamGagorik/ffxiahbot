@@ -11,20 +11,24 @@ import typer
 from rich.logging import RichHandler
 from typer import Option, Typer
 
+import ffxiahbot.apps.broker
+import ffxiahbot.apps.clear
+import ffxiahbot.apps.refill
 import ffxiahbot.apps.scrub
 
 OptionalPath = Optional[Path]
 
 
-app = Typer(add_completion=False, help=__doc__, invoke_without_command=True)
+app = Typer(add_completion=False, help=__doc__, invoke_without_command=True, rich_markup_mode="emoji")
 
 
 @app.callback()
 def setup(
-    version: Annotated[bool, Option(help="Show version information.", is_eager=True)] = False,
-    silent: Annotated[bool, Option(help="Enable silent logging.")] = False,
-    verbose: Annotated[bool, Option(help="Enable verbose logging.")] = False,
-    log_file: Annotated[Path, Option(help="Log file path.")] = Path("ffxi-ah-bot.log"),
+    version: Annotated[bool, Option("--version", help="Also show DEBUG messages.", is_eager=True)] = False,
+    silent: Annotated[bool, Option("--silent", help="Only show ERROR messages.")] = False,
+    verbose: Annotated[bool, Option("--verbose", help="Enable verbose logging.")] = False,
+    logfile: Annotated[Path, Option(help="The path to the log file.")] = Path("ahbot.log"),
+    no_logfile: Annotated[bool, Option("--disable-logfile", help="Disable logging to a file.")] = False,
 ):
     """
     Setup logging.
@@ -35,19 +39,27 @@ def setup(
         print(f"ffxiahbot v{__version__}")
         typer.Exit(0)
 
-    handler = RotatingFileHandler(log_file, maxBytes=1048576 * 5, backupCount=5)
-    handler.setFormatter(
-        logging.Formatter(
-            "[%(asctime)s][%(processName)s][%(threadName)s][%(levelname)-5s]: %(message)s", "%Y-%m-%d %H:%M:%S"
+    if no_logfile:
+        handlers = [RichHandler()]
+    else:
+        file_handler = RotatingFileHandler(logfile, maxBytes=1048576 * 5, backupCount=5)
+        file_handler.setFormatter(
+            logging.Formatter(
+                "[%(asctime)s][%(processName)s][%(threadName)s][%(levelname)-5s]: %(message)s", "%Y-%m-%d %H:%M:%S"
+            )
         )
-    )
+        handlers = [RichHandler(), file_handler]
+
     logging.basicConfig(
         level=logging.DEBUG if verbose else logging.INFO if not silent else logging.ERROR,
         format="%(message)s",
-        handlers=[RichHandler(), handler],
+        handlers=handlers,
     )
 
 
+app.command("broker")(ffxiahbot.apps.broker.main)
+app.command("clear")(ffxiahbot.apps.clear.main)
+app.command("refill")(ffxiahbot.apps.refill.main)
 app.command("scrub")(ffxiahbot.apps.scrub.main)
 
 

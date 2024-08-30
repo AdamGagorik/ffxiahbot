@@ -48,7 +48,7 @@ class Database(DarkObject):
             session.commit()
 
         # catch errors
-        except sqlalchemy.exc.SQLAlchemyError:
+        except sqlalchemy.exc.SQLAlchemyError as e:
             # log the error
             logging.exception("caught SQL exception")
 
@@ -58,7 +58,7 @@ class Database(DarkObject):
 
             # reraise error
             if fail:
-                raise RuntimeError("SQL Failed") from None
+                raise e from None
 
         # cleanup
         finally:

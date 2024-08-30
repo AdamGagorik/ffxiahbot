@@ -11,18 +11,18 @@ from typer import Exit, Option
 from ffxiahbot.logutils import logger
 from ffxiahbot.scrubbing.enums import ServerID
 
+# noinspection PyProtectedMember
+ServerIDOption = Option(
+    "--server",
+    help="The server ID to scrub.",
+    click_type=Choice(ServerID._member_names_, case_sensitive=False),
+)
+
 
 def main(
-    cfg_path: Annotated[Path, Option("--config", help="Configuration file path.")] = Path("config.yaml"),
+    cfg_path: Annotated[Path, Option("--config", help="Config file path.")] = Path("config.yaml"),
     out_csv: Annotated[Path, Option("--out-csv", help="The output CSV file to save.")] = Path("items.csv"),
-    server_str: Annotated[
-        str,
-        Option(
-            "--server",
-            help="The server ID to scrub.",
-            click_type=Choice(getattr(ServerID, "._member_names_"), case_sensitive=False),
-        ),
-    ] = ServerID.ASURA.name,
+    server_str: Annotated[str, ServerIDOption] = ServerID.ASURA.name,
     cat_urls: Annotated[list[str], Option("--cat-url", help="Preset category URLs.")] = (),
     item_ids: Annotated[list[int], Option("--item-id", help="Preset item IDs.")] = (),
     overwrite: Annotated[bool, Option("--overwrite", help="Overwrite output CSV?")] = False,
@@ -31,8 +31,7 @@ def main(
     should_backup: Annotated[bool, Option("--backup", help="Backup output CSV?")] = False,
 ):
     """
-    Download a list of items and their metadata from ffxiah.com.
-    This list of item metadata will be used for populating the AH.
+    Download a list of item prices from ffxiah.com and save to a CSV file.
     """
     from ffxiahbot.common import backup
     from ffxiahbot.config import Config
