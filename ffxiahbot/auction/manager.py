@@ -1,5 +1,7 @@
 import datetime
 
+from pydantic import SecretStr
+
 from ffxiahbot import timeutils
 from ffxiahbot.auction.browser import Browser
 from ffxiahbot.auction.buyer import Buyer
@@ -32,7 +34,7 @@ class Manager(Worker):
         hostname: str,
         database: str,
         username: str,
-        password: str,
+        password: str | SecretStr,
         port: int,
         name: str | None = None,
         fail: bool = True,
@@ -45,7 +47,7 @@ class Manager(Worker):
             hostname=hostname,
             database=database,
             username=username,
-            password=password,
+            password=password if isinstance(password, str) else password.get_secret_value(),
             port=port,
         )
 
@@ -177,7 +179,3 @@ class Manager(Worker):
                     now = timeutils.timestamp(datetime.datetime(2099, 1, 1))
                     self.seller.sell_item(itemid=data.itemid, stack=True, date=now, price=data.price_stacks, count=1)
                     stock += 1
-
-
-if __name__ == "__main__":
-    pass
