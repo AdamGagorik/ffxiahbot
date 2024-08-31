@@ -30,7 +30,7 @@ ffxiahbot --help
 ## Run from source
 
 ```bash
-git clone https://github.com/AdamGagorik/pydarkstar.git
+git clone https://github.com/AdamGagorik/ffxiahbot.git
 export PYTHONPATH=$PYTHONPATH:$(pwd)/src
 source venv/bin/activate
 python -m ffxiahbot --help

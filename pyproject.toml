@@ -28,8 +28,8 @@ version = "5.2.0"
 ffxiahbot = "ffxiahbot.__main__:app"
 
 [project.urls]
-Documentation = "https://AdamGagorik.github.io/pydarkstar"
-Repository = "https://github.com/AdamGagorik/pydarkstar"
+Documentation = "https://AdamGagorik.github.io/ffxiahbot"
+Repository = "https://github.com/AdamGagorik/ffxiahbot"
 
 [tool.coverage.report]
 skip_empty = true

@@ -25,8 +25,8 @@ This project was originally developed for the [Darkstar][DSP] server, but it wil
 
 ---
 
-[ghRep]: https://github.com/AdamGagorik/pydarkstar
-[ghWeb]: http://adamgagorik.github.io/pydarkstar
+[ghRep]: https://github.com/AdamGagorik/ffxiahbot
+[ghWeb]: http://adamgagorik.github.io/ffxiahbot
 [DSP]: https://github.com/DarkstarProject/darkstar
 [TPZ]: https://github.com/project-topaz/topaz
 [TPZN]: https://github.com/topaz-next/topaz

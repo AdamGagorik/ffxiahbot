@@ -15,8 +15,8 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ### Step 2: Test Run the bot
 
 ```bash
-git clone https://github.com/AdamGagorik/pydarkstar.git
-cd pydarkstar/bin
+git clone https://github.com/AdamGagorik/ffxiahbot.git
+cd ffxiahbot/bin
 uv run ffxiahbot --help
 ```
 
@@ -25,4 +25,4 @@ uv run ffxiahbot --help
 Follow the instructions on the [usage][USAGE] page.
 
 [uv]: https://docs.astral.sh/uv
-[USAGE]: http://adamgagorik.github.io/pydarkstar/usage
+[USAGE]: http://adamgagorik.github.io/ffxiahbot/usage

@@ -4,8 +4,8 @@
 
 Edit the `config.yaml` and `items.csv` files in the `bin` folder.
 
-- [`config.yaml`](https://github.com/AdamGagorik/pydarkstar/blob/master/bin/config.yaml)
-- [`items.csv`](https://github.com/AdamGagorik/pydarkstar/blob/master/bin/items.csv)
+- [`config.yaml`](https://github.com/AdamGagorik/ffxiahbot/blob/master/bin/config.yaml)
+- [`items.csv`](https://github.com/AdamGagorik/ffxiahbot/blob/master/bin/items.csv)
 
 From the `bin` folder, run any of the following commands:
 
