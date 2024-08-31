@@ -12,7 +12,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-### Step 2: Test Run the bot
+### Step 2: Run the app
 
 ```bash
 git clone https://github.com/AdamGagorik/ffxiahbot.git

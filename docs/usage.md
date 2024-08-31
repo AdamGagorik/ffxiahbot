@@ -31,8 +31,8 @@ uv run ffxiahbot scrub
 
 ## Creating the Config File
 
-You must create a YAML file to configure the tool (`config.yaml`).
-All other options are passed as command line arguments.
+You must create a YAML file to configure the tool (`config.yaml`). All other
+options are passed as command line arguments.
 
 ```yaml
 # ah
@@ -51,8 +51,8 @@ fail: true # fail on SQL database errors?
 
 ## Running the CLI
 
-Simply run the `ffxiahbot` from the command line.
-Specify the app you want to run and any flags you want to set.
+Simply run the `ffxiahbot` from the command line. Specify the app you want to
+run and any flags you want to set.
 
 !!! warning
 
@@ -67,9 +67,9 @@ Specify the app you want to run and any flags you want to set.
  The script will interact with the Auction House of a private Final Fantasy XI server.
 
 ╭─ Options ──────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --version                      Also show DEBUG messages.                                               │
+│ --version                      Show version string.                                                    │
 │ --silent                       Only show ERROR messages.                                               │
-│ --verbose                      Enable verbose logging.                                                 │
+│ --verbose                      Also show DEBUG messages.                                               │
 │ --logfile                PATH  The path to the log file. [default: ahbot.log]                          │
 │ --disable-logfile              Disable logging to a file.                                              │
 │ --help                         Show this message and exit.                                             │
@@ -172,14 +172,15 @@ This command will download item data from ffxiah.com and save it to a CSV file.
 
 #### Manually Editing the Items CSV
 
-- Item data is stored in _items.csv_ (you can edit it with a text editor or Excel)
+- Item data is stored in _items.csv_ (you can edit it with a text editor or
+  Excel)
 - There is an already generated _items.csv_ in the bin folder for you
 
 !!! warning
 
-    There is no reason to run the scrub app as an `items.csv` is included already in the repository!
-    You do not need to regenerate the database even if you think it is old!
-    You can cause yourself pricing issues, you have been warned!
+    - There is no reason to run the scrub app as an `items.csv` is included already in the repository!
+    - You do not need to regenerate the database even if you think it is old!
+    - You can cause yourself pricing issues, you have been warned!
 
 !!! warning
 

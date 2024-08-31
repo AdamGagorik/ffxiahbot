@@ -19,14 +19,19 @@ import ffxiahbot.apps.scrub
 OptionalPath = Optional[Path]
 
 
-app = Typer(add_completion=False, help=__doc__, invoke_without_command=True, rich_markup_mode="rich")
+app = Typer(
+    add_completion=False,
+    help=__doc__,
+    invoke_without_command=True,
+    rich_markup_mode="rich",
+)
 
 
 @app.callback()
 def setup(
-    version: Annotated[bool, Option("--version", help="Also show DEBUG messages.", is_eager=True)] = False,
+    version: Annotated[bool, Option("--version", help="Show version string.", is_eager=True)] = False,
     silent: Annotated[bool, Option("--silent", help="Only show ERROR messages.")] = False,
-    verbose: Annotated[bool, Option("--verbose", help="Enable verbose logging.")] = False,
+    verbose: Annotated[bool, Option("--verbose", help="Also show DEBUG messages.")] = False,
     logfile: Annotated[Path, Option(help="The path to the log file.")] = Path("ahbot.log"),
     no_logfile: Annotated[bool, Option("--disable-logfile", help="Disable logging to a file.")] = False,
 ):
@@ -45,13 +50,14 @@ def setup(
         file_handler = RotatingFileHandler(logfile, maxBytes=1048576 * 5, backupCount=5)
         file_handler.setFormatter(
             logging.Formatter(
-                "[%(asctime)s][%(processName)s][%(threadName)s][%(levelname)-5s]: %(message)s", "%Y-%m-%d %H:%M:%S"
+                "[%(asctime)s][%(processName)s][%(threadName)s][%(levelname)-5s]: %(message)s",
+                "%Y-%m-%d %H:%M:%S",
             )
         )
         handlers = [RichHandler(), file_handler]
 
     logging.basicConfig(
-        level=logging.DEBUG if verbose else logging.INFO if not silent else logging.ERROR,
+        level=(logging.DEBUG if verbose else logging.INFO if not silent else logging.ERROR),
         format="%(message)s",
         handlers=handlers,
     )
