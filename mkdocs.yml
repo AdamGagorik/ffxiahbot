@@ -1,6 +1,6 @@
 site_name: ffxiahbot
-repo_url: https://github.com/AdamGagorik/ffxiahbot
-site_url: https://AdamGagorik.github.io/ffxiahbot
+repo_url: https://github.com/AdamGagorik/pydarkstar
+site_url: https://AdamGagorik.github.io/pydarkstar
 site_description: A jinja2 block to render a mermaid diagram
 site_author: Adam Gagorik
 edit_uri: edit/main/docs/
@@ -46,7 +46,7 @@ theme:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/AdamGagorik/ffxiahbot
+      link: https://github.com/AdamGagorik/pydarkstar
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/ffxiahbot
 
