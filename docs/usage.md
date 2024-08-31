@@ -16,6 +16,19 @@ uv run ffxiahbot refill
 uv run ffxiahbot scrub
 ```
 
+!!! important
+
+    Run the `ffxiahbot` command inside a directory that contains a `config.yaml` and optionally an `items.csv`.
+
+!!! warning
+
+    The way you run the ffxiahbot command depends on how you installed it.
+
+    | Installation Method | Command                   |
+    |---------------------|---------------------------|
+    | uv                  | `uv run ffxiahbot --help` |
+    | pipx                |        `ffxiahbot --help` |
+
 ## Creating the Config File
 
 You must create a YAML file to configure the tool (`config.yaml`).
@@ -47,7 +60,7 @@ Specify the app you want to run and any flags you want to set.
     App specific command line flags must come after the name of the app to run.
 
 ```bash
-➜  ffxiahbot --help
+➜  uv run ffxiahbot --help
 
  Usage: ffxiahbot [OPTIONS] COMMAND [ARGS]...
 
@@ -74,10 +87,10 @@ Specify the app you want to run and any flags you want to set.
 This command will download item data from ffxiah.com and save it to a CSV file.
 
 ```bash
-➜  ffxiahbot --verbose scrub
-➜  ffxiahbot --verbose scrub --server ASURA
-➜  ffxiahbot --verbose scrub --item-id 1 --item-id 2 --item-id 3
-➜  ffxiahbot --verbose scrub --cat-url http://www.ffxiah.com/browse/62/grips
+➜  uv run ffxiahbot --verbose scrub
+➜  uv run ffxiahbot --verbose scrub --server ASURA
+➜  uv run ffxiahbot --verbose scrub --item-id 1 --item-id 2 --item-id 3
+➜  uv run ffxiahbot --verbose scrub --cat-url http://www.ffxiah.com/browse/62/grips
 ```
 
 !!! important
@@ -85,7 +98,7 @@ This command will download item data from ffxiah.com and save it to a CSV file.
     There is a pre-built CSV file in the repo, so you do not need to run this command if you don't want to.
 
 ```bash
-➜  ffxiahbot scrub --help
+➜  uv run ffxiahbot scrub --help
 
  Usage: ffxiahbot scrub [OPTIONS]
 
@@ -112,11 +125,11 @@ This command will download item data from ffxiah.com and save it to a CSV file.
     Run the `refill` app to populate the AH if you want to buy items immediately!
 
 ```bash
-➜  ffxiahbot refill --inp-csv items.csv
+➜  uv run ffxiahbot refill --inp-csv items.csv
 ```
 
 ```bash
-➜  ffxiahbot refill --help
+➜  uv run ffxiahbot refill --help
 
  Usage: ffxiahbot refill [OPTIONS]
 
@@ -134,7 +147,7 @@ This command will download item data from ffxiah.com and save it to a CSV file.
 #### Running the AH Broker Bot
 
 ```bash
-➜  ffxiahbot broker --inp-csv items.csv --buy-items --sell-items
+➜  uv run ffxiahbot broker --inp-csv items.csv --buy-items --sell-items
 ```
 
 !!! warning
@@ -142,7 +155,7 @@ This command will download item data from ffxiah.com and save it to a CSV file.
     The `broker` will wait until the 1st cycle defined in your config before populating items.
 
 ```bash
-➜  ffxiahbot broker --help
+➜  uv run ffxiahbot broker --help
 
  Usage: ffxiahbot broker [OPTIONS]
 
