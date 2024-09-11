@@ -12,12 +12,6 @@ TIMEOUT: int = 1024
 
 @dataclass()
 class Scrubber:
-    def scrub(self) -> dict[str, dict[str, Any]]:
-        """
-        Get item metadata.
-        """
-        return {}
-
     # noinspection PyBroadException
     @staticmethod
     def soup(url: str, absolute: bool = False, **kwargs: Any) -> BeautifulSoup:

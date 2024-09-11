@@ -1,4 +1,8 @@
 import contextlib
+from collections.abc import Iterator
+from typing import Any
+
+import sqlalchemy.orm
 
 from ffxiahbot.database import Database
 
@@ -10,7 +14,7 @@ class Worker:
     :param db: database object
     """
 
-    def __init__(self, db, rollback=True, fail=False):
+    def __init__(self, db: Database, rollback: bool = True, fail: bool = False) -> None:
         super().__init__()
         if not isinstance(db, Database):
             raise TypeError("expected Database object")
@@ -18,14 +22,14 @@ class Worker:
         self._fail = bool(fail)
         self._db = db
 
-    def session(self, **kwargs):
+    def session(self, **kwargs: Any) -> sqlalchemy.orm.Session:
         """
         Create database session.
         """
         return self._db.session(**kwargs)
 
     @contextlib.contextmanager
-    def scopped_session(self, **kwargs):
+    def scoped_session(self, **kwargs: Any) -> Iterator:
         """
         Create scoped database session.
         """
@@ -38,25 +42,21 @@ class Worker:
             pass
 
     @property
-    def db(self):
+    def db(self) -> Database:
         return self._db
 
     @property
-    def rollback(self):
+    def rollback(self) -> bool:
         return self._rollback
 
     @rollback.setter
-    def rollback(self, value):
+    def rollback(self, value: bool) -> None:
         self._rollback = bool(value)
 
     @property
-    def fail(self):
+    def fail(self) -> bool:
         return self._fail
 
     @fail.setter
-    def fail(self, value):
+    def fail(self, value: bool) -> None:
         self._fail = bool(value)
-
-
-if __name__ == "__main__":
-    pass

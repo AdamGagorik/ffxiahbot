@@ -9,21 +9,27 @@ from typing import Annotated
 
 from typer import Option
 
+from ffxiahbot.common import OptionalPathList
 from ffxiahbot.config import Config
 from ffxiahbot.logutils import logger
 
 
 def main(
     cfg_path: Annotated[Path, Option("--config", help="Config file path.")] = Path("config.yaml"),
-    inp_csvs: Annotated[list[Path], Option("--inp-csv", help="Input CSV file path.")] = (Path("items.csv"),),
+    inp_csvs: Annotated[
+        OptionalPathList, Option("--inp-csv", help="Input CSV file path.", show_default="items.csv")
+    ] = None,
     buy_items: Annotated[bool, Option(help="Enable the buying of items.")] = True,
     sell_items: Annotated[bool, Option(help="Enable the selling of items.")] = True,
-):
+) -> None:
     """
     Run a bot that buys and sells items on the auction house continuously.
     """
     from ffxiahbot.auction.manager import Manager
     from ffxiahbot.itemlist import ItemList
+
+    if inp_csvs is None:
+        inp_csvs = [Path("items.csv")]
 
     config: Config = Config.from_yaml(cfg_path)
     logger.info("%s", config.model_dump_json(indent=2))

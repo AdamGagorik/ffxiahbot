@@ -7,20 +7,26 @@ from typing import Annotated
 
 from typer import Option, confirm
 
+from ffxiahbot.common import OptionalPathList
 from ffxiahbot.config import Config
 from ffxiahbot.logutils import logger
 
 
 def main(
     cfg_path: Annotated[Path, Option("--config", help="Config file path.")] = Path("config.yaml"),
-    inp_csvs: Annotated[list[Path], Option("--inp-csv", help="Input CSV file path.")] = (Path("items.csv"),),
+    inp_csvs: Annotated[
+        OptionalPathList, Option("--inp-csv", help="Input CSV file path.", show_default="items.csv")
+    ] = None,
     no_prompt: Annotated[bool, Option("--no-prompt", help="Do not ask for confirmation.")] = False,
-):
+) -> None:
     """
     Refill the auction house with the items defined in the CSV file.
     """
     from ffxiahbot.auction.manager import Manager
     from ffxiahbot.itemlist import ItemList
+
+    if inp_csvs is None:
+        inp_csvs = [Path("items.csv")]
 
     config: Config = Config.from_yaml(cfg_path)
     logger.info("%s", config.model_dump_json(indent=2))

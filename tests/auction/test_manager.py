@@ -1,8 +1,14 @@
 from ffxiahbot.auction.manager import Manager
-from tests import sqltest
+from ffxiahbot.database import Database
 
 
-class TestCase01(sqltest.TestSQL):
-    def setUp(self):
-        super().setUp()
-        self.ob = Manager(self.db, fail=True)
+def test_buy_items(populated_fake_db: Database) -> None:
+    manager = Manager(populated_fake_db, seller_name="X", buyer_name="X", fail=True)
+    assert manager is not None
+    raise NotImplementedError
+
+
+def test_restock_items(populated_fake_db: Database) -> None:
+    manager = Manager(populated_fake_db, seller_name="X", buyer_name="X", fail=True)
+    assert manager is not None
+    raise NotImplementedError

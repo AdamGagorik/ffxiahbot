@@ -8,6 +8,7 @@ from typing import Annotated
 from click import Choice
 from typer import Exit, Option
 
+from ffxiahbot.common import OptionalIntList, OptionalStrList
 from ffxiahbot.logutils import logger
 from ffxiahbot.scrubbing.enums import ServerID
 
@@ -23,13 +24,13 @@ def main(
     cfg_path: Annotated[Path, Option("--config", help="Config file path.")] = Path("config.yaml"),
     out_csv: Annotated[Path, Option("--out-csv", help="The output CSV file to save.")] = Path("items.csv"),
     server_str: Annotated[str, ServerIDOption] = ServerID.ASURA.name,
-    cat_urls: Annotated[list[str], Option("--cat-url", help="Preset category URLs.")] = (),
-    item_ids: Annotated[list[int], Option("--item-id", help="Preset item IDs.")] = (),
+    cat_urls: Annotated[OptionalStrList, Option("--cat-url", help="Preset category URLs.")] = None,
+    item_ids: Annotated[OptionalIntList, Option("--item-id", help="Preset item IDs.")] = None,
     overwrite: Annotated[bool, Option("--overwrite", help="Overwrite output CSV?")] = False,
     stock_single: Annotated[int, Option(help="The default number of items for singles.")] = 10,
     stock_stacks: Annotated[int, Option(help="The default number of items for stacks.")] = 10,
     should_backup: Annotated[bool, Option("--backup", help="Backup output CSV?")] = False,
-):
+) -> None:
     """
     Download a list of item prices from ffxiah.com and save to a CSV file.
     """
@@ -45,7 +46,7 @@ def main(
     if not out_csv.suffix.lower() == ".csv":
         raise ValueError("--out-csv file must be a CSV file!")
 
-    if not overwrite and not backup and out_csv.exists():
+    if not overwrite and not should_backup and out_csv.exists():
         logger.error("output file already exists!\n\t%s", out_csv)
         logger.error("please use --overwrite or --backup")
         raise Exit(-1)

@@ -2,20 +2,23 @@ from __future__ import annotations
 
 import contextlib
 import logging
+from collections.abc import Generator
 from typing import Any
 
 import sqlalchemy.exc
 import sqlalchemy.orm
+from sqlalchemy import URL
 
 
 class Database:
     """
     Database connection using sqlalchemy.
 
-    :param url: sql database connection url
+    Args:
+        url: sql database connection url
     """
 
-    def __init__(self, url: str, **kwargs):
+    def __init__(self, url: str | URL, **kwargs: Any) -> None:
         super().__init__()
 
         # connect
@@ -31,15 +34,13 @@ class Database:
         return self._Session(**kwargs)
 
     @contextlib.contextmanager
-    def scoped_session(self, rollback: bool = True, fail: bool = False) -> sqlalchemy.orm.Session:
+    def scoped_session(self, rollback: bool = True, fail: bool = False) -> Generator[sqlalchemy.orm.Session]:
         """
         Provide a transactional scope around a series of operations.
 
-        :param rollback: rollback transactions after catch
-        :param fail: raise error after catch
-
-        :type rollback: bool
-        :type fail: bool
+        Args:
+            rollback: rollback transactions after catch
+            fail: raise error after catch
         """
         session = self._Session()
         try:
@@ -66,7 +67,15 @@ class Database:
             session.close()
 
     @classmethod
-    def pymysql(cls, hostname: str, database: str, username: str, password: str, port: int) -> Database:
+    def sqlite(cls, database: str = ":memory:", **kwargs: Any) -> Database:
+        """
+        Alternate constructor.  dialect=sqlite (in-memory)
+        """
+        url = URL.create("sqlite", database=database)
+        return cls(url, **kwargs)
+
+    @classmethod
+    def pymysql(cls, hostname: str, database: str, username: str, password: str, port: int, **kwargs: Any) -> Database:
         """
         Alternate constructor.  dialect=mysql, driver=pymysql
 
@@ -77,25 +86,15 @@ class Database:
             password: database password
             port: database port
         """
-        url = cls.format_url("mysql", "pymysql", hostname, database, username, password, port)
-        obj = cls(url)
-        return obj
-
-    @staticmethod
-    def format_url(
-        dialect: str, driver: str, hostname: str, database: str, username: str, password: str, port: int
-    ) -> str:
-        """
-        Create connection url.
-        """
-        return "{}://{username}:{password}@{hostname}:{port}/{database}".format(
-            "+".join([dialect, driver]),
-            hostname=hostname,
-            database=database,
+        url = URL.create(
+            "mysql+pymysql",
             username=username,
-            password=password,
+            password=password,  # plain (unescaped) text
+            host=hostname,
+            database=database,
             port=port,
         )
+        return cls(url, **kwargs)
 
     def __str__(self) -> str:
         return repr(self.engine)

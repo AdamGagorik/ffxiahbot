@@ -1,8 +1,12 @@
 from ffxiahbot.auction.worker import Worker
-from tests import sqltest
+from ffxiahbot.database import Database
 
 
-class TestCase01(sqltest.TestSQL):
-    def setUp(self):
-        super().setUp()
-        self.ob = Worker(self.db, fail=True)
+def test_create_worker(populated_fake_db: Database) -> None:
+    worker = Worker(populated_fake_db, fail=True)
+    assert worker.fail is True
+    assert worker.rollback is True
+    assert worker.db is populated_fake_db
+
+    with worker.scoped_session():
+        pass

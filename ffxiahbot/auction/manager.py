@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import datetime
+from typing import Any
 
 from pydantic import SecretStr
 
@@ -9,6 +12,7 @@ from ffxiahbot.auction.cleaner import Cleaner
 from ffxiahbot.auction.seller import Seller
 from ffxiahbot.auction.worker import Worker
 from ffxiahbot.database import Database
+from ffxiahbot.itemlist import ItemList
 from ffxiahbot.logutils import capture, logger
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
@@ -17,12 +21,13 @@ class Manager(Worker):
     """
     Auction House browser.
 
-    :param db: database object
+    Args:
+        db: The database object.
     """
 
-    def __init__(self, db, **kwargs):
+    def __init__(self, db: Database, **kwargs: Any) -> None:
         super().__init__(db, **kwargs)
-        self.blacklist = set()
+        self.blacklist: set[int] = set()
         self.browser = Browser(db, **kwargs)
         self.cleaner = Cleaner(db, **kwargs)
         self.seller = Seller(db, **kwargs)
@@ -38,7 +43,7 @@ class Manager(Worker):
         port: int,
         name: str | None = None,
         fail: bool = True,
-    ):
+    ) -> Manager:
         """
         Create database and manager at the same time.
         """
@@ -60,18 +65,18 @@ class Manager(Worker):
 
         return obj
 
-    def add_to_blacklist(self, rowid):
+    def add_to_blacklist(self, rowid: int) -> None:
         """
         Add row to blacklist.
         """
         logger.info("blacklisting: row=%d", rowid)
         self.blacklist.add(rowid)
 
-    def buy_items(self, itemdata):
+    def buy_items(self, itemdata: ItemList) -> None:
         """
         The main buy item loop.
         """
-        with self.scopped_session(fail=self.fail) as session:
+        with self.scoped_session(fail=self.fail) as session:
             # find rows that are still up for sale
             q = session.query(AuctionHouse).filter(
                 AuctionHouse.seller != self.seller.seller,
@@ -98,7 +103,7 @@ class Manager(Worker):
                                     # check price
                                     if row.price <= data.price_stacks:
                                         date = timeutils.timestamp(datetime.datetime.now())
-                                        self.buyer.buy_item(row, date, data.price_stacks)
+                                        self.buyer.set_row_buyer_info(row, date, data.price_stacks)
                                     else:
                                         logger.info(
                                             "price too high! itemid=%d %d <= %d",
@@ -117,7 +122,7 @@ class Manager(Worker):
                                     # check price
                                     if row.price <= data.price_single:
                                         date = timeutils.timestamp(datetime.datetime.now())
-                                        self.buyer.buy_item(row, date, data.price_single)
+                                        self.buyer.set_row_buyer_info(row, date, data.price_single)
                                     else:
                                         logger.info(
                                             "price too high! itemid=%d %d <= %d",
@@ -136,7 +141,7 @@ class Manager(Worker):
                         # row was blacklisted
                         logger.debug("skipping row %d", row.id)
 
-    def restock_items(self, itemdata):
+    def restock_items(self, itemdata: ItemList) -> None:
         """
         The main restock loop.
         """

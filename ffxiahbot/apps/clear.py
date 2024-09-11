@@ -15,7 +15,7 @@ def main(
     cfg_path: Annotated[Path, Option("--config", help="Config file path.")] = Path("config.yaml"),
     no_prompt: Annotated[bool, Option("--no-prompt", help="Do not ask for confirmation.")] = False,
     clear_all: Annotated[bool, Option("--all", help="Clear all items.")] = False,
-):
+) -> None:
     """
     Delete items from the auction house ([red]dangerous operation![/]).
     """

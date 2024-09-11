@@ -1,4 +1,7 @@
+from typing import Any
+
 from ffxiahbot.auction.worker import Worker
+from ffxiahbot.database import Database
 from ffxiahbot.logutils import capture
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
@@ -7,25 +10,27 @@ class Seller(Worker):
     """
     Auction House seller.
 
-    :param db: database object
-    :param seller: auction house seller id
-    :param seller_name: auction house seller name
+    Args:
+        db: The database object.
+        seller: The auction house seller id.
+        seller_name: The auction house seller name.
     """
 
-    def __init__(self, db, seller=0, seller_name="Zissou", **kwargs):
+    def __init__(self, db: Database, seller: int = 0, seller_name: str = "Zissou", **kwargs: Any) -> None:
         super().__init__(db, **kwargs)
         self.seller = int(seller)
         self.seller_name = str(seller_name)
 
-    def set_history(self, itemid, stack, price, date, count=1):
+    def set_history(self, itemid: int, stack: int | bool, price: int, date: int, count: int = 1) -> None:
         """
         Set the history of a particular item.
 
-        :param itemid: item number
-        :param stack: stack 0|1
-        :param date: timestamp
-        :param price: price
-        :param count: rows
+        Args:
+            itemid: The item number.
+            stack: The stack size.
+            price: The price.
+            date: The timestamp.
+            count: The number of rows.
         """
         with capture(fail=self.fail):
             itemid = AuctionHouse.validate_itemid(itemid)
@@ -34,7 +39,7 @@ class Seller(Worker):
             date = AuctionHouse.validate_date(date)
 
             # add row
-            with self.scopped_session() as session:
+            with self.scoped_session() as session:
                 # add the item multiple times
                 for _i in range(count):
                     row = AuctionHouse(
@@ -48,18 +53,18 @@ class Seller(Worker):
                         sale=price,
                         sell_date=date,
                     )
-
                     session.add(row)
 
-    def sell_item(self, itemid, stack, date, price, count):
+    def sell_item(self, itemid: int, stack: int, date: int, price: int, count: int) -> None:
         """
         Put up a particular item for sale.
 
-        :param itemid: item number
-        :param stack: stack 0|1
-        :param date: timestamp
-        :param price: price
-        :param count: rows
+        Args:
+            itemid: The item number.
+            stack: The stack size.
+            date: The timestamp.
+            price: The price.
+            count: The number of rows.
         """
         with capture(fail=self.fail):
             itemid = AuctionHouse.validate_itemid(itemid)
@@ -68,7 +73,7 @@ class Seller(Worker):
             date = AuctionHouse.validate_date(date)
 
             # add row
-            with self.scopped_session() as session:
+            with self.scoped_session() as session:
                 # add the item multiple times
                 for _i in range(count):
                     row = AuctionHouse(
@@ -79,9 +84,4 @@ class Seller(Worker):
                         date=date,
                         price=price,
                     )
-
                     session.add(row)
-
-
-if __name__ == "__main__":
-    pass

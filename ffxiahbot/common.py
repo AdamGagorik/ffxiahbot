@@ -3,10 +3,23 @@ import logging
 import os
 import re
 import shutil
+from collections.abc import Iterator
 from pathlib import Path
+from typing import Any, Optional
+
+OptionalPath = Optional[Path]
+OptionalIntList = Optional[list[int]]
+OptionalStrList = Optional[list[str]]
+OptionalPathList = Optional[list[Path]]
 
 
-def create_path(*args, absolute=True, dt_fmt="%Y_%m_%d_%H_%M_%S", dt=None, **kwargs):
+def create_path(
+    *args: str,
+    absolute: bool = True,
+    dt_fmt: str = "%Y_%m_%d_%H_%M_%S",
+    dt: datetime.datetime | None = None,
+    **kwargs: Any,
+) -> bytes | str:
     """
     Construct a path.  You can access dt or datetime as objects.
 
@@ -46,7 +59,7 @@ def backup(path: str | Path, copy: bool = False) -> Path | None:
 
     # nothing to back up
     if not os.path.exists(old_path):
-        return
+        return None
 
     if not os.path.isfile(old_path):
         raise RuntimeError(f"can only backup files: {old_path}")
@@ -86,7 +99,9 @@ def backup(path: str | Path, copy: bool = False) -> Path | None:
     return Path(new_path)
 
 
-def find_files(top, regex=r".*", r=False, ignorecase=True, **kwargs):
+def find_files(
+    top: str, regex: str | re.Pattern[str] = r".*", r: bool = False, ignorecase: bool = True, **kwargs: Any
+) -> Iterator[str]:
     """
     Search for files that match pattern.
 
@@ -95,7 +110,11 @@ def find_files(top, regex=r".*", r=False, ignorecase=True, **kwargs):
     :param regex: pattern to match
     :param r: recursive search
     """
-    regex = re.compile(regex, re.IGNORECASE) if ignorecase else re.compile(regex)
+    regex = (
+        regex
+        if isinstance(regex, re.Pattern)
+        else (re.compile(regex, re.IGNORECASE) if ignorecase else re.compile(regex))
+    )
 
     if r:
         for root, _dirs, files in os.walk(top, **kwargs):
@@ -109,7 +128,3 @@ def find_files(top, regex=r".*", r=False, ignorecase=True, **kwargs):
             match = regex.match(f)
             if match:
                 yield os.path.join(root, f)
-
-
-if __name__ == "__main__":
-    pass
