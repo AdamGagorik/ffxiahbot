@@ -1,11 +1,11 @@
-from typing import Any
+from dataclasses import dataclass
 
 from ffxiahbot.auction.worker import Worker
-from ffxiahbot.database import Database
 from ffxiahbot.logutils import capture
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
+@dataclass(frozen=True)
 class Seller(Worker):
     """
     Auction House seller.
@@ -16,10 +16,10 @@ class Seller(Worker):
         seller_name: The auction house seller name.
     """
 
-    def __init__(self, db: Database, seller: int = 0, seller_name: str = "Zissou", **kwargs: Any) -> None:
-        super().__init__(db, **kwargs)
-        self.seller = int(seller)
-        self.seller_name = str(seller_name)
+    #: The auction house seller id.
+    seller: int
+    #: The auction house seller name.
+    seller_name: str
 
     def set_history(self, itemid: int, stack: int | bool, price: int, date: int, count: int = 1) -> None:
         """

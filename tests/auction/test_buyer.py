@@ -36,6 +36,7 @@ def transactions() -> tuple[AHR, ...]:
     )
 
 
+# noinspection PyTypeChecker
 def get_row_for_sale_by(session: Session, seller_name: str) -> AuctionHouse:
     return session.query(AuctionHouse).filter(AuctionHouse.seller_name == seller_name).first()
 
@@ -51,7 +52,7 @@ def test_buyer_buys_row(
 ) -> None:
     expected_transaction_table = setup_ah_transactions(populated_fake_db, *transactions)
 
-    buyer = Buyer(populated_fake_db, buyer_name=buyer_name, fail=True)
+    buyer = Buyer(populated_fake_db, buyer_name=buyer_name, rollback=True, fail=True)
     with populated_fake_db.scoped_session() as session:
         row = get_row_for_sale_by(session, seller_name)
         buyer.set_row_buyer_info(row, 0, buy_price)
@@ -79,7 +80,7 @@ def test_buyer_raises_on_invalid_item(
     buy_price: int = 1,
 ):
     setup_ah_transactions(populated_fake_db, *transactions)
-    buyer = Buyer(populated_fake_db, buyer_name=buyer_name, fail=True)
+    buyer = Buyer(populated_fake_db, buyer_name=buyer_name, rollback=True, fail=True)
     with populated_fake_db.scoped_session() as session:
         row = get_row_for_sale_by(session, seller_name)
         with pytest.raises(RuntimeError):

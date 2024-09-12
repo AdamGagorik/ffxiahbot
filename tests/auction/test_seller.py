@@ -25,7 +25,7 @@ def test_set_history(populated_fake_db: Database, sell_timestamp) -> None:
         assert session.query(AuctionHouse).count() == 0
 
     # set history for item
-    seller = Seller(populated_fake_db, seller=1, seller_name="X", fail=True)
+    seller = Seller(populated_fake_db, seller=1, seller_name="X", rollback=True, fail=True)
     seller.set_history(itemid=1, stack=False, price=1024, date=sell_timestamp, count=10)
 
     # ensure database has 10 rows
@@ -49,7 +49,7 @@ def test_sell_item(populated_fake_db: Database, sell_timestamp) -> None:
         assert session.query(AuctionHouse).count() == 0
 
     # sell item
-    seller = Seller(populated_fake_db, seller=1, seller_name="X", fail=True)
+    seller = Seller(populated_fake_db, seller=1, seller_name="X", rollback=True, fail=True)
     seller.sell_item(itemid=1, stack=True, date=sell_timestamp, price=1024, count=5)
 
     # ensure database has 5 rows

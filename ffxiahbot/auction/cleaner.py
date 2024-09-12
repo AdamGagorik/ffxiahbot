@@ -1,21 +1,15 @@
-from typing import Any
+from dataclasses import dataclass
 
 from ffxiahbot.auction.worker import Worker
-from ffxiahbot.database import Database
 from ffxiahbot.logutils import capture, logger
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
+@dataclass(frozen=True)
 class Cleaner(Worker):
     """
     Auction House cleaner.
-
-    Args:
-        db: The database object.
     """
-
-    def __init__(self, db: Database, **kwargs: Any) -> None:
-        super().__init__(db, **kwargs)
 
     def clear(self, seller: int | None = None) -> None:
         """

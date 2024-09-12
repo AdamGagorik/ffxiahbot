@@ -25,7 +25,7 @@ def test_clear_all(populated_fake_db: Database, transactions: tuple[AHR, ...]) -
         assert session.query(AuctionHouse).count() == 4
 
     # clear all rows
-    cleaner = Cleaner(populated_fake_db, fail=True)
+    cleaner = Cleaner(populated_fake_db, rollback=True, fail=True)
     cleaner.clear(seller=None)
 
     # ensure database has 0 rows
@@ -40,7 +40,7 @@ def test_clear_for_seller(populated_fake_db: Database, transactions: tuple[AHR, 
         assert session.query(AuctionHouse).count() == 4
 
     # clear rows for seller 1
-    cleaner = Cleaner(populated_fake_db, fail=True)
+    cleaner = Cleaner(populated_fake_db, rollback=True, fail=True)
     cleaner.clear(seller=1)
 
     # ensure database has 2 rows

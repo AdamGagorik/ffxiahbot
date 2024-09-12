@@ -108,7 +108,7 @@ class TestCase04(BaseTest):
 class TestCase05(BaseTest):
     def test_str(self):
         stmp1 = timeutils.timestamp("1/2/1971 04:05:06")
-        self.assertTrue(isinstance(stmp1, float))
+        self.assertTrue(isinstance(stmp1, int))
         dobj1 = timeutils.timestamp_to_datetime(stmp1)
         self.assertEqual(dobj1.month, 1)
         self.assertEqual(dobj1.day, 2)
@@ -123,7 +123,7 @@ class TestCase05(BaseTest):
             dobj1 = randomdt(year_range=(1971, 2015))
             stmp1 = timeutils.datetime_to_timestamp(dobj1)
             stmp2 = timeutils.timestamp(stmp1)
-            self.assertTrue(isinstance(stmp1, float))
+            self.assertTrue(isinstance(stmp1, int))
             self.assertEqual(stmp1, stmp2)
 
     def test_datetime(self):
@@ -131,7 +131,7 @@ class TestCase05(BaseTest):
             dobj1 = randomdt()
             stmp1 = timeutils.timestamp(dobj1)
             stmp2 = timeutils.datetime_to_timestamp(dobj1)
-            self.assertTrue(isinstance(stmp1, float))
+            self.assertTrue(isinstance(stmp1, int))
             self.assertEqual(stmp1, stmp2)
 
     def test_args(self):

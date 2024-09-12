@@ -1,22 +1,21 @@
-from typing import Any
+from dataclasses import dataclass
 
 from ffxiahbot.auction.worker import Worker
-from ffxiahbot.database import Database
 from ffxiahbot.logutils import logger
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
+@dataclass(frozen=True)
 class Buyer(Worker):
     """
     Auction House buyer.
 
     Args:
-        db: The database object.
+        buyer_name: The name of the character buying the item.
     """
 
-    def __init__(self, db: Database, buyer_name: str = "Zissou", **kwargs: Any) -> None:
-        super().__init__(db, **kwargs)
-        self.buyer_name = str(buyer_name)
+    #: The name of the character buying the item.
+    buyer_name: str
 
     def set_row_buyer_info(self, row: AuctionHouse, date: int, price: int) -> None:
         """

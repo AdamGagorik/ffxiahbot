@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime
+from dataclasses import dataclass
 from typing import Any
 
 from pydantic import SecretStr
@@ -17,21 +18,22 @@ from ffxiahbot.logutils import capture, logger
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
+@dataclass(frozen=True)
 class Manager(Worker):
     """
     Auction House browser.
-
-    Args:
-        db: The database object.
     """
 
-    def __init__(self, db: Database, **kwargs: Any) -> None:
-        super().__init__(db, **kwargs)
-        self.blacklist: set[int] = set()
-        self.browser = Browser(db, **kwargs)
-        self.cleaner = Cleaner(db, **kwargs)
-        self.seller = Seller(db, **kwargs)
-        self.buyer = Buyer(db, **kwargs)
+    #: Auction House database row ids to ignore.
+    blacklist: set[int]
+    #: A worker to browse the auction house.
+    browser: Browser
+    #: A worker to clean the auction house.
+    cleaner: Cleaner
+    #: A worker to sell and restock items.
+    seller: Seller
+    #: A worker to purchase items.
+    buyer: Buyer
 
     @classmethod
     def create_database_and_manager(
@@ -41,11 +43,18 @@ class Manager(Worker):
         username: str,
         password: str | SecretStr,
         port: int,
-        name: str | None = None,
-        fail: bool = True,
+        **kwargs: Any,
     ) -> Manager:
         """
         Create database and manager at the same time.
+
+        Args:
+            hostname: Database hostname.
+            database: Database name.
+            username: Database username.
+            password: Database password.
+            port: Database port.
+            **kwargs: Additional arguments passed to the `Manager.from_db` method.
         """
         # connect to database
         db = Database.pymysql(
@@ -57,13 +66,37 @@ class Manager(Worker):
         )
 
         # create auction house manager
-        obj = cls(db, fail=fail)
+        return cls.from_db(db=db, **kwargs)
 
-        if name is not None:
-            obj.seller.seller_name = name
-            obj.buyer.buyer_name = name
+    @classmethod
+    def from_db(
+        cls,
+        db: Database,
+        name: str,
+        fail: bool = True,
+        rollback: bool = True,
+        blacklist: set[int] | None = None,
+    ) -> Manager:
+        """
+        Create manager from database.
 
-        return obj
+        Args:
+            db: Database connection.
+            name: Name of the seller and buyer.
+            fail: If True, raise exceptions.
+            rollback: If True, rollback transactions.
+            blacklist: Auction House row ids to ignore.
+        """
+        return cls(
+            db=db,
+            blacklist=blacklist if blacklist is not None else set(),
+            browser=Browser(db=db, rollback=rollback, fail=fail),
+            cleaner=Cleaner(db=db, rollback=rollback, fail=fail),
+            seller=Seller(db=db, rollback=rollback, fail=fail, seller=0, seller_name=name),
+            buyer=Buyer(db=db, rollback=rollback, fail=fail, buyer_name=name),
+            rollback=rollback,
+            fail=fail,
+        )
 
     def add_to_blacklist(self, rowid: int) -> None:
         """

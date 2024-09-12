@@ -8,7 +8,7 @@ from sqlalchemy.exc import OperationalError
 
 from ffxiahbot.database import Database
 
-EXPECTED_TABLE_NAMES: set[str] = {"auction_house", "delivery_box"}
+EXPECTED_TABLE_NAMES: set[str] = {"auction_house"}
 
 
 def test_real_connection(real_db: Database):

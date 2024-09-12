@@ -8,12 +8,12 @@ from tests.cookbook import setup_ah_transactions
 
 
 def test_browser_count_empty(populated_fake_db: Database) -> None:
-    browser = Browser(populated_fake_db, fail=True)
+    browser = Browser(populated_fake_db, rollback=True, fail=True)
     assert browser.count() == 0
 
 
 def test_browser_count_one_item(populated_fake_db: Database) -> None:
-    browser = Browser(populated_fake_db, fail=True)
+    browser = Browser(populated_fake_db, rollback=True, fail=True)
     AHR().add_item_for_sale(populated_fake_db)
     assert browser.count() == 1
 
@@ -59,36 +59,36 @@ def test_browser_count_one_item(populated_fake_db: Database) -> None:
 )
 def test_browser_get_stock_and_price(populated_fake_db: Database, transactions: tuple[AHR]) -> None:
     builder = setup_ah_transactions(populated_fake_db, *transactions)
-    browser = Browser(populated_fake_db, fail=True)
+    browser = Browser(populated_fake_db, rollback=True, fail=True)
 
     # validate totals being sold
     for i in builder.itemid.unique():
         assert browser.get_stock(i, stack=True, seller=None) == len(
-            builder.query(f"itemid == {i} & stack == 1 & sale.isnull()")
+            builder.query(f"itemid == {i} & stack == 1 & sale == 0")
         )
         assert browser.get_stock(i, stack=False, seller=None) == len(
-            builder.query(f"itemid == {i} & stack == 0 & sale.isnull()")
+            builder.query(f"itemid == {i} & stack == 0 & sale == 0")
         )
 
     # validate totals being sold for seller
     for seller in builder.seller.unique():
         for i in builder.itemid.unique():
             assert browser.get_stock(i, stack=True, seller=seller) == len(
-                builder.query(f"itemid == {i} & stack == 1 & sale.isnull() & seller == {seller}")
+                builder.query(f"itemid == {i} & stack == 1 & sale == 0 & seller == {seller}")
             )
             assert browser.get_stock(i, stack=False, seller=seller) == len(
-                builder.query(f"itemid == {i} & stack == 0 & sale.isnull() & seller == {seller}")
+                builder.query(f"itemid == {i} & stack == 0 & sale == 0 & seller == {seller}")
             )
 
     # validate min price for item up for sale
     for i in builder.itemid.unique():
         assert (
             browser.get_price(i, stack=True, seller=None)
-            == builder.query(f"itemid == {i} & stack == 1 & sale > 0").price.min()
+            == builder.query(f"itemid == {i} & stack == 1 & sale > 0").sale.min()
         )
         assert (
             browser.get_price(i, stack=False, seller=None)
-            == builder.query(f"itemid == {i} & stack == 0 & sale > 0").price.min()
+            == builder.query(f"itemid == {i} & stack == 0 & sale > 0").sale.min()
         )
 
     # validate min price for item up for sale by seller
@@ -96,9 +96,9 @@ def test_browser_get_stock_and_price(populated_fake_db: Database, transactions: 
         for i in builder.itemid.unique():
             assert (
                 browser.get_price(i, stack=True, seller=seller)
-                == builder.query(f"itemid == {i} & stack == 1 & sale > 0 & seller == {seller}").price.min()
+                == builder.query(f"itemid == {i} & stack == 1 & sale > 0 & seller == {seller}").sale.min()
             )
             assert (
                 browser.get_price(i, stack=False, seller=seller)
-                == builder.query(f"itemid == {i} & stack == 0 & sale > 0 & seller == {seller}").price.min()
+                == builder.query(f"itemid == {i} & stack == 0 & sale > 0 & seller == {seller}").sale.min()
             )

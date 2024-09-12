@@ -1,24 +1,18 @@
 from collections.abc import Callable
-from typing import Any
+from dataclasses import dataclass
 
 import sqlalchemy
 
 from ffxiahbot.auction.worker import Worker
-from ffxiahbot.database import Database
 from ffxiahbot.logutils import capture
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
+@dataclass(frozen=True)
 class Browser(Worker):
     """
     Auction House browser.
-
-    Args:
-        db: The database object.
     """
-
-    def __init__(self, db: Database, **kwargs: Any) -> None:
-        super().__init__(db, **kwargs)
 
     def count(self) -> int:
         """
@@ -86,7 +80,7 @@ class Browser(Worker):
             # ignore seller
             if seller is None:
                 n = (
-                    session.query(func(AuctionHouse.price))
+                    session.query(func(AuctionHouse.sale))
                     .filter(
                         AuctionHouse.itemid == AuctionHouse.validate_itemid(itemid),
                         AuctionHouse.stack == AuctionHouse.validate_stack(stack),
@@ -99,7 +93,7 @@ class Browser(Worker):
             # consider seller
             else:
                 n = (
-                    session.query(func(AuctionHouse.price))
+                    session.query(func(AuctionHouse.sale))
                     .filter(
                         AuctionHouse.itemid == AuctionHouse.validate_itemid(itemid),
                         AuctionHouse.seller == AuctionHouse.validate_seller(seller),
