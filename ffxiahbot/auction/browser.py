@@ -63,7 +63,7 @@ class Browser(Worker):
 
     def get_price(
         self, itemid: int, stack: bool = False, seller: int | None = None, func: Callable = sqlalchemy.func.min
-    ) -> int:
+    ) -> int | None:
         """
         Get the historical price of an item.
 
@@ -88,7 +88,7 @@ class Browser(Worker):
                     )
                     .scalar()
                 )
-                return int(n)
+                return None if n is None else int(n)
 
             # consider seller
             else:
@@ -102,4 +102,4 @@ class Browser(Worker):
                     )
                     .scalar()
                 )
-                return int(n)
+                return None if n is None else int(n)

@@ -101,6 +101,18 @@ class ItemList:
         """
         return self.items[itemid]
 
+    def __contains__(self, itemid: int) -> bool:
+        """
+        Check if Item is in ItemList.
+
+        Args:
+            itemid: The item id.
+
+        Returns:
+            bool: True if the Item is in the ItemList, False otherwise.
+        """
+        return itemid in self.items
+
     def __len__(self) -> int:
         """
         Get the number of items in the ItemList.
