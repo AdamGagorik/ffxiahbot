@@ -15,6 +15,20 @@ wheels = [
 ]
 
 [[package]]
+name = "apscheduler"
+version = "3.10.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytz" },
+    { name = "six" },
+    { name = "tzlocal" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5e/34/5dcb368cf89f93132d9a31bd3747962a9dc874480e54333b0c09fa7d56ac/APScheduler-3.10.4.tar.gz", hash = "sha256:e6df071b27d9be898e486bc7940a7be50b4af2e9da7c08f0744a96d4bd4cef4a", size = 100832 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/13/b5/7af0cb920a476dccd612fbc9a21a3745fb29b1fcd74636078db8f7ba294c/APScheduler-3.10.4-py3-none-any.whl", hash = "sha256:fb91e8a768632a4756a585f79ec834e0e27aad5860bac7eaa523d9ccefd87661", size = 59303 },
+]
+
+[[package]]
 name = "babel"
 version = "2.16.0"
 source = { registry = "https://pypi.org/simple" }
@@ -177,6 +191,7 @@ name = "ffxiahbot"
 version = "5.2.1"
 source = { editable = "." }
 dependencies = [
+    { name = "apscheduler" },
     { name = "beautifulsoup4" },
     { name = "click" },
     { name = "pydantic" },
@@ -207,6 +222,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "apscheduler", specifier = ">=3.10.4" },
     { name = "beautifulsoup4", specifier = ">=4.12.3" },
     { name = "click", specifier = ">=8.1.7" },
     { name = "pydantic", specifier = ">=2.8.2" },
@@ -1007,6 +1023,18 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/74/5b/e025d02cb3b66b7b76093404392d4b44343c69101cc85f4d180dd5784717/tzdata-2024.1.tar.gz", hash = "sha256:2674120f8d891909751c38abcdfd386ac0a5a1127954fbc332af6b5ceae07efd", size = 190559 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/65/58/f9c9e6be752e9fcb8b6a0ee9fb87e6e7a1f6bcab2cdc73f02bb7ba91ada0/tzdata-2024.1-py2.py3-none-any.whl", hash = "sha256:9068bc196136463f5245e51efda838afa15aaeca9903f49050dfa2679db4d252", size = 345370 },
+]
+
+[[package]]
+name = "tzlocal"
+version = "5.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "tzdata", marker = "platform_system == 'Windows'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/04/d3/c19d65ae67636fe63953b20c2e4a8ced4497ea232c43ff8d01db16de8dc0/tzlocal-5.2.tar.gz", hash = "sha256:8d399205578f1a9342816409cc1e46a93ebd5755e39ea2d85334bea911bf0e6e", size = 30201 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/97/3f/c4c51c55ff8487f2e6d0e618dba917e3c3ee2caae6cf0fbb59c9b1876f2e/tzlocal-5.2-py3-none-any.whl", hash = "sha256:49816ef2fe65ea8ac19d19aa7a1ae0551c834303d5014c6d5a62e4cbda8047b8", size = 17859 },
 ]
 
 [[package]]

@@ -15,7 +15,8 @@ dependencies = [
   "typer>=0.12.5",
   "rich>=13.8.0",
   "pydantic>=2.8.2",
-  "click>=8.1.7"
+  "click>=8.1.7",
+  "apscheduler>=3.10.4"
 ]
 description = "A command line tool for interacting with a FFXI server."
 license = {file = "LICENSE"}
