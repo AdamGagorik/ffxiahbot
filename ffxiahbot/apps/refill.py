@@ -7,9 +7,11 @@ from typing import Annotated
 
 from typer import Option, confirm
 
-from ffxiahbot.common import OptionalPathList
+from ffxiahbot.common import OptionalPath, OptionalPathList
 from ffxiahbot.config import Config
+from ffxiahbot.database import Database
 from ffxiahbot.logutils import logger
+from ffxiahbot.tables.base import Base
 
 
 def main(
@@ -18,6 +20,7 @@ def main(
         OptionalPathList, Option("--inp-csv", help="Input CSV file path.", show_default="items.csv")
     ] = None,
     no_prompt: Annotated[bool, Option("--no-prompt", help="Do not ask for confirmation.")] = False,
+    use_sqlite_db: Annotated[OptionalPath, Option(help="Use a test SQLite database instead of the real one?")] = None,
 ) -> None:
     """
     Refill the auction house with the items defined in the CSV file.
@@ -32,15 +35,23 @@ def main(
     logger.info("%s", config.model_dump_json(indent=2))
 
     # create auction house manager
-    manager = Manager.create_database_and_manager(
-        hostname=config.hostname,
-        database=config.database,
-        username=config.username,
-        password=config.password,
-        port=config.port,
-        name=config.name,
-        fail=config.fail,
-    )
+    if use_sqlite_db:
+        manager = Manager.from_db(
+            db=Database.sqlite(database=str(use_sqlite_db)),
+            name=config.name,
+            fail=config.fail,
+        )
+        Base.metadata.create_all(manager.db.engine)
+    else:
+        manager = Manager.create_database_and_manager(
+            hostname=config.hostname,
+            database=config.database,
+            username=config.username,
+            password=config.password,
+            port=config.port,
+            name=config.name,
+            fail=config.fail,
+        )
 
     # load data
     item_list = ItemList.from_csv(*inp_csvs)
