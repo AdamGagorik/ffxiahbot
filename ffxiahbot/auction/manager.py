@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import contextlib
 import datetime
+from collections import Counter
 from dataclasses import dataclass
 from typing import Any
 
+import pandas as pd
 from pydantic import SecretStr
+from rich.progress import Progress, TimeElapsedColumn
 
 from ffxiahbot import timeutils
 from ffxiahbot.auction.browser import Browser
@@ -123,14 +127,17 @@ class Manager(Worker):
                 AuctionHouse.sale == 0,
             )
             # loop rows
+            counts = Counter()
             for row in q:
                 if row.id in self.blacklist:
                     logger.debug("skipping blacklisted row %d", row.id)
+                    counts["blacklisted"] += 1
                     continue
 
                 if row.itemid not in item_list:
                     logger.error("item missing from database: %d", row.itemid)
                     self.add_to_blacklist(row.id)
+                    counts["unknown itemid"] += 1
                     continue
 
                 with capture(fail=self.fail):
@@ -140,16 +147,30 @@ class Manager(Worker):
                         if not item.buy_stacks:
                             logger.debug("not allowed to buy item! itemid=%d", row.itemid)
                             self.add_to_blacklist(row.id)
+                            counts["forbidden item"] += 1
                         else:
-                            self._buy_row(row, item.price_stacks)
+                            if self._buy_row(row, item.price_stacks):
+                                counts["stack purchased"] += 1
+                            else:
+                                counts["price too high"] += 1
                     else:
                         if not item.buy_single:
                             logger.debug("not allowed to buy item! itemid=%d", row.itemid)
                             self.add_to_blacklist(row.id)
+                            counts["forbidden item"] += 1
                         else:
-                            self._buy_row(row, item.price_single)
+                            if self._buy_row(row, item.price_single):
+                                counts["single purchased"] += 1
+                            else:
+                                counts["price too high"] += 1
 
-    def _buy_row(self, row: AuctionHouse, max_price: int) -> None:
+            counts_frame = pd.DataFrame.from_dict(counts, orient="index").rename(columns={0: "count"})
+            if not counts_frame.empty:
+                logger.debug("manager.buy_items counts: \n%s", counts_frame)
+            else:
+                logger.warning("no rows processed when buying items (no items for sale?)")
+
+    def _buy_row(self, row: AuctionHouse, max_price: int) -> bool:
         """
         Buy a row.
 
@@ -161,6 +182,7 @@ class Manager(Worker):
         if row.price <= max_price:
             date = timeutils.timestamp(datetime.datetime.now())
             self.buyer.set_row_buyer_info(row, date, max_price)
+            return True
         else:
             logger.info(
                 "price too high! itemid=%d %d <= %d",
@@ -169,6 +191,7 @@ class Manager(Worker):
                 max_price,
             )
             self.add_to_blacklist(row.id)
+            return False
 
     def restock_items(self, item_list: ItemList) -> None:
         """
@@ -178,14 +201,17 @@ class Manager(Worker):
             item_list: Item data.
         """
         # loop over items
-        for data in item_list.items.values():
-            # singles
-            if data.sell_single:
-                self._sell_item(data.itemid, stack=False, price=data.price_single, stock=data.stock_single)
+        with progress_bar("[red]Restocking Items...", total=len(item_list)) as (progress, task):
+            for item in item_list.items.values():
+                # singles
+                if item.sell_single:
+                    self._sell_item(item.itemid, stack=False, price=item.price_single, stock=item.stock_single)
+                    progress.update(task, advance=0.5)
 
-            # stacks
-            if data.sell_stacks:
-                self._sell_item(data.itemid, stack=True, price=data.price_stacks, stock=data.stock_stacks)
+                # stacks
+                if item.sell_stacks:
+                    self._sell_item(item.itemid, stack=True, price=item.price_stacks, stock=item.stock_stacks)
+                    progress.update(task, advance=0.5)
 
     @property
     def _sell_time(self) -> int:
@@ -218,3 +244,17 @@ class Manager(Worker):
         if current_stock < stock:
             for _ in range(stock - current_stock):
                 self.seller.sell_item(itemid=itemid, stack=stack, date=self._sell_time, price=price, count=1)
+
+
+@contextlib.contextmanager
+def progress_bar(description: str, total: int):
+    try:
+        with Progress(
+            *Progress.get_default_columns(),
+            TimeElapsedColumn(),
+            transient=True,
+        ) as progress:
+            task = progress.add_task(description=description, total=total)
+            yield progress, task
+    finally:
+        pass
