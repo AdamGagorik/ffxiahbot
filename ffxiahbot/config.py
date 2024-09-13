@@ -27,9 +27,9 @@ class Config(BaseModel):
 
     # Database
     hostname: str = Field(default="127.0.0.1")  # SQL address
-    database: str = Field(default="dspdb")  # SQL database
-    username: str = Field(default="root")  # SQL username
-    password: SecretStr | str = Field(default=SecretStr("?"))  # SQL password
+    database: str = Field(default="xidb")  # SQL database
+    username: str = Field(default="xi")  # SQL username
+    password: SecretStr | str = Field(default=SecretStr("password"))  # SQL password
     port: int = Field(default=3306)  # SQL port
     fail: bool = Field(default=False)  # Fail on SQL errors?
 

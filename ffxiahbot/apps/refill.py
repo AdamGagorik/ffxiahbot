@@ -43,9 +43,9 @@ def main(
     )
 
     # load data
-    idata = ItemList.from_csv(*inp_csvs)
+    item_list = ItemList.from_csv(*inp_csvs)
 
     if no_prompt or confirm("Restock all items?", abort=True, show_default=True):
         logger.info("restocking...")
-        manager.restock_items(itemdata=idata)
+        manager.restock_items(item_list=item_list)
         logger.info("exit after restock")

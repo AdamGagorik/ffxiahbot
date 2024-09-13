@@ -49,7 +49,7 @@ def main(
     )
 
     # load data
-    idata = ItemList.from_csv(*inp_csvs)
+    item_list = ItemList.from_csv(*inp_csvs)
 
     # main loop
     logger.info("starting main loop...")
@@ -65,12 +65,12 @@ def main(
 
         if sell_items and delta >= config.restock:
             logger.debug("restocking...")
-            manager.restock_items(itemdata=idata)
+            manager.restock_items(item_list=item_list)
             last = datetime.datetime.now()
 
         # buy items
         if buy_items:
-            manager.buy_items(itemdata=idata)
+            manager.buy_items(item_list=item_list)
 
         # sleep until next tick
         logger.debug("wait=%012.1f s", config.tick)
