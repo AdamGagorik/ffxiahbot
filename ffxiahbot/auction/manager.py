@@ -3,12 +3,13 @@ from __future__ import annotations
 import contextlib
 import datetime
 from collections import Counter
+from collections.abc import Generator
 from dataclasses import dataclass
 from typing import Any
 
 import pandas as pd
 from pydantic import SecretStr
-from rich.progress import Progress, TimeElapsedColumn
+from rich.progress import Progress, TaskID, TimeElapsedColumn
 
 from ffxiahbot import timeutils
 from ffxiahbot.auction.browser import Browser
@@ -127,7 +128,7 @@ class Manager(Worker):
                 AuctionHouse.sale == 0,
             )
             # loop rows
-            counts = Counter()
+            counts: Counter[str] = Counter()
             for row in q:
                 if row.id in self.blacklist:
                     logger.debug("skipping blacklisted row %d", row.id)
@@ -247,7 +248,7 @@ class Manager(Worker):
 
 
 @contextlib.contextmanager
-def progress_bar(description: str, total: int):
+def progress_bar(description: str, total: int) -> Generator[tuple[Progress, TaskID]]:
     try:
         with Progress(
             *Progress.get_default_columns(),

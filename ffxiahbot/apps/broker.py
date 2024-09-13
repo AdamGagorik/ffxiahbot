@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Annotated
 
 from apscheduler.schedulers.blocking import BlockingScheduler
-from rich.errors import LiveError
 from typer import Option
 
 from ffxiahbot.common import OptionalPath, OptionalPathList
@@ -95,11 +94,3 @@ def main(
         )
 
     scheduler.start()
-
-
-def wrap_and_skip(func, name: str):
-    def callback(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except LiveError:
-            logger.error("skipping job until other is finished!")
