@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from typing import Any
 
 import sqlalchemy.orm
+from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 
 from ffxiahbot.database import Database
 
@@ -42,3 +44,14 @@ class Worker:
                 yield session
         finally:
             pass
+
+    def can_connect(self) -> bool:
+        """
+        Test database connection.
+        """
+        try:
+            with self.scoped_session(fail=True) as session:
+                session.execute(text("SELECT 1"))
+        except SQLAlchemyError:
+            return False
+        return True
