@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 from typing import Any, ClassVar
 
+from ffxiahbot import REPOSITORY_BIN_DIR
 from ffxiahbot.item import Item
 from ffxiahbot.itemlist import ItemList
 
@@ -147,3 +148,9 @@ itemid, name # comment 0
             os.remove(csv_path)
 
         self.assertTrue(len(item_list), 2)
+
+
+def test_load_default_items_csv() -> None:
+    if (csv_path := REPOSITORY_BIN_DIR / "items.csv").exists():
+        item_list = ItemList()
+        item_list.load_csv(csv_path)
