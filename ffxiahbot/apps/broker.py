@@ -4,7 +4,7 @@ Buy and sell items on the auction house.
 
 from datetime import datetime
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Any
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from typer import Option
@@ -72,17 +72,19 @@ def main(
     scheduler = BlockingScheduler()
 
     if buy_items:
+        buy_kwargs: dict[str, Any] = {} if not buy_immediately else {"next_run_time": datetime.now().astimezone()}
         scheduler.add_job(
             lambda: manager.buy_items(item_list=item_list),
             trigger="interval",
             id="buy_items",
             seconds=config.tick,
             max_instances=1,
-            next_run_time=None if not buy_immediately else datetime.now().astimezone(),
             name="Buy Items",
+            **buy_kwargs,
         )
 
     if sell_items:
+        sell_kwargs: dict[str, Any] = {} if not restock_immediately else {"next_run_time": datetime.now().astimezone()}
         scheduler.add_job(
             lambda: manager.restock_items(item_list=item_list),
             trigger="interval",
@@ -91,6 +93,7 @@ def main(
             max_instances=1,
             next_run_time=None if not restock_immediately else datetime.now().astimezone(),
             name="Restock Items",
+            **sell_kwargs,
         )
 
     scheduler.start()
