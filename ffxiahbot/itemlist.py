@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, cast
 
-from ffxiahbot.item import Item, item_csv_title_str, item_csv_value_str
+from ffxiahbot.item import Item, allowed_item_keys, item_csv_title_str, item_csv_value_str
 from ffxiahbot.logutils import logger
 
 
@@ -181,7 +181,7 @@ class ItemList:
                     tokens: list[str | int | None] = [x.strip() for x in line.split(",")]
 
                     # check for new title line
-                    if set(tokens).issubset(Item.model_fields.keys()):
+                    if set(tokens).issubset(allowed_item_keys()):
                         keys = cast(list[str], tokens)
 
                         # check for primary key
@@ -189,7 +189,7 @@ class ItemList:
                             raise RuntimeError(f"missing itemid column:\n\t{keys}")
 
                     # validate line
-                    elif set(tokens).intersection(Item.model_fields.keys()):
+                    elif set(tokens).intersection(allowed_item_keys()):
                         raise RuntimeError("something wrong with line %d" % line_number)
 
                     # process normal line

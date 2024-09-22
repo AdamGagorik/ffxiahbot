@@ -24,6 +24,8 @@ class Config(BaseModel):
     name: str = Field(default="M.H.M.U.")  # Bot name
     tick: int = Field(default=30)  # Tick interval (seconds)
     restock: int = Field(default=3600)  # Restock interval (seconds)
+    use_buying_rates: bool = Field(default=False)  # Only buy items a fraction of the time?
+    use_selling_rates: bool = Field(default=False)  # Only sell items a fraction of the time?
 
     # Database
     hostname: str = Field(default="127.0.0.1")  # SQL address

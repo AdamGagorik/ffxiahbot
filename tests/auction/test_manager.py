@@ -90,7 +90,7 @@ def test_buy_items(
 
     # perform buy loop multiple times
     for _ in range(3):
-        manager.buy_items(item_list)
+        manager.buy_items(item_list, use_buying_rates=False)
         assert manager.blacklist == expected_blacklist
 
     # validate database after buy loop
@@ -134,7 +134,7 @@ def test_restock_items(
 
     # perform restock loop multiple times
     for _ in range(3):
-        manager.restock_items(item_list)
+        manager.restock_items(item_list, use_selling_rates=False)
 
     # validate the historical prices after restock loop
     for itemid, (singles_price, stacks_price) in expected_history.items():
