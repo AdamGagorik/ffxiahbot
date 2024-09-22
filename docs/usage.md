@@ -135,7 +135,7 @@ This command will remove all items for sale from the AH.
     Retail sometimes has unexpected prices in the history.
 
       * There may be ancient entries.
-      * Something might be sold something below NPC price.
+      * An item may have a selling price below an NPC buying price.
       * An item may only really sell as either a stack or a single.
 
     This may result in exploits on your server if you are not careful.
