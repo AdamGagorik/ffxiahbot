@@ -1,3 +1,5 @@
+export TERMINAL_WIDTH=132
+
 .PHONY: install
 install: ## Install the environment and the pre-commit hooks
 	@uv run pre-commit install

@@ -15,8 +15,9 @@ from ffxiahbot.scrubbing.enums import ServerID
 # noinspection PyProtectedMember
 ServerIDOption = Option(
     "--server",
-    help="The server ID to scrub.",
+    help="The server name (asura, bahamut, etc).",
     click_type=Choice(ServerID._member_names_, case_sensitive=False),
+    metavar="SERVER",
 )
 
 
