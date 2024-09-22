@@ -40,6 +40,9 @@ skip_empty = true
 branch = true
 source = ["ffxiahbot"]
 
+[tool.deptry]
+extend_exclude = ["macros.py"]
+
 [tool.deptry.per_rule_ignores]
 DEP002 = ["pymysql"]
 
@@ -137,5 +140,6 @@ dev-dependencies = [
   "types-beautifulsoup4>=4.12.0.20240511",
   "types-requests>=2.32.0.20240712",
   "types-pyyaml>=6.0.12.20240808",
-  "pandas-stubs>=2.2.2.240909"
+  "pandas-stubs>=2.2.2.240909",
+  "mkdocs-macros-plugin>=1.2.0"
 ]

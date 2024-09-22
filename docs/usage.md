@@ -59,28 +59,7 @@ run and any flags you want to set.
     Common command line flags like --verbose must come before the name of the app to run.
     App specific command line flags must come after the name of the app to run.
 
-```bash
-➜  uv run ffxiahbot --help
-
- Usage: ffxiahbot [OPTIONS] COMMAND [ARGS]...
-
- The script will interact with the Auction House of a private Final Fantasy XI server.
-
-╭─ Options ──────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --version                      Show version string.                                                    │
-│ --silent                       Only show ERROR messages.                                               │
-│ --verbose                      Also show DEBUG messages.                                               │
-│ --logfile                PATH  The path to the log file. [default: ahbot.log]                          │
-│ --disable-logfile              Disable logging to a file.                                              │
-│ --help                         Show this message and exit.                                             │
-╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-╭─ Commands ─────────────────────────────────────────────────────────────────────────────────────────────╮
-│ broker   Run a bot that buys and sells items on the auction house continuously.                        │
-│ clear    Delete items from the auction house (dangerous operation!).                                   │
-│ refill   Refill the auction house with the items defined in the CSV file.                              │
-│ scrub    Download a list of item prices from ffxiah.com and save to a CSV file.                        │
-╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-```
+{{ get_help_message("ffxiahbot") }}
 
 #### Downloading a new Items CSV
 
@@ -97,26 +76,7 @@ This command will download item data from ffxiah.com and save it to a CSV file.
 
     There is a pre-built CSV file in the repo, so you do not need to run this command if you don't want to.
 
-```bash
-➜  uv run ffxiahbot scrub --help
-
- Usage: ffxiahbot scrub [OPTIONS]
-
- Download a list of item prices from ffxiah.com and save to a CSV file.
-
-╭─ Options ──────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --config              PATH                Config file path. [default: config.yaml]                     │
-│ --out-csv             PATH                The output CSV file to save. [default: items.csv]            │
-│ --server              [BAHAMUT|SHIVA...]  The server ID to scrub. [default: ASURA]                     │                                                                                               │
-│ --cat-url             TEXT                Preset category URLs.                                        │
-│ --item-id             INTEGER             Preset item IDs.                                             │
-│ --overwrite                               Overwrite output CSV?                                        │
-│ --stock-single        INTEGER             The default number of items for singles. [default: 10]       │
-│ --stock-stacks        INTEGER             The default number of items for stacks. [default: 10]        │
-│ --backup                                  Backup output CSV?                                           │
-│ --help                                    Show this message and exit.                                  │
-╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-```
+{{ get_help_message("ffxiahbot", "scrub") }}
 
 #### Refilling the Auction House
 
@@ -128,21 +88,21 @@ This command will download item data from ffxiah.com and save it to a CSV file.
 ➜  uv run ffxiahbot refill --inp-csv items.csv
 ```
 
-```bash
-➜  uv run ffxiahbot refill --help
+{{ get_help_message("ffxiahbot", "refill") }}
 
- Usage: ffxiahbot refill [OPTIONS]
+#### Clearing the Auction House
 
- Refill the auction house with the items defined in the CSV file.
+This command will remove all items for sale from the AH.
 
+!!! warning
 
-╭─ Options ──────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --config           PATH  Config file path. [default: config.yaml]                                      │
-│ --inp-csv          PATH  Input CSV file path. [default: items.csv]                                     │
-│ --no-prompt              Do not ask for confirmation.                                                  │
-│ --help                   Show this message and exit.                                                   │
-╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-```
+    This command is pretty destructive, so be careful!
+
+!!! important
+
+    Unless `--all` is specified, this command will only clear items that are for sale by the bot.
+
+{{ get_help_message("ffxiahbot", "clear") }}
 
 #### Running the AH Broker Bot
 
@@ -154,21 +114,7 @@ This command will download item data from ffxiah.com and save it to a CSV file.
 
     The `broker` will wait until the 1st cycle defined in your config before populating items.
 
-```bash
-➜  uv run ffxiahbot broker --help
-
- Usage: ffxiahbot broker [OPTIONS]
-
- Run a bot that buys and sells items on the auction house continuously.
-
-╭─ Options ──────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --config                           PATH  Config file path. [default: config.yaml]                      │
-│ --inp-csv                          PATH  Input CSV file path. [default: items.csv]                     │
-│ --buy-items     --no-buy-items           Enable the buying of items. [default: buy-items]              │
-│ --sell-items    --no-sell-items          Enable the selling of items. [default: sell-items]            │
-│ --help                                   Show this message and exit.                                   │
-╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-```
+{{ get_help_message("ffxiahbot", "broker") }}
 
 #### Manually Editing the Items CSV
 

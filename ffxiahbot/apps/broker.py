@@ -23,8 +23,12 @@ def main(
     ] = None,
     buy_items: Annotated[bool, Option(help="Enable the buying of items.")] = True,
     sell_items: Annotated[bool, Option(help="Enable the selling of items.")] = True,
-    buy_immediately: Annotated[bool, Option(help="Buy items immediately instead of waiting?")] = False,
-    restock_immediately: Annotated[bool, Option(help="Restock items immediately instead of waiting?")] = False,
+    buy_immediately: Annotated[
+        bool, Option("--buy-immediately", help="Buy items immediately instead of waiting?")
+    ] = False,
+    restock_immediately: Annotated[
+        bool, Option("--restock-immediately", help="Restock items immediately instead of waiting?")
+    ] = False,
     use_sqlite_db: Annotated[OptionalPath, Option(help="Use a test SQLite database instead of the real one?")] = None,
 ) -> None:
     """
