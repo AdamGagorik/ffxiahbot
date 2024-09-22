@@ -14,7 +14,7 @@ check-all: ## Run code quality tools.
 	@uv run pre-commit run --hook-stage manual -a
 	@uv run deptry .
 
-.PHONY: test
+.PHONY: mypy
 mypy: ## Run mypy
 	@uv run mypy
 
