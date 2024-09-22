@@ -63,6 +63,13 @@ run and any flags you want to set.
 
 {{ get_help_message("ffxiahbot") }}
 
+!!! note
+
+    You do not actually need a live or production SQL database to test these commands.
+    Instead, you can pass the `--use-sqlite-db` flag to use a fake SQLite database instead.
+    This will manipulate a SQLite database file on your machine instead of a real server's database.
+    You can then inspect the database with any tool that can read SQLite databases.
+
 #### Downloading a new Items CSV
 
 This command will download item data from ffxiah.com and save it to a CSV file.
