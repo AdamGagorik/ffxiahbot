@@ -188,7 +188,7 @@ wheels = [
 
 [[package]]
 name = "ffxiahbot"
-version = "5.2.1"
+version = "6.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "apscheduler" },
