@@ -1,66 +1,51 @@
-import unittest
+from typing import Any
+
+import pytest
 
 from ffxiahbot.item import Item
 
 
-class TestCase01(unittest.TestCase):
-    def test_init(self):
-        i0 = Item(itemid=0, name="A")
-        self.assertEqual(i0.itemid, 0)
-        self.assertEqual(i0.name, "A")
-
-    def test_price_single(self):
-        Item(itemid=0, price_single=+1)
-        with self.assertRaises(ValueError):
-            Item(itemid=0, price_single=+0)
-
-        with self.assertRaises(ValueError):
-            Item(itemid=0, price_single=-1)
-
-    def test_price_stacks(self):
-        Item(itemid=0, price_stacks=+1)
-        with self.assertRaises(ValueError):
-            Item(itemid=0, price_stacks=+0)
-
-        with self.assertRaises(ValueError):
-            Item(itemid=0, price_stacks=-1)
-
-    def test_stock_single(self):
-        Item(itemid=0, stock_single=+0)
-
-        with self.assertRaises(ValueError):
-            Item(itemid=0, stock_single=-1)
-
-    def test_stock_stacks(self):
-        Item(itemid=0, stock_stacks=+0)
-
-        with self.assertRaises(ValueError):
-            Item(itemid=0, stock_stacks=-1)
-
-    def test_rate_single(self):
-        i = Item(itemid=0)
-        self.assertEqual(i.rate_single, 1.0)
-
-        Item(itemid=0, rate_single=0.0)
-        Item(itemid=0, rate_single=0.5)
-        Item(itemid=0, rate_single=1.0)
-
-        with self.assertRaises(ValueError):
-            Item(itemid=0, rate_single=-1.5)
-
-        with self.assertRaises(ValueError):
-            Item(itemid=0, rate_single=+1.5)
-
-    def test_rate_stacks(self):
-        i = Item(itemid=0)
-        self.assertEqual(i.rate_stacks, 1.0)
-
-        Item(itemid=0, rate_stacks=0.0)
-        Item(itemid=0, rate_stacks=0.5)
-        Item(itemid=0, rate_stacks=1.0)
-
-        with self.assertRaises(ValueError):
-            Item(itemid=0, rate_stacks=-1.5)
-
-        with self.assertRaises(ValueError):
-            Item(itemid=0, rate_stacks=+1.5)
+@pytest.mark.parametrize(
+    "kwargs,error",
+    [
+        pytest.param({"itemid": 0, "name": "A"}, None, id="name=A"),
+        pytest.param({"itemid": 0, "price_single": 1}, None, id="price_single=1"),
+        pytest.param({"itemid": 0, "price_single": 0}, ValueError, id="price_single=0 raises"),
+        pytest.param({"itemid": 0, "price_single": -1}, ValueError, id="price_single=-1 raises"),
+        pytest.param({"itemid": 0, "price_stacks": 1}, None, id="price_stacks=1"),
+        pytest.param({"itemid": 0, "price_stacks": 0}, ValueError, id="price_stacks=0 raises"),
+        pytest.param({"itemid": 0, "price_stacks": -1}, ValueError, id="price_stacks=-1 raises"),
+        pytest.param({"itemid": 0, "stock_single": 0}, None, id="stock_single=0"),
+        pytest.param({"itemid": 0, "stock_single": -1}, ValueError, id="stock_single=-1"),
+        pytest.param({"itemid": 0, "stock_stacks": 0}, None, id="stock_stacks=0"),
+        pytest.param({"itemid": 0, "stock_stacks": -1}, ValueError, id="stock_stacks=-1"),
+        pytest.param({"itemid": 0, "sell_rate_single": 0.0}, None, id="sell_rate_single=0.0"),
+        pytest.param({"itemid": 0, "sell_rate_single": 0.5}, None, id="sell_rate_single=0.5"),
+        pytest.param({"itemid": 0, "sell_rate_single": 1.0}, None, id="sell_rate_single=1.0"),
+        pytest.param({"itemid": 0, "sell_rate_single": -1.5}, ValueError, id="sell_rate_single=-1.5"),
+        pytest.param({"itemid": 0, "sell_rate_single": +1.5}, ValueError, id="sell_rate_single=+1.5"),
+        pytest.param({"itemid": 0, "sell_rate_stacks": 0.0}, None, id="sell_rate_stacks=0.0"),
+        pytest.param({"itemid": 0, "sell_rate_stacks": 0.5}, None, id="sell_rate_stacks=0.5"),
+        pytest.param({"itemid": 0, "sell_rate_stacks": 1.0}, None, id="sell_rate_stacks=1.0"),
+        pytest.param({"itemid": 0, "sell_rate_stacks": -1.5}, ValueError, id="sell_rate_stacks=-1.5"),
+        pytest.param({"itemid": 0, "sell_rate_stacks": +1.5}, ValueError, id="sell_rate_stacks=+1.5"),
+        pytest.param({"itemid": 0, "buy_rate_single": 0.0}, None, id="buy_rate_single=0.0"),
+        pytest.param({"itemid": 0, "buy_rate_single": 0.5}, None, id="buy_rate_single=0.5"),
+        pytest.param({"itemid": 0, "buy_rate_single": 1.0}, None, id="buy_rate_single=1.0"),
+        pytest.param({"itemid": 0, "buy_rate_single": -1.5}, ValueError, id="buy_rate_single=-1.5"),
+        pytest.param({"itemid": 0, "buy_rate_single": +1.5}, ValueError, id="buy_rate_single=+1.5"),
+        pytest.param({"itemid": 0, "buy_rate_stacks": 0.0}, None, id="buy_rate_stacks=0.0"),
+        pytest.param({"itemid": 0, "buy_rate_stacks": 0.5}, None, id="buy_rate_stacks=0.5"),
+        pytest.param({"itemid": 0, "buy_rate_stacks": 1.0}, None, id="buy_rate_stacks=1.0"),
+        pytest.param({"itemid": 0, "buy_rate_stacks": -1.5}, ValueError, id="buy_rate_stacks=-1.5"),
+        pytest.param({"itemid": 0, "buy_rate_stacks": +1.5}, ValueError, id="buy_rate_stacks=+1.5"),
+    ],
+)
+def test_create_item_raises(kwargs: dict[str, Any], error: type[Exception] | None):
+    if error:
+        with pytest.raises(error):
+            Item(**kwargs)
+    else:
+        item = Item(**kwargs)
+        for key, value in kwargs.items():
+            assert getattr(item, key) == value

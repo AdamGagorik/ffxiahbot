@@ -78,7 +78,7 @@ def main(
     if buy_items:
         buy_kwargs: dict[str, Any] = {} if not buy_immediately else {"next_run_time": datetime.now().astimezone()}
         scheduler.add_job(
-            lambda: manager.buy_items(item_list=item_list),
+            lambda: manager.buy_items(item_list=item_list, use_buying_rates=config.use_buying_rates),
             trigger="interval",
             id="buy_items",
             seconds=config.tick,
@@ -90,7 +90,7 @@ def main(
     if sell_items:
         sell_kwargs: dict[str, Any] = {} if not restock_immediately else {"next_run_time": datetime.now().astimezone()}
         scheduler.add_job(
-            lambda: manager.restock_items(item_list=item_list),
+            lambda: manager.restock_items(item_list=item_list, use_selling_rates=config.use_selling_rates),
             trigger="interval",
             id="restock_items",
             seconds=config.restock,

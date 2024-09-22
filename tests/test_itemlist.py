@@ -55,6 +55,8 @@ class TestCase01(unittest.TestCase):
         "stock_stacks": 40,
         "rate_single": 0.5,
         "rate_stacks": 0.6,
+        "buy_rate_single": 0.7,
+        "buy_rate_stacks": 0.8,
     }
 
     def test_save_csv(self):

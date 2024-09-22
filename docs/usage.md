@@ -39,6 +39,8 @@ options are passed as command line arguments.
 name: M.H.M.U. # Name that appears on AH when buying and selling
 tick: 30 # seconds between buying
 restock: 3600 # seconds between selling
+use_buying_rates: false  # Only buy items a fraction of the time?
+use_selling_rates: false  # Only sell items a fraction of the time?
 
 # sql
 hostname: 127.0.0.1 # SQL parameter
@@ -138,17 +140,19 @@ This command will remove all items for sale from the AH.
 
     This may result in exploits on your server if you are not careful.
 
-| column       | description                    | value             |
-| ------------ | ------------------------------ | ----------------- |
-| itemid       | unique item id                 | integer >=0       |
-| name         | item name                      | string            |
-| sell_single  | sell single?                   | 0=false 1=true    |
-| buy_single   | buy single?                    | 0=false 1=true    |
-| price_single | price for single               | integer >=1       |
-| stock_single | restock count (single)         | integer >=0       |
-| rate_single  | buy rate (single) **not used** | float 0 <= x <= 1 |
-| sell_stacks  | sell stack?                    | 0=false 1=true    |
-| buy_stacks   | buy stack?                     | 0=false 1=true    |
-| price_stacks | price for stack                | integer >=1       |
-| stock_stacks | restock count (stack)          | integer >=0       |
-| rate_stacks  | buy rate (stack) **not used**  | float 0 <= x <= 1 |
+| column           | description            | value             | note                                   |
+|------------------|------------------------|-------------------|----------------------------------------|
+| itemid           | unique item id         | integer >=0       |                                        |
+| name             | item name              | string            |                                        |
+| sell_single      | sell single?           | 0=false 1=true    |                                        |
+| buy_single       | buy single?            | 0=false 1=true    |                                        |
+| price_single     | price for single       | integer >=1       |                                        |
+| stock_single     | restock count (single) | integer >=0       |                                        |
+| sell_rate_single | sell rate (single)     | float 0 <= x <= 1 | disabled unless use_selling_rates=true |
+| buy_rate_single  | buy rate (single)      | float 0 <= x <= 1 | disabled unless use_buying_rates=true  |
+| sell_stacks      | sell stack?            | 0=false 1=true    |                                        |
+| buy_stacks       | buy stack?             | 0=false 1=true    |                                        |
+| price_stacks     | price for stack        | integer >=1       |                                        |
+| stock_stacks     | restock count (stack)  | integer >=0       |                                        |
+| sell_rate_stacks | sell rate (stack)      | float 0 <= x <= 1 | disabled unless use_selling_rates=true |
+| buy_rate_stacks  | buy rate (stack)       | float 0 <= x <= 1 | disabled unless use_buying_rates=true  |

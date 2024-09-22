@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import contextlib
 import datetime
+import random
 from collections import Counter
 from collections.abc import Generator
 from dataclasses import dataclass
@@ -113,12 +114,13 @@ class Manager(Worker):
         logger.info("blacklisting: row=%d", rowid)
         self.blacklist.add(rowid)
 
-    def buy_items(self, item_list: ItemList) -> None:
+    def buy_items(self, item_list: ItemList, use_buying_rates: bool = False) -> None:  # noqa: C901
         """
         The main buy item loop.
 
         Args:
             item_list: Item data.
+            use_buying_rates: If True, only buy items at their buying rate.
         """
         with self.scoped_session(fail=self.fail) as session:
             # find rows that are still up for sale
@@ -150,20 +152,26 @@ class Manager(Worker):
                             self.add_to_blacklist(row.id)
                             counts["forbidden item"] += 1
                         else:
-                            if self._buy_row(row, item.price_stacks):
-                                counts["stack purchased"] += 1
+                            if not use_buying_rates or random.random() <= item.buy_rate_stacks:
+                                if self._buy_row(row, item.price_stacks):
+                                    counts["stack purchased"] += 1
+                                else:
+                                    counts["price too high"] += 1
                             else:
-                                counts["price too high"] += 1
+                                counts["buy rate too low"] += 1
                     else:
                         if not item.buy_single:
                             logger.debug("not allowed to buy item! itemid=%d", row.itemid)
                             self.add_to_blacklist(row.id)
                             counts["forbidden item"] += 1
                         else:
-                            if self._buy_row(row, item.price_single):
-                                counts["single purchased"] += 1
+                            if not use_buying_rates or random.random() <= item.buy_rate_single:
+                                if self._buy_row(row, item.price_single):
+                                    counts["single purchased"] += 1
+                                else:
+                                    counts["price too high"] += 1
                             else:
-                                counts["price too high"] += 1
+                                counts["buy rate too low"] += 1
 
             counts_frame = pd.DataFrame.from_dict(counts, orient="index").rename(columns={0: "count"})
             if not counts_frame.empty:
@@ -194,24 +202,37 @@ class Manager(Worker):
             self.add_to_blacklist(row.id)
             return False
 
-    def restock_items(self, item_list: ItemList) -> None:
+    def restock_items(self, item_list: ItemList, use_selling_rates: bool = False) -> None:
         """
         The main restock loop.
 
         Args:
             item_list: Item data.
+            use_selling_rates: If True, only restock items at their selling rate.
         """
         # loop over items
         with progress_bar("[red]Restocking Items...", total=len(item_list)) as (progress, task):
             for item in item_list.items.values():
                 # singles
                 if item.sell_single:
-                    self._sell_item(item.itemid, stack=False, price=item.price_single, stock=item.stock_single)
+                    self._sell_item(
+                        item.itemid,
+                        stack=False,
+                        price=item.price_single,
+                        stock=item.stock_single,
+                        rate=None if not use_selling_rates else item.sell_rate_single,
+                    )
                     progress.update(task, advance=0.5)
 
                 # stacks
                 if item.sell_stacks:
-                    self._sell_item(item.itemid, stack=True, price=item.price_stacks, stock=item.stock_stacks)
+                    self._sell_item(
+                        item.itemid,
+                        stack=True,
+                        price=item.price_stacks,
+                        stock=item.stock_stacks,
+                        rate=None if not use_selling_rates else item.sell_rate_stacks,
+                    )
                     progress.update(task, advance=0.5)
 
     @property
@@ -221,7 +242,7 @@ class Manager(Worker):
         """
         return timeutils.timestamp(datetime.datetime(2099, 1, 1))
 
-    def _sell_item(self, itemid: int, stack: bool, price: int, stock: int) -> None:
+    def _sell_item(self, itemid: int, stack: bool, price: int, stock: int, rate: float | None) -> None:
         """
         Sell an item.
 
@@ -244,7 +265,8 @@ class Manager(Worker):
         # restock
         if current_stock < stock:
             for _ in range(stock - current_stock):
-                self.seller.sell_item(itemid=itemid, stack=stack, date=self._sell_time, price=price, count=1)
+                if rate is None or random.random() <= rate:
+                    self.seller.sell_item(itemid=itemid, stack=stack, date=self._sell_time, price=price, count=1)
 
 
 @contextlib.contextmanager

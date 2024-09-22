@@ -58,5 +58,5 @@ def main(
 
     if no_prompt or confirm("Restock all items?", abort=True, show_default=True):
         logger.info("restocking...")
-        manager.restock_items(item_list=item_list)
+        manager.restock_items(item_list=item_list, use_selling_rates=config.use_selling_rates)
         logger.info("exit after restock")
