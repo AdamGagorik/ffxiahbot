@@ -1,62 +1,57 @@
 import contextlib
+from collections.abc import Iterator
+from dataclasses import dataclass
+from typing import Any
+
+import sqlalchemy.orm
+from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 
 from ffxiahbot.database import Database
 
 
+@dataclass(frozen=True)
 class Worker:
     """
     Base class for Auction House objects.
 
-    :param db: database object
+    Args:
+        db: The database object.
     """
 
-    def __init__(self, db, rollback=True, fail=False):
-        super().__init__()
-        if not isinstance(db, Database):
-            raise TypeError("expected Database object")
-        self._rollback = bool(rollback)
-        self._fail = bool(fail)
-        self._db = db
+    #: The database object.
+    db: Database
+    #: Should the session fail on error?
+    fail: bool
+    #: Should the session rollback on error?
+    rollback: bool
 
-    def session(self, **kwargs):
+    def session(self, **kwargs: Any) -> sqlalchemy.orm.Session:
         """
         Create database session.
         """
-        return self._db.session(**kwargs)
+        return self.db.session(**kwargs)
 
     @contextlib.contextmanager
-    def scopped_session(self, **kwargs):
+    def scoped_session(self, **kwargs: Any) -> Iterator:
         """
         Create scoped database session.
         """
         _kwargs = {"rollback": self.rollback, "fail": self.fail}
         _kwargs.update(**kwargs)
         try:
-            with self._db.scoped_session(**_kwargs) as session:
+            with self.db.scoped_session(**_kwargs) as session:
                 yield session
         finally:
             pass
 
-    @property
-    def db(self):
-        return self._db
-
-    @property
-    def rollback(self):
-        return self._rollback
-
-    @rollback.setter
-    def rollback(self, value):
-        self._rollback = bool(value)
-
-    @property
-    def fail(self):
-        return self._fail
-
-    @fail.setter
-    def fail(self, value):
-        self._fail = bool(value)
-
-
-if __name__ == "__main__":
-    pass
+    def can_connect(self) -> bool:
+        """
+        Test database connection.
+        """
+        try:
+            with self.scoped_session(fail=True) as session:
+                session.execute(text("SELECT 1"))
+        except SQLAlchemyError:
+            return False
+        return True

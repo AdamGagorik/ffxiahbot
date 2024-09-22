@@ -15,7 +15,9 @@ dependencies = [
   "typer>=0.12.5",
   "rich>=13.8.0",
   "pydantic>=2.8.2",
-  "click>=8.1.7"
+  "click>=8.1.7",
+  "apscheduler>=3.10.4",
+  "pandas>=2.2.2"
 ]
 description = "A command line tool for interacting with a FFXI server."
 license = {file = "LICENSE"}
@@ -51,9 +53,15 @@ show_error_codes = "True"
 warn_return_any = "True"
 warn_unused_ignores = "True"
 
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+  "apscheduler.*"
+]
+
 [tool.pytest.ini_options]
 log_cli = true
-log_cli_format = "%(message)s"
+log_cli_format = "%(levelname)-7s %(message)s"
 log_cli_level = "DEBUG"
 testpaths = ["tests"]
 
@@ -74,7 +82,9 @@ ignore = [
   # Avoid specifying long messages outside the exception class
   "TRY003",
   # Check for execution of untrusted input
-  "S603"
+  "S603",
+  # Standard pseudo-random generators are not suitable for security/cryptographic purposes
+  "S311"
 ]
 select = [
   # flake8-2020
@@ -123,5 +133,9 @@ dev-dependencies = [
   "mkdocs-material>=9.5.33",
   "mkdocstrings[python]>=0.25.2",
   "mkdocs-include-markdown-plugin>=6.2.2",
-  "pytest-cov>=5.0.0"
+  "pytest-cov>=5.0.0",
+  "types-beautifulsoup4>=4.12.0.20240511",
+  "types-requests>=2.32.0.20240712",
+  "types-pyyaml>=6.0.12.20240808",
+  "pandas-stubs>=2.2.2.240909"
 ]

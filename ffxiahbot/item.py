@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import collections
 
+from pydantic import BaseModel, ConfigDict, Field
+
 fmt = collections.OrderedDict()
 fmt["itemid"] = "{:>8}"
 fmt["name"] = "{:>24}"
@@ -52,236 +54,51 @@ _template = """
 """[:-1]
 
 
-class Item:
+class Item(BaseModel):
     """
     Item properties.
 
-    :param itemid: unique item id
-    :param name: item name
-
-    :param sell_single: sell single
-    :param buy_single: buy single
-    :param price_single: price (>= 1) for single
-    :param stock_single: restock count (>= 0) for single
-
-    :param sell_stacks: sell stack
-    :param buy_stacks: buy stack
-    :param price_stacks: price (>= 1) for stack
-    :param stock_stacks: restock count (>= 0) for stack
+    Args:
+        itemid: A unique item id.
+        name: The item's name.
+        sell_single: sell singles?
+        buy_single: buy singles?
+        price_single: price (>= 1) for singles.
+        stock_single: restock count (>= 0) for singles.
+        sell_stacks: sell stacks?
+        buy_stacks: buy stacks?
+        price_stacks: price (>= 1) for stacks.
+        stock_stacks: restock count (>= 0) for stacks.
+        rate_single: sell rate (0.0 <= rate <= 1.0) for singles.
+        rate_stacks: sell rate (0.0 <= rate <= 1.0) for stacks.
     """
 
-    keys = (
-        "itemid",
-        "name",
-        "sell_single",
-        "buy_single",
-        "price_single",
-        "stock_single",
-        "rate_single",
-        "sell_stacks",
-        "buy_stacks",
-        "price_stacks",
-        "stock_stacks",
-        "rate_stacks",
-    )
+    model_config = ConfigDict(extra="forbid")
 
-    @property
-    def values(self):
-        return [
-            self.itemid,
-            self.name,
-            self.sell_single,
-            self.buy_single,
-            self.price_single,
-            self.stock_single,
-            self.rate_single,
-            self.sell_stacks,
-            self.buy_stacks,
-            self.price_stacks,
-            self.stock_stacks,
-            self.rate_stacks,
-        ]
+    #: A unique item id.
+    itemid: int = Field(ge=0)
+    #: The item's name.
+    name: str = "?"
+    #: Sell singles?
+    sell_single: bool = True
+    #: Sell stacks?
+    sell_stacks: bool = True
+    #: Buy singles?
+    buy_single: bool = True
+    #: Buy stacks?
+    buy_stacks: bool = True
+    #: Price (>= 1) for singles.
+    price_single: int = Field(default=1, gt=0)
+    #: Price (>= 1) for stacks.
+    price_stacks: int = Field(default=1, gt=0)
+    #: Restock count (>= 0) for singles.
+    stock_single: int = Field(default=0, ge=0)
+    #: Restock count (>= 0) for stacks.
+    stock_stacks: int = Field(default=0, ge=0)
+    #: Sell rate (0.0 <= rate <= 1.0) for singles.
+    rate_single: float = Field(default=1.0, ge=0.0, le=1.0)
+    #: Sell rate (0.0 <= rate <= 1.0) for stacks.
+    rate_stacks: float = Field(default=1.0, ge=0.0, le=1.0)
 
-    def __init__(
-        self,
-        itemid,
-        name=None,
-        sell_single=None,
-        buy_single=None,
-        price_single=None,
-        stock_single=None,
-        rate_single=None,
-        sell_stacks=None,
-        buy_stacks=None,
-        price_stacks=None,
-        stock_stacks=None,
-        rate_stacks=None,
-    ):
-        super().__init__()
-
-        self._itemid = int(itemid)
-        self._name = None
-
-        self._sell_single = None
-        self._sell_stacks = None
-
-        self._buy_single = None
-        self._buy_stacks = None
-
-        self._price_single = None
-        self._price_stacks = None
-
-        self._stock_single = None
-        self._stock_stacks = None
-
-        self._rate_single = None
-        self._rate_stacks = None
-
-        self.name = name
-
-        self.sell_single = sell_single
-        self.buy_single = buy_single
-        self.price_single = price_single
-        self.stock_single = stock_single
-        self.rate_single = rate_single
-
-        self.sell_stacks = sell_stacks
-        self.buy_stacks = buy_stacks
-        self.price_stacks = price_stacks
-        self.stock_stacks = stock_stacks
-        self.rate_stacks = rate_stacks
-
-        if not self._itemid >= 0:
-            raise ValueError("itemid must be positive: %d" % self._itemid)
-
-    def _init_notify(self):
-        pass
-
-    def __str__(self):
+    def __str__(self) -> str:
         return _template.format(self=self, addr=hex(id(self)))
-
-    @property
-    def itemid(self):
-        return self._itemid
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        if value is None:
-            value = "?"
-        self._name = str(value)
-
-    @property
-    def sell_single(self):
-        return self._sell_single
-
-    @sell_single.setter
-    def sell_single(self, value):
-        if value is None:
-            value = True
-        self._sell_single = bool(value)
-
-    @property
-    def buy_single(self):
-        return self._buy_single
-
-    @buy_single.setter
-    def buy_single(self, value):
-        if value is None:
-            value = True
-        self._buy_single = bool(value)
-
-    @property
-    def price_single(self):
-        return self._price_single
-
-    @price_single.setter
-    def price_single(self, value):
-        if value is None:
-            value = 1
-        self._price_single = int(value)
-        if self._price_single < 1:
-            raise ValueError("price_single must be positive definite: %d" % self._price_single)
-
-    @property
-    def stock_single(self):
-        return self._stock_single
-
-    @stock_single.setter
-    def stock_single(self, value):
-        if value is None:
-            value = 0
-        self._stock_single = int(value)
-        if self._stock_single < 0:
-            raise ValueError("stock_single must be positive: %d" % self._stock_single)
-
-    @property
-    def rate_single(self):
-        return self._rate_single
-
-    @rate_single.setter
-    def rate_single(self, value):
-        if value is None:
-            value = 1.0
-        self._rate_single = float(value)
-        if self._rate_single < 0.0 or self._rate_single > 1.0:
-            raise ValueError("rate_single must be between 0 and 1: %d" % self._rate_single)
-
-    @property
-    def sell_stacks(self):
-        return self._sell_stacks
-
-    @sell_stacks.setter
-    def sell_stacks(self, value):
-        if value is None:
-            value = True
-        self._sell_stacks = bool(value)
-
-    @property
-    def buy_stacks(self):
-        return self._buy_stacks
-
-    @buy_stacks.setter
-    def buy_stacks(self, value):
-        if value is None:
-            value = True
-        self._buy_stacks = bool(value)
-
-    @property
-    def price_stacks(self):
-        return self._price_stacks
-
-    @price_stacks.setter
-    def price_stacks(self, value):
-        if value is None:
-            value = 1
-        self._price_stacks = int(value)
-        if self._price_stacks < 1:
-            raise ValueError("price_stacks must be positive definite: %d" % self._price_stacks)
-
-    @property
-    def stock_stacks(self):
-        return self._stock_stacks
-
-    @stock_stacks.setter
-    def stock_stacks(self, value):
-        if value is None:
-            value = 0
-        self._stock_stacks = int(value)
-        if self._stock_stacks < 0:
-            raise ValueError("stock_stacks must be positive: %d" % self._stock_stacks)
-
-    @property
-    def rate_stacks(self):
-        return self._rate_stacks
-
-    @rate_stacks.setter
-    def rate_stacks(self, value):
-        if value is None:
-            value = 1.0
-        self._rate_stacks = float(value)
-        if self._rate_stacks < 0.0 or self._rate_stacks > 1.0:
-            raise ValueError("rate_stacks must be between 0 and 1: %d" % self._rate_stacks)

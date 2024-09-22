@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 from typing import Any, ClassVar
 
+from ffxiahbot import REPOSITORY_BIN_DIR
 from ffxiahbot.item import Item
 from ffxiahbot.itemlist import ItemList
 
@@ -41,10 +42,23 @@ class TestCase01(unittest.TestCase):
         self.item_list.add(1)
         self.assertEqual(len(self.item_list), 2)
 
-    _test_item1: ClassVar[list[Any]] = [0, "A", True, False, 10, 20, False, True, 30, 40]
+    _test_item1: ClassVar[dict[str, Any]] = {
+        "itemid": 0,
+        "name": "A",
+        "sell_single": True,
+        "sell_stacks": False,
+        "buy_single": False,
+        "buy_stacks": True,
+        "price_single": 10,
+        "price_stacks": 20,
+        "stock_single": 30,
+        "stock_stacks": 40,
+        "rate_single": 0.5,
+        "rate_stacks": 0.6,
+    }
 
     def test_save_csv(self):
-        self.item_list.add(*self._test_item1)
+        self.item_list.add(**self._test_item1)
         i, csv_path = tempfile.mkstemp()
         self.item_list.save_csv(Path(csv_path))
         with open(csv_path) as handle:
@@ -55,14 +69,14 @@ class TestCase01(unittest.TestCase):
 
     def test_load_csv(self):
         item_list_1 = ItemList()
-        item_list_1.add(*self._test_item1)
+        item_list_1.add(**self._test_item1)
         i, csv_path = tempfile.mkstemp()
         item_list_1.save_csv(Path(csv_path))
 
         item_list_2 = ItemList()
         item_list_2.load_csv(Path(csv_path))
 
-        for k in Item.keys:
+        for k in Item.model_fields:
             attr1 = getattr(item_list_1.get(0), k)
             attr2 = getattr(item_list_2.get(0), k)
             self.assertEqual(attr1, attr2)
@@ -134,3 +148,9 @@ itemid, name # comment 0
             os.remove(csv_path)
 
         self.assertTrue(len(item_list), 2)
+
+
+def test_load_default_items_csv() -> None:
+    if (csv_path := REPOSITORY_BIN_DIR / "items.csv").exists():
+        item_list = ItemList()
+        item_list.load_csv(csv_path)

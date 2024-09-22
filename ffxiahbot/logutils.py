@@ -1,17 +1,21 @@
 import contextlib
 import logging
 import warnings
+from collections.abc import Iterator
+from typing import Any
 
 logger = logging.getLogger("ffxiahbot")
 
 
 # noinspection PyUnusedLocal
-def custom_warning_format(message, category, filename, lineno, *args, **kwargs):
+def custom_warning_format(
+    message: Warning | str, category: type[Warning], filename: str, lineno: int, *args: Any, **kwargs: Any
+) -> str:
     return f"{filename}:{lineno}\n{category.__name__}: {message}"
 
 
 @contextlib.contextmanager
-def capture(capture_warnings=True, fail=False):
+def capture(capture_warnings: bool = True, fail: bool = False) -> Iterator:
     """
     Log exceptions and warnings.
     """

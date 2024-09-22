@@ -1,14 +1,30 @@
-import unittest
+from __future__ import annotations
 
+from ffxiahbot.database import Database
 from ffxiahbot.tables.auctionhouse import AuctionHouse
+from tests.cookbook import AuctionHouseRowBuilder
 
 
-class TestCase01(unittest.TestCase):
-    def setUp(self):
-        self.ah = AuctionHouse()
+def test_create_ah_row(populated_fake_db: Database) -> None:
+    # check that the table is empty
+    with populated_fake_db.scoped_session() as session:
+        assert session.query(AuctionHouse).count() == 0
 
-    def test_init(self):
-        pass
+    # add a row to the table
+    random_items = [AuctionHouseRowBuilder() for _ in range(10)]
+    for item in random_items:
+        item.add_item_for_sale(populated_fake_db)
 
-    def test_str(self):
-        str(self.ah)
+    # check that a single row now exists with the expected values
+    with populated_fake_db.scoped_session() as session:
+        assert session.query(AuctionHouse).count() == len(random_items)
+        for i, random_item in enumerate(random_items):
+            random_item.validate_query_result(session.query(AuctionHouse).get(i + 1))
+
+    # clear the table
+    with populated_fake_db.scoped_session() as session:
+        session.query(AuctionHouse).delete()
+
+    # check that the table is empty
+    with populated_fake_db.scoped_session() as session:
+        assert session.query(AuctionHouse).count() == 0

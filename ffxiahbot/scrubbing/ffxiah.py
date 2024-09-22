@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import contextlib
 import re
-from collections.abc import Generator, Iterable
+from collections.abc import Generator
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, cast
+
+from bs4 import Tag
 
 from ffxiahbot.logutils import logger
 from ffxiahbot.scrubbing.enums import ServerID
@@ -13,6 +15,9 @@ from ffxiahbot.scrubbing.scrubber import Scrubber
 REGEX_CATEGORY: re.Pattern = re.compile(r"/browse/(\d+)/?.*")
 REGEX_ITEM: re.Pattern = re.compile(r"/item/(\d+)")
 REGEX_NAME: re.Pattern = re.compile(r"(.*?)\s*-?\s*(FFXIAH)?\.(com)?")
+
+ItemIDsType = list[int] | set[int] | tuple[int, ...]
+CatURLsType = list[str] | set[str] | tuple[str, ...]
 
 
 @dataclass()
@@ -26,7 +31,11 @@ class FFXIAHScrubber(Scrubber):
     #: number of threads to use
     num_threads: int | None = None
 
-    def scrub(self, cat_urls: Iterable[str] | None = None, item_ids: Iterable[int] | None = None):
+    def scrub(
+        self,
+        cat_urls: CatURLsType | None = None,
+        item_ids: ItemIDsType | None = None,
+    ) -> tuple[dict, dict]:
         """
         Get item metadata main function.
 
@@ -90,7 +99,7 @@ class FFXIAHScrubber(Scrubber):
                     logger.debug("ignoring %s", href)
 
     # step 2
-    def _get_itemids(self, urls: list[str]) -> Generator[int]:
+    def _get_itemids(self, urls: CatURLsType) -> Generator[int]:
         """
         Scrub urls of the form http://www.ffxiah.com/{CategoryNumber} for itemids.
         """
@@ -120,7 +129,7 @@ class FFXIAHScrubber(Scrubber):
             return
 
         # look for table rows
-        trs = tbody.find_all("tr")
+        trs = cast(Tag, tbody).find_all("tr")
         if not trs:
             logger.error("failed to parse <tr>")
             return
@@ -137,13 +146,12 @@ class FFXIAHScrubber(Scrubber):
 
                 if href is not None:
                     # make sure href matches /item/{number}
-                    try:
-                        item = int(REGEX_ITEM.match(href).group(1))
+                    if (match := REGEX_ITEM.match(href)) is None:
+                        logger.error("failed to extract itemid!\n\n\trow %d of %s\n\n%s\n\n", j, url, row)
+                    else:
+                        item = int(match.group(1))
                         count += 1
                         yield item
-
-                    except (ValueError, IndexError):
-                        logger.exception("failed to extract itemid!\n\n\trow %d of %s\n\n%s\n\n", j, url, row)
                 else:
                     logger.error("failed to extract href!\n\n\trow %d of %s\n\n%s\n\n", j, url, row)
             else:
@@ -185,7 +193,7 @@ class FFXIAHScrubber(Scrubber):
         """
         percent = float(index) / float(total) * 100.0 if total > 0 else 0.0
 
-        data = {"name": None, "itemid": itemid}
+        data: dict[str, Any] = {"name": None, "itemid": itemid}
         url = self._create_item_url(itemid)
 
         # create tag soup
@@ -193,9 +201,13 @@ class FFXIAHScrubber(Scrubber):
         soup = self.soup(url, absolute=True, sid=self.server.value)
 
         # extract name
-        try:
-            data.update(name=REGEX_NAME.match(soup.title.text).group(1))
-        except AttributeError:
+        if (
+            soup.title is not None
+            and soup.title.text is not None
+            and (name_match := REGEX_NAME.match(soup.title.text)) is not None
+        ):
+            data.update(name=name_match.group(1))
+        else:
             data.update(name=None)
 
         # extract numbers
@@ -216,7 +228,7 @@ class FFXIAHScrubber(Scrubber):
 
         return data
 
-    def _get_item_data_for_itemid_map(self, args):
+    def _get_item_data_for_itemid_map(self, args: tuple[int, ...]) -> dict[str, Any]:
         return self._get_item_data_for_itemid(*args)
 
     # step 3.1.1
@@ -242,7 +254,7 @@ class FFXIAHScrubber(Scrubber):
         return data
 
 
-def extract(data: dict[int, dict[str, Any]], itemid: int, **kwargs: Any):
+def extract(data: dict[int, dict[str, Any]], itemid: int, **kwargs: Any) -> dict:
     """
     Extract item data from scrubbed info.
     """

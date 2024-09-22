@@ -47,9 +47,10 @@ Documentation
 """
 
 import datetime as _datetime
+from typing import Any
 
 
-def str_to_datetime(date_string):
+def str_to_datetime(date_string: str) -> _datetime.datetime:
     """
     Convert string to datetime object.
 
@@ -69,7 +70,7 @@ def str_to_datetime(date_string):
     return _datetime.datetime.strptime(date_string, "%m/%d/%Y %H:%M:%S").replace(tzinfo=_datetime.timezone.utc)
 
 
-def datetime_to_str(datetime_obj):
+def datetime_to_str(datetime_obj: _datetime.datetime) -> str:
     """
     Convert datetime object to string.
 
@@ -101,10 +102,10 @@ class DatetimeToTimestamp:
     """
 
     #: 01/01/1970
-    epoch = _datetime.datetime(1970, 1, 1, tzinfo=_datetime.timezone.utc)
+    epoch: _datetime.datetime = _datetime.datetime(1970, 1, 1, tzinfo=_datetime.timezone.utc)
 
-    def __call__(self, datetime_obj):
-        return float((datetime_obj - self.epoch).total_seconds())
+    def __call__(self, datetime_obj: _datetime.datetime) -> int:
+        return int((datetime_obj - self.epoch).total_seconds())
 
 
 datetime_to_timestamp = DatetimeToTimestamp()
@@ -126,7 +127,7 @@ Convert datetime object to timestamp.
 """
 
 
-def timestamp_to_datetime(stamp):
+def timestamp_to_datetime(stamp: int) -> _datetime.datetime:
     """
     Convert timestamp to datetime object.
 
@@ -146,7 +147,7 @@ def timestamp_to_datetime(stamp):
     return _datetime.datetime.fromtimestamp(stamp, _datetime.timezone.utc)
 
 
-def datetime(*args, **kwargs):
+def datetime(*args: Any, **kwargs: Any) -> _datetime.datetime:
     """
     Convert anything (within reason) to a datetime object.
 
@@ -200,12 +201,12 @@ def datetime(*args, **kwargs):
         return timestamp_to_datetime(obj)
 
     if isinstance(obj, float):
-        return timestamp_to_datetime(obj)
+        return timestamp_to_datetime(int(obj))
 
     raise TypeError(f"unknown type: {type(obj)}")
 
 
-def timestamp(*args, **kwargs):
+def timestamp(*args: Any, **kwargs: Any) -> int:
     """
     Convert anything (within reason) to a timestamp.
 

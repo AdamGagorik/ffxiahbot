@@ -1,3 +1,6 @@
+from collections.abc import Callable
+from dataclasses import dataclass
+
 import sqlalchemy
 
 from ffxiahbot.auction.worker import Worker
@@ -5,114 +8,98 @@ from ffxiahbot.logutils import capture
 from ffxiahbot.tables.auctionhouse import AuctionHouse
 
 
+@dataclass(frozen=True)
 class Browser(Worker):
     """
     Auction House browser.
-
-    :param db: database object
     """
 
-    def __init__(self, db, **kwargs):
-        super().__init__(db, **kwargs)
-
-    def count(self):
+    def count(self) -> int:
         """
         Get the number of rows.
         """
-        with self.scopped_session() as session:
-            return session.query(AuctionHouse).count()
+        with self.scoped_session() as session:
+            return int(session.query(AuctionHouse).count())
 
-    def get_stock(self, itemid, stack=False, seller=None):
+    def get_stock(self, itemid: int, stack: bool = False, seller: int | None = None) -> int:
         """
-        Get stock of item.
+        Get stock of an item.
 
-        :param itemid: item number
-        :param stack: consider stacks
-        :param seller: consider seller
+        Args:
+            itemid: The item number.
+            stack: Consider stacks?
+            seller: Consider seller?
 
-        :type itemid: int
-        :type stack: int
-        :type seller: int
+        Returns:
+            The total number of singles or stacks being sold, in general or by the specific seller.
         """
-        with capture(fail=self.fail):
-            # validate
-            itemid = AuctionHouse.validate_itemid(itemid)
-            stack = AuctionHouse.validate_stack(stack)
-
-            # perform query
-            with self.scopped_session() as session:
-                # ignore seller
-                if seller is None:
-                    n = (
-                        session.query(AuctionHouse)
-                        .filter(
-                            AuctionHouse.itemid == itemid,
-                            AuctionHouse.stack == stack,
-                            AuctionHouse.sale == 0,
-                        )
-                        .count()
+        with capture(fail=self.fail), self.scoped_session() as session:
+            # ignore seller
+            if seller is None:
+                n = (
+                    session.query(AuctionHouse)
+                    .filter(
+                        AuctionHouse.itemid == AuctionHouse.validate_itemid(itemid),
+                        AuctionHouse.stack == AuctionHouse.validate_stack(stack),
+                        AuctionHouse.sale == 0,
                     )
-                    return n
+                    .count()
+                )
+                return int(n)
 
-                # consider seller
-                else:
-                    seller = AuctionHouse.validate_seller(seller)
-                    n = (
-                        session.query(AuctionHouse)
-                        .filter(
-                            AuctionHouse.itemid == itemid,
-                            AuctionHouse.seller == seller,
-                            AuctionHouse.stack == stack,
-                            AuctionHouse.sale == 0,
-                        )
-                        .count()
+            # consider seller
+            else:
+                n = (
+                    session.query(AuctionHouse)
+                    .filter(
+                        AuctionHouse.itemid == AuctionHouse.validate_itemid(itemid),
+                        AuctionHouse.seller == AuctionHouse.validate_seller(seller),
+                        AuctionHouse.stack == AuctionHouse.validate_stack(stack),
+                        AuctionHouse.sale == 0,
                     )
-                    return n
+                    .count()
+                )
+                return int(n)
 
-    def get_price(self, itemid, stack=False, seller=None, func=sqlalchemy.func.min):
+    def get_price(
+        self, itemid: int, stack: bool = False, seller: int | None = None, func: Callable = sqlalchemy.func.min
+    ) -> int | None:
         """
-        Get price of item.
+        Get the historical price of an item.
 
-        :param itemid: item number
-        :param stack: consider stacks
-        :param seller: consider seller
-        :param func: sqlalchemy function
+        Args:
+            itemid: The item number.
+            stack: Consider stacks?
+            seller: Consider seller?
+            func: Aggregation function (min).
 
-        :type itemid: int
-        :type stack: int
-        :type seller: int
+        Return:
+            The aggregated priced for an item, in general or for the specific seller.
         """
-        with capture(fail=self.fail):
-            # validate
-            itemid = AuctionHouse.validate_itemid(itemid)
-            stack = AuctionHouse.validate_stack(stack)
-
-            # perform query
-            with self.scopped_session() as session:
-                # ignore seller
-                if seller is None:
-                    n = (
-                        session.query(func(AuctionHouse.sale))
-                        .filter(
-                            AuctionHouse.itemid == itemid,
-                            AuctionHouse.stack == stack,
-                            AuctionHouse.sale != 0,
-                        )
-                        .scalar()
+        with capture(fail=self.fail), self.scoped_session() as session:
+            # ignore seller
+            if seller is None:
+                n = (
+                    session.query(func(AuctionHouse.sale))
+                    .filter(
+                        AuctionHouse.itemid == AuctionHouse.validate_itemid(itemid),
+                        AuctionHouse.stack == AuctionHouse.validate_stack(stack),
+                        AuctionHouse.sale != 0,
                     )
-                    return n
+                    .scalar()
+                )
+                return None if n is None else int(n)
 
-                # consider seller
-                else:
-                    seller = AuctionHouse.validate_seller(seller)
-                    n = (
-                        session.query(func(AuctionHouse.sale))
-                        .filter(
-                            AuctionHouse.itemid == itemid,
-                            AuctionHouse.seller == seller,
-                            AuctionHouse.stack == stack,
-                            AuctionHouse.sale != 0,
-                        )
-                        .scalar()
+            # consider seller
+            else:
+                n = (
+                    session.query(func(AuctionHouse.sale))
+                    .filter(
+                        AuctionHouse.itemid == AuctionHouse.validate_itemid(itemid),
+                        AuctionHouse.seller == AuctionHouse.validate_seller(seller),
+                        AuctionHouse.stack == AuctionHouse.validate_stack(stack),
+                        AuctionHouse.sale != 0,
                     )
-                    return n
+                    .scalar()
+                )
+                return None if n is None else int(n)

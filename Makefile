@@ -8,6 +8,12 @@ check: ## Run code quality tools.
 	@uv run pre-commit run -a
 	@uv run deptry .
 
+.PHONY: check-all
+check-all: ## Run code quality tools.
+	@uv lock
+	@uv run pre-commit run --hook-stage manual -a
+	@uv run deptry .
+
 .PHONY: test
 mypy: ## Run mypy
 	@uv run mypy

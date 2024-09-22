@@ -4,7 +4,7 @@ import ast
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from ffxiahbot.item import Item, item_csv_title_str, item_csv_value_str
 from ffxiahbot.logutils import logger
@@ -16,7 +16,7 @@ class ItemList:
     Container for Item objects.
     """
 
-    items: dict[int,] = field(default_factory=dict)
+    items: dict[int, Item] = field(default_factory=dict)
 
     @classmethod
     def from_csv(cls, *csv_paths: Path) -> ItemList:
@@ -41,19 +41,18 @@ class ItemList:
 
         return item_list
 
-    def add(self, itemid: int, *args: Any, **kwargs: Any) -> Item:
+    def add(self, itemid: int, **kwargs: Any) -> Item:
         """
         Add Item to ItemList.  Item must not already exist.
 
         Args:
             itemid: The item id.
-            *args: The arguments to pass to the Item constructor.
             **kwargs: The keyword arguments to pass to the Item constructor.
 
         Returns:
             Item: The Item object created.
         """
-        item = Item(itemid, *args, **kwargs)
+        item = Item(itemid=itemid, **kwargs)
         if item.itemid in self.items:
             raise KeyError("duplicate item found: %d" % item.itemid)
         self.items[item.itemid] = item
@@ -102,6 +101,18 @@ class ItemList:
         """
         return self.items[itemid]
 
+    def __contains__(self, itemid: int) -> bool:
+        """
+        Check if Item is in ItemList.
+
+        Args:
+            itemid: The item id.
+
+        Returns:
+            bool: True if the Item is in the ItemList, False otherwise.
+        """
+        return itemid in self.items
+
     def __len__(self) -> int:
         """
         Get the number of items in the ItemList.
@@ -126,12 +137,8 @@ class ItemList:
             RuntimeError: If something is wrong with a line.
         """
         regex_c = re.compile(r"#.*$")
-
-        regex_t = "[{0}{1}]?True[{0}{1}]?".format('"', "'")
-        regex_t = re.compile(regex_t, re.IGNORECASE)
-
-        regex_f = "[{0}{1}]?False[{0}{1}]?".format('"', "'")
-        regex_f = re.compile(regex_f, re.IGNORECASE)
+        regex_t = re.compile("[{0}{1}]?True[{0}{1}]?".format('"', "'"), re.IGNORECASE)
+        regex_f = re.compile("[{0}{1}]?False[{0}{1}]?".format('"', "'"), re.IGNORECASE)
 
         logger.info("load %s", csv_path)
         line_number = 0
@@ -149,7 +156,7 @@ class ItemList:
 
             # make sure keys are valid
             for k in keys:
-                if k not in Item.keys:
+                if k not in Item.model_fields:
                     raise RuntimeError(f"unknown column: {k}")
 
             # check for primary key
@@ -171,32 +178,33 @@ class ItemList:
                 # ignore empty lines
                 if line:
                     # split into tokens
-                    tokens = [x.strip() for x in line.split(",")]
+                    tokens: list[str | int | None] = [x.strip() for x in line.split(",")]
 
                     # check for new title line
-                    if set(tokens).issubset(Item.keys):
-                        keys = tokens
+                    if set(tokens).issubset(Item.model_fields.keys()):
+                        keys = cast(list[str], tokens)
 
                         # check for primary key
                         if "itemid" not in keys:
                             raise RuntimeError(f"missing itemid column:\n\t{keys}")
 
                     # validate line
-                    elif set(tokens).intersection(Item.keys):
+                    elif set(tokens).intersection(Item.model_fields.keys()):
                         raise RuntimeError("something wrong with line %d" % line_number)
 
                     # process normal line
                     else:
                         # try to evaluate tokens
                         for i, token in enumerate(tokens):
-                            try:
-                                token = ast.literal_eval(token)
-                            except SyntaxError:
-                                pass
-                            except ValueError:
-                                pass
-                            except NameError:
-                                pass
+                            if isinstance(token, str):
+                                try:
+                                    token = ast.literal_eval(token)
+                                except SyntaxError:
+                                    pass
+                                except ValueError:
+                                    pass
+                                except NameError:
+                                    pass
 
                             # process missing tokens
                             if isinstance(token, str) and not token:
@@ -205,12 +213,13 @@ class ItemList:
                             tokens[i] = token
 
                         # map values
-                        kwargs = {k: None for k in keys}
+                        kwargs: dict[str, str | int | None] = {k: None for k in keys}
                         for i in range(len(tokens)):
                             kwargs[keys[i]] = tokens[i]
 
                         # add new item
-                        self.add(**kwargs)
+                        itemid: int = cast(int, kwargs.pop("itemid"))
+                        self.add(itemid, **kwargs)
 
                 # read next line
                 line = handle.readline()
