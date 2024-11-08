@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import json
+import os
 import re
 from collections.abc import Iterable
 from dataclasses import dataclass
@@ -204,7 +205,7 @@ class FFXIAHScrubber(Scrubber):
                 except Exception as e:
                     failed[itemid] = e
                     logger.exception("item %06d/%06d : %06d", i, len(itemids), itemid)
-                    if len(failed) > 10:
+                    if len(failed) > int(os.environ.get("FFXIAHBOT_SCRUB_MAX_FAILURES", 10)):
                         logger.error("too many failures!")
                         raise typer.Exit(-1) from None
         return results, failed
