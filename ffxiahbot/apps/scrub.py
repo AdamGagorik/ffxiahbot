@@ -2,13 +2,14 @@
 Create item database.
 """
 
+import asyncio
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, cast
 
 from click import Choice
 from typer import Exit, Option
 
-from ffxiahbot.common import OptionalIntList, OptionalStrList
+from ffxiahbot.common import OptionalIntList, OptionalPath, OptionalStrList
 from ffxiahbot.logutils import logger
 from ffxiahbot.scrubbing.enums import ServerID
 
@@ -31,6 +32,7 @@ def main(
     stock_single: Annotated[int, Option(help="The default number of items for singles.")] = 10,
     stock_stacks: Annotated[int, Option(help="The default number of items for stacks.")] = 10,
     should_backup: Annotated[bool, Option("--backup", help="Backup output CSV?")] = False,
+    cache: Annotated[OptionalPath, Option("--cache", help="A directory to cache the fetched data")] = None,
 ) -> None:
     """
     Download a list of item prices from ffxiah.com and save to a CSV file.
@@ -38,7 +40,7 @@ def main(
     from ffxiahbot.common import backup
     from ffxiahbot.config import Config
     from ffxiahbot.itemlist import ItemList
-    from ffxiahbot.scrubbing.ffxiah import FFXIAHScrubber, extract
+    from ffxiahbot.scrubbing.ffxiah import FFXIAHScrubber, augment_item_info
 
     config: Config = Config.from_yaml(cfg_path)
     logger.info("%s", config.model_dump_json(indent=2))
@@ -53,14 +55,14 @@ def main(
         raise Exit(-1)
 
     # scrub data
-    scrubber = FFXIAHScrubber(server=ServerID[server_str.upper()])
-    failed, data = scrubber.scrub(cat_urls=cat_urls, item_ids=item_ids)
+    scrubber = FFXIAHScrubber(server=cast(ServerID, ServerID[server_str.upper()]), cache=cache)
+    results, failed = asyncio.run(scrubber.scrub(cat_urls=cat_urls, item_ids=item_ids))
 
-    if data:
+    if results:
         # create item list from data
         item_list = ItemList()
-        for itemid in sorted(data.keys()):
-            kwargs = extract(data, itemid, stock_single=stock_single, stock_stacks=stock_stacks)
+        for itemid in sorted(results.keys()):
+            kwargs = augment_item_info(results[itemid], stock_single=stock_single, stock_stacks=stock_stacks)
             item_list.add(itemid, **kwargs)
 
         # backup file
