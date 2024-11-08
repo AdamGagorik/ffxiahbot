@@ -212,7 +212,7 @@ class Manager(Worker):
         with progress_bar("[red]Restocking Items...", total=len(item_list)) as (progress, task):
             for item in item_list.items.values():
                 # singles
-                if item.sell_single:
+                if item.sell_single and item.price_single > 0:
                     self._sell_item(
                         item.itemid,
                         stack=False,
@@ -223,7 +223,7 @@ class Manager(Worker):
                     progress.update(task, advance=0.5)
 
                 # stacks
-                if item.sell_stacks:
+                if item.sell_stacks and item.price_stacks > 0:
                     self._sell_item(
                         item.itemid,
                         stack=True,
