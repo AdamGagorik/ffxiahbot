@@ -3,6 +3,7 @@ The script will interact with the Auction House of a private Final Fantasy XI se
 """
 
 import logging
+import os
 from logging import Handler
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
@@ -64,7 +65,8 @@ def setup(
     )
 
     # disable logging from aiohttp
-    logging.getLogger("asyncio").disabled = True
+    if os.environ.get("FFXIAHBOT_SCRUB_DEBUG_ASYNCIO", "0").lower() not in {"1", "true"}:
+        logging.getLogger("asyncio").disabled = True
 
 
 app.command("broker")(ffxiahbot.apps.broker.main)

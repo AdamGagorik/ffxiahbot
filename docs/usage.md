@@ -86,6 +86,14 @@ This command will download item data from ffxiah.com and save it to a CSV file.
 
     There is a pre-built CSV file in the repo, so you do not need to run this command if you don't want to.
 
+!!! note
+
+    Set FFXIAHBOT_SCRUB_MAX_FAILURES=N to the number of failures (N) you are willing to accept before the scrubber stops.
+
+!!! note
+
+    Enable the asyncio logger by setting FFXIAHBOT_SCRUB_DEBUG_ASYNCIO=1
+
 {{ get_help_message("ffxiahbot", "scrub") }}
 
 #### Refilling the Auction House
