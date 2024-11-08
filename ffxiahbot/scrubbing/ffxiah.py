@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, cast
 
 import aiohttp
+import typer
 from bs4 import Tag
 
 from ffxiahbot.common import OptionalPath, progress_bar
@@ -202,9 +203,10 @@ class FFXIAHScrubber(Scrubber):
                     logger.info("item %06d/%06d : %06d", i, len(itemids), itemid)
                 except Exception as e:
                     failed[itemid] = e
-                    logger.error("item %06d/%06d : %06d", i, len(itemids), itemid)
-                    pass
-
+                    logger.exception("item %06d/%06d : %06d", i, len(itemids), itemid)
+                    if len(failed) > 10:
+                        logger.error("too many failures!")
+                        raise typer.Exit(-1) from None
         return results, failed
 
     def _cache_sub(self, itemid: int) -> Path:

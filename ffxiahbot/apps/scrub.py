@@ -9,7 +9,7 @@ from typing import Annotated, cast
 from click import Choice
 from typer import Exit, Option
 
-from ffxiahbot.common import OptionalIntList, OptionalPath, OptionalStrList
+from ffxiahbot.common import OptionalIntList, OptionalPath, OptionalStrList, progress_bar
 from ffxiahbot.logutils import logger
 from ffxiahbot.scrubbing.enums import ServerID
 
@@ -61,9 +61,11 @@ def main(
     if results:
         # create item list from data
         item_list = ItemList()
-        for itemid in sorted(results.keys()):
-            kwargs = augment_item_info(results[itemid], stock_single=stock_single, stock_stacks=stock_stacks)
-            item_list.add(itemid, **kwargs)
+        with progress_bar("[red]Validate Items...", total=len(results)) as (progress, progress_task):
+            for itemid in sorted(results.keys()):
+                kwargs = augment_item_info(results[itemid], stock_single=stock_single, stock_stacks=stock_stacks)
+                progress.update(progress_task, advance=1)
+                item_list.add(itemid, **kwargs)
 
         # backup file
         if should_backup:

@@ -63,6 +63,9 @@ def setup(
         handlers=handlers,
     )
 
+    # disable logging from aiohttp
+    logging.getLogger("asyncio").disabled = True
+
 
 app.command("broker")(ffxiahbot.apps.broker.main)
 app.command("clear")(ffxiahbot.apps.clear.main)
