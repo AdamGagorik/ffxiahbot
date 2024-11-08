@@ -1,10 +1,10 @@
+import asyncio
 import logging
-import time
 from dataclasses import dataclass
 from typing import Any
 
+import aiohttp
 import bs4
-import requests
 from bs4 import BeautifulSoup
 
 TIMEOUT: int = 1024
@@ -14,35 +14,31 @@ TIMEOUT: int = 1024
 class Scrubber:
     # noinspection PyBroadException
     @staticmethod
-    def soup(url: str, absolute: bool = False, **kwargs: Any) -> BeautifulSoup:
+    async def soup(session: aiohttp.ClientSession, url: str, **kwargs: Any) -> BeautifulSoup:
         """
         Open URL and create tag soup.
 
-        :param url: website string
-        :type url: str
-
-        :param absolute: perform double get request to find absolute url
-        :type absolute: bool
+        Parameters:
+            session: client session
+            url: website string to open
         """
-        handle = ""
         max_tries = 10
         for i in range(max_tries):
             # noinspection PyPep8
             try:
-                if absolute:
-                    url = requests.get(url, timeout=TIMEOUT).url
-                handle = requests.get(url, params=kwargs, timeout=TIMEOUT).text
+                async with session.get(url, **kwargs) as response:
+                    text = await response.text()
                 break
             except Exception:
                 logging.exception("urlopen failed (attempt %d)", i + 1)
                 if i == max_tries - 1:
                     logging.exception("the maximum urlopen attempts have been reached")
                     raise
-                time.sleep(1)
+                await asyncio.sleep(1)
 
         try:
-            s = BeautifulSoup(handle, features="html5lib")
+            s = BeautifulSoup(text, features="html5lib")
         except bs4.FeatureNotFound:
-            s = BeautifulSoup(handle, features="html.parser")
+            s = BeautifulSoup(text, features="html.parser")
 
         return s
