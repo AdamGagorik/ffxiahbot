@@ -1,35 +1,52 @@
-import unittest
+import aiohttp
+import pytest
 
-from ffxiahbot.scrubbing.ffxiah import FFXIAHScrubber, extract
+from ffxiahbot.scrubbing.ffxiah import FFXIAHScrubber, augment_item_info
 
 
-class TestCase01(unittest.TestCase):
-    def setUp(self):
-        self.scrubber = FFXIAHScrubber()
-        self.scrubber.save = False
+@pytest.mark.asyncio
+async def test_get_category_urls():
+    async with aiohttp.ClientSession() as session:
+        await FFXIAHScrubber()._get_category_urls(session)
 
-    def test_get_category_urls(self):
-        self.scrubber._get_category_urls()
 
-    def test_get_itemids_for_category_url(self):
-        url = r"http://www.ffxiah.com/browse/49/ninja-tools"
-        self.scrubber._get_itemids_for_category_url(url)
+@pytest.mark.asyncio
+async def test_get_itemids_for_category_url():
+    url = r"http://www.ffxiah.com/browse/49/ninja-tools"
+    async with aiohttp.ClientSession() as session:
+        await FFXIAHScrubber()._get_itemids_for_category_url(session, url)
 
-    def test_get_itemids(self):
-        urls = [
-            r"http://www.ffxiah.com/browse/49/ninja-tools",
-            r"http://www.ffxiah.com/browse/56/breads-rice",
-        ]
-        self.scrubber._get_itemids(urls)
 
-    def test_get_item_data_for_itemid(self):
-        self.scrubber._get_item_data_for_itemid(4096)
+@pytest.mark.asyncio
+async def test_get_itemids():
+    urls = [
+        r"http://www.ffxiah.com/browse/49/ninja-tools",
+        r"http://www.ffxiah.com/browse/56/breads-rice",
+    ]
+    async with aiohttp.ClientSession() as session:
+        await FFXIAHScrubber()._get_item_ids(session, urls)
 
-    def test_get_item_data(self):
-        self.scrubber._get_item_data(list(range(1, 9)))
 
-    def test_scrub(self):
-        self.scrubber.scrub(item_ids={1, 2, 3, 4})
+@pytest.mark.asyncio
+async def test_get_item_data_for_itemid():
+    async with aiohttp.ClientSession() as session:
+        await FFXIAHScrubber()._get_item_data_for_itemid(session, 4096)
 
-    def test_extract(self):
-        extract(self.scrubber._get_item_data([4096])[1], 4096)
+
+@pytest.mark.asyncio
+async def test_get_item_data():
+    async with aiohttp.ClientSession() as session:
+        await FFXIAHScrubber()._get_item_data(session, list(range(1, 9)))
+
+
+@pytest.mark.asyncio
+async def test_scrub():
+    await FFXIAHScrubber().scrub(item_ids={1, 2, 3, 4})
+
+
+@pytest.mark.asyncio
+async def test_augment_item_info():
+    async with aiohttp.ClientSession() as session:
+        results, failed = await FFXIAHScrubber()._get_item_data(session, [4096])
+        kwargs = augment_item_info(results[4096])
+        assert kwargs["name"] == "Fire Crystal"
