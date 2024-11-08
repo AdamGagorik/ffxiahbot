@@ -88,6 +88,12 @@ This command will download item data from ffxiah.com and save it to a CSV file.
 
 !!! note
 
+    Pass the  `--cache .cache` flag to the `scrub` app to save intermediate data during the scrubbing process.
+    This will allow you to resume the scrubbing process if it is interrupted.
+    Delete the `.cache` folder to start the scrubbing process from scratch.
+
+!!! note
+
     Set FFXIAHBOT_SCRUB_MAX_FAILURES=N to the number of failures (N) you are willing to accept before the scrubber stops.
 
 !!! note
