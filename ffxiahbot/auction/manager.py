@@ -185,6 +185,11 @@ class Manager(Worker):
             row: Auction House row to buy.
             max_price: Maximum price to pay.
         """
+        if max_price <= 0:
+            logger.error("max buying price is zero! itemid=%d", row.itemid)
+            self.add_to_blacklist(row.id)
+            return False
+
         # check price
         if row.price <= max_price:
             date = timeutils.timestamp(datetime.datetime.now())
