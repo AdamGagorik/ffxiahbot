@@ -22,6 +22,9 @@ app = Typer(
     help=__doc__,
     invoke_without_command=True,
     rich_markup_mode="rich",
+    pretty_exceptions_enable=True,
+    pretty_exceptions_short=True,
+    pretty_exceptions_show_locals=False,
 )
 
 

@@ -100,9 +100,9 @@ class Item(BaseModel):
     #: Buy stacks?
     buy_stacks: bool = True
     #: Price (>= 1) for singles.
-    price_single: int = Field(default=1, gt=0)
+    price_single: int = Field(default=1, ge=0)
     #: Price (>= 1) for stacks.
-    price_stacks: int = Field(default=1, gt=0)
+    price_stacks: int = Field(default=1, ge=0)
     #: Restock count (>= 0) for singles.
     stock_single: int = Field(default=0, ge=0)
     #: Restock count (>= 0) for stacks.

@@ -1,11 +1,14 @@
+import contextlib
 import datetime
 import logging
 import os
 import re
 import shutil
-from collections.abc import Iterator
+from collections.abc import Generator, Iterator
 from pathlib import Path
 from typing import Any, Optional
+
+from rich.progress import Progress, TaskID, TimeElapsedColumn
 
 OptionalPath = Optional[Path]
 OptionalIntList = Optional[list[int]]
@@ -128,3 +131,17 @@ def find_files(
             match = regex.match(f)
             if match:
                 yield os.path.join(root, f)
+
+
+@contextlib.contextmanager
+def progress_bar(description: str, total: int) -> Generator[tuple[Progress, TaskID]]:
+    try:
+        with Progress(
+            *Progress.get_default_columns(),
+            TimeElapsedColumn(),
+            transient=True,
+        ) as progress:
+            task = progress.add_task(description=description, total=total)
+            yield progress, task
+    finally:
+        pass

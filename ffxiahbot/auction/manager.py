@@ -1,16 +1,13 @@
 from __future__ import annotations
 
-import contextlib
 import datetime
 import random
 from collections import Counter
-from collections.abc import Generator
 from dataclasses import dataclass
 from typing import Any
 
 import pandas as pd
 from pydantic import SecretStr
-from rich.progress import Progress, TaskID, TimeElapsedColumn
 
 from ffxiahbot import timeutils
 from ffxiahbot.auction.browser import Browser
@@ -18,6 +15,7 @@ from ffxiahbot.auction.buyer import Buyer
 from ffxiahbot.auction.cleaner import Cleaner
 from ffxiahbot.auction.seller import Seller
 from ffxiahbot.auction.worker import Worker
+from ffxiahbot.common import progress_bar
 from ffxiahbot.database import Database
 from ffxiahbot.itemlist import ItemList
 from ffxiahbot.logutils import capture, logger
@@ -187,6 +185,11 @@ class Manager(Worker):
             row: Auction House row to buy.
             max_price: Maximum price to pay.
         """
+        if max_price <= 0:
+            logger.error("max buying price is zero! itemid=%d", row.itemid)
+            self.add_to_blacklist(row.id)
+            return False
+
         # check price
         if row.price <= max_price:
             date = timeutils.timestamp(datetime.datetime.now())
@@ -214,7 +217,7 @@ class Manager(Worker):
         with progress_bar("[red]Restocking Items...", total=len(item_list)) as (progress, task):
             for item in item_list.items.values():
                 # singles
-                if item.sell_single:
+                if item.sell_single and item.price_single > 0:
                     self._sell_item(
                         item.itemid,
                         stack=False,
@@ -225,7 +228,7 @@ class Manager(Worker):
                     progress.update(task, advance=0.5)
 
                 # stacks
-                if item.sell_stacks:
+                if item.sell_stacks and item.price_stacks > 0:
                     self._sell_item(
                         item.itemid,
                         stack=True,
@@ -267,17 +270,3 @@ class Manager(Worker):
             for _ in range(stock - current_stock):
                 if rate is None or random.random() <= rate:
                     self.seller.sell_item(itemid=itemid, stack=stack, date=self._sell_time, price=price, count=1)
-
-
-@contextlib.contextmanager
-def progress_bar(description: str, total: int) -> Generator[tuple[Progress, TaskID]]:
-    try:
-        with Progress(
-            *Progress.get_default_columns(),
-            TimeElapsedColumn(),
-            transient=True,
-        ) as progress:
-            task = progress.add_task(description=description, total=total)
-            yield progress, task
-    finally:
-        pass

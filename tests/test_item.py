@@ -10,10 +10,8 @@ from ffxiahbot.item import Item
     [
         pytest.param({"itemid": 0, "name": "A"}, None, id="name=A"),
         pytest.param({"itemid": 0, "price_single": 1}, None, id="price_single=1"),
-        pytest.param({"itemid": 0, "price_single": 0}, ValueError, id="price_single=0 raises"),
         pytest.param({"itemid": 0, "price_single": -1}, ValueError, id="price_single=-1 raises"),
         pytest.param({"itemid": 0, "price_stacks": 1}, None, id="price_stacks=1"),
-        pytest.param({"itemid": 0, "price_stacks": 0}, ValueError, id="price_stacks=0 raises"),
         pytest.param({"itemid": 0, "price_stacks": -1}, ValueError, id="price_stacks=-1 raises"),
         pytest.param({"itemid": 0, "stock_single": 0}, None, id="stock_single=0"),
         pytest.param({"itemid": 0, "stock_single": -1}, ValueError, id="stock_single=-1"),
