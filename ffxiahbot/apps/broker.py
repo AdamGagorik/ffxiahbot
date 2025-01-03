@@ -95,7 +95,6 @@ def main(
             id="restock_items",
             seconds=config.restock,
             max_instances=1,
-            next_run_time=None if not restock_immediately else datetime.now().astimezone(),
             name="Restock Items",
             **sell_kwargs,
         )
