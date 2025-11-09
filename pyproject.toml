@@ -36,7 +36,7 @@ dependencies = [
   "click>=8.1.7",
   "apscheduler>=3.10.4",
   "pandas>=2.2.2",
-  "aiohttp>=3.10.10"
+  "aiohttp>=3.13.2"
 ]
 description = "A command line tool for interacting with a FFXI server."
 license = {file = "LICENSE"}
