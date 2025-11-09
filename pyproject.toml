@@ -2,6 +2,25 @@
 build-backend = "hatchling.build"
 requires = ["hatchling"]
 
+[dependency-groups]
+dev = [
+  "mkdocs>=1.6.0",
+  "pre-commit>=3.8.0",
+  "mypy>=1.11.2",
+  "deptry>=0.20.0",
+  "pytest>=8.3.2",
+  "mkdocs-material>=9.5.33",
+  "mkdocstrings[python]>=0.25.2",
+  "mkdocs-include-markdown-plugin>=6.2.2",
+  "pytest-cov>=5.0.0",
+  "types-beautifulsoup4>=4.12.0.20240511",
+  "types-requests>=2.32.0.20240712",
+  "types-pyyaml>=6.0.12.20240808",
+  "pandas-stubs>=2.2.2.240909",
+  "mkdocs-macros-plugin>=1.2.0",
+  "pytest-asyncio>=0.24.0"
+]
+
 [project]
 authors = [
   {"name" = "Adam Gagorik", "email" = "adam.gagorik@gmail.com"}
@@ -125,22 +144,3 @@ select = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"]
-
-[tool.uv]
-dev-dependencies = [
-  "mkdocs>=1.6.0",
-  "pre-commit>=3.8.0",
-  "mypy>=1.11.2",
-  "deptry>=0.20.0",
-  "pytest>=8.3.2",
-  "mkdocs-material>=9.5.33",
-  "mkdocstrings[python]>=0.25.2",
-  "mkdocs-include-markdown-plugin>=6.2.2",
-  "pytest-cov>=5.0.0",
-  "types-beautifulsoup4>=4.12.0.20240511",
-  "types-requests>=2.32.0.20240712",
-  "types-pyyaml>=6.0.12.20240808",
-  "pandas-stubs>=2.2.2.240909",
-  "mkdocs-macros-plugin>=1.2.0",
-  "pytest-asyncio>=0.24.0"
-]
