@@ -2,6 +2,7 @@ export TERMINAL_WIDTH=132
 
 .PHONY: install
 install: ## Install the environment and the pre-commit hooks
+	@uv venv --python 3.13.9
 	@uv run pre-commit install
 
 .PHONY: check

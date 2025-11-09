@@ -18,8 +18,8 @@ ffxiahbot --help
 ## Installation into a virtual environment (pyenv + pip)
 
 ```bash
-pyenv install 3.12
-pyenv local 3.12
+pyenv install 3.13
+pyenv local 3.13
 pip install virtualenv
 python3 -m virtualenv venv
 source venv/bin/activate
