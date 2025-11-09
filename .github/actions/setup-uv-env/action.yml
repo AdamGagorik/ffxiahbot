@@ -38,5 +38,5 @@ runs:
       shell: bash
 
     - name: Install dependencies
-      run: uv pip install .
+      run: uv pip install --group dev .
       shell: bash
