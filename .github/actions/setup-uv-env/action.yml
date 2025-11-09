@@ -9,7 +9,7 @@ inputs:
   uv-version:
     required: false
     description: "The uv version to use"
-    default: "0.4.0"
+    default: "0.9.8"
   python-version:
     required: false
     description: "The python version to use"
