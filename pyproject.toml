@@ -43,7 +43,7 @@ license = {file = "LICENSE"}
 name = "ffxiahbot"
 readme = "README.md"
 requires-python = ">=3.13"
-version = "6.1.2"
+version = "7.0.1"
 
 [project.scripts]
 ffxiahbot = "ffxiahbot.__main__:app"
