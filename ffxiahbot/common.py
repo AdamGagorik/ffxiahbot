@@ -69,7 +69,7 @@ def backup(path: str | Path, copy: bool = False) -> Path | None:
 
     # extract file info
     dname, bname = os.path.dirname(old_path), os.path.basename(old_path)
-    root, dirs, files = next(os.walk(dname))
+    _, _, files = next(os.walk(dname))
 
     # look for existing backups
     regex = re.compile(rf"^{bname}(\.(\d+))?$")
@@ -126,7 +126,7 @@ def find_files(
                 if match:
                     yield os.path.join(root, f)
     else:
-        root, dirs, files = next(os.walk(top, **kwargs))
+        root, _, files = next(os.walk(top, **kwargs))
         for f in files:
             match = regex.match(f)
             if match:

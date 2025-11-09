@@ -47,6 +47,6 @@ async def test_scrub():
 @pytest.mark.asyncio
 async def test_augment_item_info():
     async with aiohttp.ClientSession() as session:
-        results, failed = await FFXIAHScrubber()._get_item_data(session, [4096])
+        results, _ = await FFXIAHScrubber()._get_item_data(session, [4096])
         kwargs = augment_item_info(results[4096])
         assert kwargs["name"] == "Fire Crystal"

@@ -61,7 +61,7 @@ class TestCase01(unittest.TestCase):
 
     def test_save_csv(self):
         self.item_list.add(**self._test_item1)
-        i, csv_path = tempfile.mkstemp()
+        _, csv_path = tempfile.mkstemp()
         self.item_list.save_csv(Path(csv_path))
         with open(csv_path) as handle:
             handle.readline().strip()
@@ -72,7 +72,7 @@ class TestCase01(unittest.TestCase):
     def test_load_csv(self):
         item_list_1 = ItemList()
         item_list_1.add(**self._test_item1)
-        i, csv_path = tempfile.mkstemp()
+        _, csv_path = tempfile.mkstemp()
         item_list_1.save_csv(Path(csv_path))
 
         item_list_2 = ItemList()
@@ -85,7 +85,7 @@ class TestCase01(unittest.TestCase):
 
     @staticmethod
     def _get_item_list(text, item_list):
-        i, csv_path = tempfile.mkstemp()
+        _, csv_path = tempfile.mkstemp()
         with open(csv_path, "w") as handle:
             handle.write(text)
 
@@ -133,7 +133,7 @@ itemid, name # comment 0
 
         item_list = ItemList()
 
-        i, csv_path = tempfile.mkstemp()
+        _, csv_path = tempfile.mkstemp()
         with open(csv_path, "w") as handle:
             handle.write(text1)
 
@@ -141,7 +141,7 @@ itemid, name # comment 0
         with contextlib.suppress(OSError):
             os.remove(csv_path)
 
-        i, csv_path = tempfile.mkstemp()
+        _, csv_path = tempfile.mkstemp()
         with open(csv_path, "w") as handle:
             handle.write(text2)
 

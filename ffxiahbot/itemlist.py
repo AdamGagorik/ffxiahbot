@@ -54,7 +54,7 @@ class ItemList:
         """
         item = Item(itemid=itemid, **kwargs)
         if item.itemid in self.items:
-            raise KeyError("duplicate item found: %d" % item.itemid)
+            raise KeyError(f"duplicate item found: {item.itemid}")
         self.items[item.itemid] = item
         return item
 
@@ -190,7 +190,7 @@ class ItemList:
 
                     # validate line
                     elif set(tokens).intersection(allowed_item_keys()):
-                        raise RuntimeError("something wrong with line %d" % line_number)
+                        raise RuntimeError(f"something wrong with line {line_number}")
 
                     # process normal line
                     else:
@@ -213,7 +213,7 @@ class ItemList:
                             tokens[i] = token
 
                         # map values
-                        kwargs: dict[str, str | int | None] = {k: None for k in keys}
+                        kwargs: dict[str, str | int | None] = dict.fromkeys(keys)
                         for i in range(len(tokens)):
                             kwargs[keys[i]] = tokens[i]
 
