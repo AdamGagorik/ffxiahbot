@@ -67,7 +67,7 @@ def str_to_datetime(date_string: str) -> _datetime.datetime:
 
     .. seealso:: :py:meth:`datetime.datetime.strptime`
     """
-    return _datetime.datetime.strptime(date_string, "%m/%d/%Y %H:%M:%S").replace(tzinfo=_datetime.timezone.utc)
+    return _datetime.datetime.strptime(date_string, "%m/%d/%Y %H:%M:%S").replace(tzinfo=_datetime.UTC)
 
 
 def datetime_to_str(datetime_obj: _datetime.datetime) -> str:
@@ -102,7 +102,7 @@ class DatetimeToTimestamp:
     """
 
     #: 01/01/1970
-    epoch: _datetime.datetime = _datetime.datetime(1970, 1, 1, tzinfo=_datetime.timezone.utc)
+    epoch: _datetime.datetime = _datetime.datetime(1970, 1, 1, tzinfo=_datetime.UTC)
 
     def __call__(self, datetime_obj: _datetime.datetime) -> int:
         return int((datetime_obj - self.epoch).total_seconds())
@@ -144,7 +144,7 @@ def timestamp_to_datetime(stamp: int) -> _datetime.datetime:
 
     .. seealso:: :py:meth:`datetime.timedelta.utcfromtimestamp`
     """
-    return _datetime.datetime.fromtimestamp(stamp, _datetime.timezone.utc)
+    return _datetime.datetime.fromtimestamp(stamp, _datetime.UTC)
 
 
 def datetime(*args: Any, **kwargs: Any) -> _datetime.datetime:
@@ -184,7 +184,7 @@ def datetime(*args: Any, **kwargs: Any) -> _datetime.datetime:
         :py:class:`datetime.datetime`
     """
     if len(args) > 1 or kwargs:
-        return _datetime.datetime(*args, **(kwargs | {"tzinfo": _datetime.timezone.utc}))
+        return _datetime.datetime(*args, **(kwargs | {"tzinfo": _datetime.UTC}))
 
     try:
         obj = args[0]
@@ -192,7 +192,7 @@ def datetime(*args: Any, **kwargs: Any) -> _datetime.datetime:
         raise ValueError("expecting argument") from None
 
     if isinstance(obj, _datetime.datetime):
-        return obj.replace(tzinfo=_datetime.timezone.utc)
+        return obj.replace(tzinfo=_datetime.UTC)
 
     if isinstance(obj, str):
         return str_to_datetime(obj)

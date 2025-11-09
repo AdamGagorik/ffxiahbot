@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.12"]
+        python-version: ["3.13"]
       fail-fast: false
     defaults:
       run:
@@ -53,13 +53,13 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-        if: ${{ matrix.python-version == '3.12' }}
+        if: ${{ matrix.python-version == '3.13' }}
 
       - name: Upload test results reports to Codecov
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-        if: ${{ matrix.python-version == '3.12' }}
+        if: ${{ matrix.python-version == '3.13' }}
 
   check-docs:
     runs-on: ubuntu-latest

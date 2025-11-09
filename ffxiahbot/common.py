@@ -10,10 +10,10 @@ from typing import Any, Optional
 
 from rich.progress import Progress, TaskID, TimeElapsedColumn
 
-OptionalPath = Optional[Path]
-OptionalIntList = Optional[list[int]]
-OptionalStrList = Optional[list[str]]
-OptionalPathList = Optional[list[Path]]
+OptionalPath = Optional[Path]  # noqa: UP045
+OptionalIntList = Optional[list[int]]  # noqa: UP045
+OptionalStrList = Optional[list[str]]  # noqa: UP045
+OptionalPathList = Optional[list[Path]]  # noqa: UP045
 
 
 def create_path(
