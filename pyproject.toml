@@ -5,10 +5,7 @@ requires = ["hatchling"]
 [dependency-groups]
 dev = [
   "mkdocs>=1.6.0",
-  "pre-commit>=3.8.0",
-  "mypy>=1.11.2",
   "deptry>=0.20.0",
-  "pytest>=8.3.2",
   "mkdocs-material>=9.5.33",
   "mkdocstrings[python]>=0.25.2",
   "mkdocs-include-markdown-plugin>=6.2.2",
@@ -18,7 +15,10 @@ dev = [
   "types-pyyaml>=6.0.12.20240808",
   "pandas-stubs>=2.2.2.240909",
   "mkdocs-macros-plugin>=1.2.0",
-  "pytest-asyncio>=0.24.0"
+  "pytest-asyncio>=0.24.0",
+  "mypy>=1.18.2",
+  "pytest>=8.4.2",
+  "pre-commit>=4.4.0"
 ]
 
 [project]
